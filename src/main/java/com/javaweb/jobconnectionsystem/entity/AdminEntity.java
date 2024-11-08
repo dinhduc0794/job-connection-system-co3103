@@ -1,7 +1,6 @@
 package com.javaweb.jobconnectionsystem.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,5 +8,6 @@ import lombok.Setter;
 @Setter
 @Table(name = "admin")
 @Entity
+//@PrimaryKeyJoinColumn(name = "id")
 public class AdminEntity extends AccountEntity{
 }

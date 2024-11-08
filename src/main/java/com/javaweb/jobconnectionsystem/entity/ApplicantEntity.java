@@ -12,6 +12,7 @@ import java.util.List;
 @Setter
 @Table(name = "applicant")
 @Entity
+//@PrimaryKeyJoinColumn(name = "id")
 public class ApplicantEntity extends UserEntity{
     @Column(name = "firstname", nullable = false)
     private String firstName;

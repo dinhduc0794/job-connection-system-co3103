@@ -1,5 +1,10 @@
 package com.javaweb.jobconnectionsystem.service;
 
-public interface UserService {
+import com.javaweb.jobconnectionsystem.entity.UserEntity;
+import jakarta.persistence.Column;
 
+public interface UserService {
+    void saveUser();
 }
+
+

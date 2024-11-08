@@ -10,13 +10,14 @@ import lombok.Setter;
 @Entity
 public class EmailEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
     @Column(name = "email", unique = true)
     private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+//    @ManyToOne
+//    @JoinColumn(name = "user_id", nullable = false)
+//    private UserEntity user;
 }
