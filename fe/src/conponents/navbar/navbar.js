@@ -1,15 +1,15 @@
 import React from 'react';
 import './navbar.css';
-
+import { Link } from 'react-router-dom';
 
 
 function Navbar() {  
     return (
-        <div id="headernav">
+        <div id="header">
         <div id="nav">
         <div className='nav__logo'>
-              <a className="navbar-brand-custom" href="/">
-                <img 
+              <a className="navbar-brand-custom" href="#home">
+                <img
                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXkI3X3ldqL1YTY2TZhVx-8QeRWlqvCiqtxg&s"
                   width="50"
                   height="50"
@@ -20,7 +20,7 @@ function Navbar() {
 
             <div className="nav__menu">
                 <div className="menu-home menu-effect">
-                    <a href="/">Trang chủ</a>
+                    <a href="./">Trang chủ</a>
                 </div>
                 <div className="menu-job menu-effect auth-only">
                     <a href="./teacher-info.html">
@@ -29,7 +29,7 @@ function Navbar() {
                     </a>
                     
                     <ul className="subnav">
-                        <li><a href="./">Toàn Bộ Việc Làm</a></li>
+                        <li><Link to="/alljob">Toàn Bộ Việc Làm</Link></li>
                         <li><a href="./">Việc Làm IT</a></li>
                         <li><a href="./">Việc Làm Hot</a></li>
                     </ul>
@@ -41,7 +41,7 @@ function Navbar() {
                         <i className="fa-solid fa-angle-down"></i>
                     </a>
                     <ul className="subnav">
-                        <li><a href="./">Toàn Bộ Công Ty</a></li>
+                        <li><Link to="/allcompany">Toàn Bộ Công Ty</Link></li>
                         <li><a href="./">Công Ty Hàng Đầu</a></li>
                         <li><a href="./">Công Ty IT</a></li>
                     </ul>

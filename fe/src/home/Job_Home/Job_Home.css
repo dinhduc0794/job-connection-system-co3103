@@ -105,4 +105,30 @@
   }
   
   /* Danh sách công việc */
-  
+  .filter-value {
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background-color: #f0f0f0;
+    transition: all 0.3s ease;
+}
+
+.filter-value:hover {
+    background-color: #e0e0e0;
+}
+
+.filter-value.active {
+    background-color: #4f46e5;
+    color: white;
+}
+
+.job-list-container {
+    min-height: 400px; /* Đảm bảo container không bị co lại khi không có kết quả */
+}
+
+.no-results {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-size: 1.1rem;
+}

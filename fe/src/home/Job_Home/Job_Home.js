@@ -3,11 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import './Job_Home.css';
 import './JobList.css';
 
-function Job_Home() {
+function Job_Home({ onFilterChange }) {
     const [selectedFilter, setSelectedFilter] = useState('nganh-nghe');
+    const [selectedValues, setSelectedValues] = useState({
+        'nganh-nghe': '',
+        'muc-luong': '',
+        'dia-diem': ''
+    });
     const [currentValues, setCurrentValues] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [jobPage, setJobPage] = useState(1);
+    const [filteredJobs, setFilteredJobs] = useState([]);
 
     const allValues = {
         'nganh-nghe': ['Kinh doanh', 'Phiên dịch', 'Báo chí', 'Viễn thông', 'Game', 'IT'],
@@ -16,37 +22,138 @@ function Job_Home() {
     };
 
     const jobs = [
-        { id: 1, title: 'Quản lý dự án - PM', company: 'Công Ty Cổ Phần Đầu Tư Thương Mại Và Phát Triển Công Nghệ FSI', description: '20 - 27 triệu' },
-        { id: 2, title: 'Backend Developer', company: 'Company B', description: 'Thỏa thuận' },
-        { id: 3, title: 'Full Stack Developer', company: 'Company C', description: 'Thỏa thuận' },
-        { id: 4, title: 'Data Scientist', company: 'Company D', description: 'Thỏa thuận' },
-        { id: 5, title: 'Mobile Developer', company: 'Company E', description: 'Thỏa thuận' },
-        { id: 6, title: 'DevOps Engineer', company: 'Company F', description: 'Thỏa thuận' },
-        { id: 7, title: 'UI/UX Designer', company: 'Company G', description: 'Thỏa thuận' },
-        { id: 8, title: 'QA Engineer', company: 'Company H', description: 'Thỏa thuận' },
-        { id: 9, title: 'Project Manager', company: 'Company I', description: 'Thỏa thuận' },
-        { id: 10, title: 'Cybersecurity Expert', company: 'Company J', description: 'Thỏa thuận' },
-        { id: 11, title: 'Cloud Architect', company: 'Company K', description: 'Thỏa thuận' },
-        { id: 12, title: 'AI Engineer', company: 'Company L', description: 'Thỏa thuận' },
-        { id: 13, title: 'Blockchain Developer', company: 'Company M', description: 'Thỏa thuận' },
-        { id: 14, title: 'Marketing Manager', company: 'Company N', description: 'Thỏa thuận' },
-        { id: 15, title: 'Product Manager', company: 'Company O', description: 'Thỏa thuận' },
+        { 
+            id: 1, 
+            title: 'Quản lý dự án - PM', 
+            company: 'Công Ty FSI', 
+            description: '20 - 27 triệu',
+            category: 'IT',
+            salary: '20-30 triệu',
+            location: 'Hà Nội'
+        },
+        { 
+            id: 2, 
+            title: 'Backend Developer', 
+            company: 'Company B', 
+            description: 'Thỏa thuận',
+            category: 'IT',
+            salary: '10-20 triệu',
+            location: 'TP Hồ Chí Minh'
+        },
+        {
+            id: 3,
+            title: 'Front-end Developer',
+            company: 'Startup X',
+            description: 'Cơ hội phát triển cao',
+            category: 'IT',
+            salary: '15-25 triệu',
+            location: 'Đà Nẵng'
+        },
+        {
+            id: 4,
+            title: 'Designer',
+            company: 'Công ty thiết kế Y',
+            description: 'Môi trường làm việc sáng tạo',
+            category: 'Design',
+            salary: '18-28 triệu',
+            location: 'Hà Nội'
+        },
+        {
+            id: 5,
+            title: 'Data Analyst',
+            company: 'Công ty Dữ liệu Z',
+            description: 'Phân tích dữ liệu lớn',
+            category: 'Data Science',
+            salary: '20-30 triệu',
+            location: 'TP. Hồ Chí Minh'
+        },
+        
+        {
+            id: 6,
+            title: 'Marketing Manager',
+            company: 'Công ty Thương mại T',
+            description: 'Lập kế hoạch marketing',
+            category: 'Marketing',
+            salary: '25-35 triệu',
+            location: 'Hà Nội'
+        },
+        {
+            id: 7,
+            title: 'Designer',
+            company: 'Công ty thiết kế Y',
+            description: 'Môi trường làm việc sáng tạo',
+            category: 'Design',
+            salary: '18-28 triệu',
+            location: 'Hà Nội'
+        },
+        {
+            id: 8,
+            title: 'Data Analyst',
+            company: 'Công ty Dữ liệu Z',
+            description: 'Phân tích dữ liệu lớn',
+            category: 'Data Science',
+            salary: '20-30 triệu',
+            location: 'TP. Hồ Chí Minh'
+        },
+        
+        {
+            id: 9,
+            title: 'Marketing Manager',
+            company: 'Công ty Thương mại T',
+            description: 'Lập kế hoạch marketing',
+            category: 'Marketing',
+            salary: '25-35 triệu',
+            location: 'Hà Nội'
+        }
+        // ... thêm các công việc khác với đầy đủ thông tin lọc
     ];
 
     const valuesPerPage = 5;
     const jobsPerPage = 9;
-
     const navigate = useNavigate();
 
-    const handleJobDetail = (jobId) => {
-      navigate(`/JobDetail/${jobId}`);
+    // Xử lý khi người dùng click vào một giá trị lọc
+    const handleValueClick = (value) => {
+        setSelectedValues(prev => ({
+            ...prev,
+            [selectedFilter]: value
+        }));
     };
-    
+
+    // Lọc công việc dựa trên các giá trị đã chọn
+    const filterJobs = () => {
+        let filtered = [...jobs];
+
+        if (selectedValues['nganh-nghe'] && selectedValues['nganh-nghe'] !== 'Tất cả') {
+            filtered = filtered.filter(job => job.category === selectedValues['nganh-nghe']);
+        }
+
+        if (selectedValues['muc-luong'] && selectedValues['muc-luong'] !== 'Tất cả') {
+            filtered = filtered.filter(job => job.salary === selectedValues['muc-luong']);
+        }
+
+        if (selectedValues['dia-diem'] && selectedValues['dia-diem'] !== 'Tất cả') {
+            filtered = filtered.filter(job => job.location === selectedValues['dia-diem']);
+        }
+
+        setFilteredJobs(filtered);
+        setJobPage(1); // Reset về trang đầu tiên khi lọc
+    };
+
+    useEffect(() => {
+        filterJobs();
+    }, [selectedValues]);
+
+    useEffect(() => {
+        const startIndex = currentPage * valuesPerPage;
+        const endIndex = startIndex + valuesPerPage;
+        setCurrentValues(allValues[selectedFilter].slice(startIndex, endIndex));
+    }, [selectedFilter, currentPage]);
 
     const handleFilterChange = (event) => {
         const selected = event.target.value;
         setSelectedFilter(selected);
-        setCurrentPage(0); // Khi thay đổi filter, chuyển về trang đầu tiên
+        setCurrentPage(0);
     };
 
     const handlePreviousClick = () => {
@@ -62,34 +169,32 @@ function Job_Home() {
         }
     };
 
-    useEffect(() => {
-        const startIndex = currentPage * valuesPerPage;
-        const endIndex = startIndex + valuesPerPage;
-        setCurrentValues(allValues[selectedFilter].slice(startIndex, endIndex));
-    }, [selectedFilter, currentPage]);
+    const handleJobDetail = (jobId) => {
+        navigate(`/JobDetail/${jobId}`);
+    };
 
+    // Tính toán các công việc cho trang hiện tại
     const indexOfLastJob = jobPage * jobsPerPage;
     const indexOfFirstJob = indexOfLastJob - jobsPerPage;
-    const currentJobs = jobs.slice(indexOfFirstJob, indexOfLastJob);
-
-    const totalPages = Math.ceil(jobs.length / jobsPerPage);
+    const currentJobs = filteredJobs.slice(indexOfFirstJob, indexOfLastJob);
+    const totalPages = Math.ceil(filteredJobs.length / jobsPerPage);
 
     const paginate = (pageNumber) => setJobPage(pageNumber);
 
     return (
         <div>
             <div id="jobhome-container">
-                {/* Hàng đầu tiên - Việc làm tốt nhất và nút Xem tất cả */}
                 <div className="header">
                     <h1>Việc làm tốt nhất</h1>
-                    <button className="view-all-btn" onClick={() => alert('Chuyển sang trang khác')}>Xem tất cả</button>
+                    <button className="view-all-btn" onClick={() => navigate('/all-jobs')}>
+                        Xem tất cả
+                    </button>
                 </div>
 
-                {/* Bộ lọc */}
                 <div className="filter-container">
                     <div className="filter-left">
                         <label>Lọc theo:</label>
-                        <select onChange={handleFilterChange}>
+                        <select onChange={handleFilterChange} value={selectedFilter}>
                             <option value="nganh-nghe">Ngành nghề</option>
                             <option value="muc-luong">Mức lương</option>
                             <option value="dia-diem">Địa điểm</option>
@@ -100,14 +205,19 @@ function Job_Home() {
                         <button className="arrow-btn" onClick={handlePreviousClick}>{"<"}</button>
                         <div className="filter-values">
                             {currentValues.map((value, index) => (
-                                <span key={index} className="filter-value">{value}</span>
+                                <span
+                                    key={index}
+                                    className={`filter-value ${selectedValues[selectedFilter] === value ? 'active' : ''}`}
+                                    onClick={() => handleValueClick(value)}
+                                >
+                                    {value}
+                                </span>
                             ))}
                         </div>
                         <button className="arrow-btn" onClick={handleNextClick}>{">"}</button>
                     </div>
                 </div>
 
-                {/* Hàng thứ ba - Danh sách các job */}
                 <div className="job-list-container">
                     <div className="job-list">
                         {currentJobs.map((job) => (
@@ -126,18 +236,19 @@ function Job_Home() {
                         ))}
                     </div>
 
-                    {/* Phân trang */}
-                    <div className="pagination">
-                        {Array.from({ length: totalPages }, (_, index) => (
-                            <button
-                                key={index + 1}
-                                onClick={() => paginate(index + 1)}
-                                className={jobPage === index + 1 ? 'active' : ''}
-                            >
-                                {index + 1}
-                            </button>
-                        ))}
-                    </div>
+                    {totalPages > 1 && (
+                        <div className="pagination">
+                            {Array.from({ length: totalPages }, (_, index) => (
+                                <button
+                                    key={index + 1}
+                                    onClick={() => paginate(index + 1)}
+                                    className={jobPage === index + 1 ? 'active' : ''}
+                                >
+                                    {index + 1}
+                                </button>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
