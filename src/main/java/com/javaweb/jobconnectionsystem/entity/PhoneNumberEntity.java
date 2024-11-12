@@ -10,7 +10,7 @@ import lombok.Setter;
 @Entity
 public class PhoneNumberEntity {
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "phonenumber", unique = true)

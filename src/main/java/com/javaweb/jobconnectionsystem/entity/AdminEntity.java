@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @Table(name = "admin")
 @Entity
-//@PrimaryKeyJoinColumn(name = "id")
+@PrimaryKeyJoinColumn(name = "id")
 public class AdminEntity extends AccountEntity{
 }

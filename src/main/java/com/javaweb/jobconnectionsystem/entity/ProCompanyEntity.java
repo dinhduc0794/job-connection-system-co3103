@@ -13,7 +13,7 @@ import java.util.Date;
 @Setter
 @Table(name = "pro_company")
 @Entity
-//@PrimaryKeyJoinColumn(name = "id")
+@PrimaryKeyJoinColumn(name = "id")
 public class ProCompanyEntity extends CompanyEntity {
     @Column(name = "registdate", nullable = false)
     private Date registDate;

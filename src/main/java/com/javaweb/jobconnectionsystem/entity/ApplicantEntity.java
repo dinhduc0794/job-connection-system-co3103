@@ -10,9 +10,9 @@ import java.util.List;
 
 @Getter
 @Setter
-@Table(name = "applicant")
 @Entity
-//@PrimaryKeyJoinColumn(name = "id")
+@Table(name = "applicant")
+@PrimaryKeyJoinColumn(name = "id")
 public class ApplicantEntity extends UserEntity{
     @Column(name = "firstname", nullable = false)
     private String firstName;

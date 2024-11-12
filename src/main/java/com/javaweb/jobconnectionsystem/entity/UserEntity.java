@@ -9,10 +9,10 @@ import java.util.List;
 
 @Getter
 @Setter
-@Table(name = "\"user\"")
+@Table(name = "Usertable")
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED )
-//@PrimaryKeyJoinColumn(name = "id")
+@PrimaryKeyJoinColumn(name = "id")
 public class UserEntity extends AccountEntity{
     @Column(name = "description")
     private String description;
@@ -23,15 +23,15 @@ public class UserEntity extends AccountEntity{
     @Column(name = "is_banned")
     private Boolean isBanned = false;
 
-//    // 1 user can have many phone numbers
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<PhoneNumberEntity> phoneNumbers = new ArrayList<>();
-//
-//    // 1 user can have many email
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<EmailEntity> emails = new ArrayList<>();
-//
-//    // 1 user can have many notification
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<NotificationEntity> notifications = new ArrayList<>();
+    // 1 user can have many phone numbers
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PhoneNumberEntity> phoneNumbers;
+
+    // 1 user can have many email
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EmailEntity> emails ;
+
+    // 1 user can have many notification
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<NotificationEntity> notifications;
 }

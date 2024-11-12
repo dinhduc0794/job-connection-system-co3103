@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AccountService {
+    //thêm tài khoản
     public AccountEntity addAccount(AccountEntity account);
+    // Lấy toàn bộ tài khoản
+
     public List<AccountEntity> getAllAccounts();
     // Lấy tài khoản theo ID
     public Optional<AccountEntity> getAccountById(Long id);

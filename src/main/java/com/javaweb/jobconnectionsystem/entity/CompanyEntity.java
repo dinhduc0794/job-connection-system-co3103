@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = "company")
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-//@PrimaryKeyJoinColumn(name = "id")
+@PrimaryKeyJoinColumn(name = "id")
 public class CompanyEntity extends UserEntity {
     @Column(name = "name", nullable = false)
     private String name;

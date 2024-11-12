@@ -12,12 +12,6 @@ import lombok.Setter;
 @Table(name = "account")
 @Inheritance(strategy = InheritanceType.JOINED )
 public class AccountEntity {
-    public AccountEntity(){}
-    public AccountEntity(String username, String password, Boolean isActive) {
-        this.username = username;
-        this.password = password;
-        this.isActive = isActive;
-    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,5 +23,5 @@ public class AccountEntity {
     private String password;
 
     @Column(name = "is_active")
-    private Boolean isActive;
+    private Boolean isActive = true;
 }
