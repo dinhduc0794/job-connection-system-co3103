@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@Table(name = "Usertable")
+@Table(name = "\"user\"")
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED )
 @PrimaryKeyJoinColumn(name = "id")
