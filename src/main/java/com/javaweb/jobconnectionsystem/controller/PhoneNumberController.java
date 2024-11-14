@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/phonenumber")
+@RequestMapping("/phonenumbers")
 public class PhoneNumberController {
 
     @Autowired

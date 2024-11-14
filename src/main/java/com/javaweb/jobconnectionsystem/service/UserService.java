@@ -9,10 +9,7 @@ public interface UserService {
     //thêm User
     public UserEntity addUser(UserEntity user,String phoneNumber,String email);
     // Lấy thêm user
-    public UserEntity addUserNophoneNoemail(UserEntity user);
     //
-    public UserEntity addUserPhone(UserEntity user,String phoneNumber);
-    //lấy toàn bộ
     public List<UserEntity> getAllUsers();
     // Lấy user theo ID
     public Optional<UserEntity> getUserById(Long id);

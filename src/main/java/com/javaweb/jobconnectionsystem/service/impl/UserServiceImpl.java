@@ -12,6 +12,7 @@ import com.javaweb.jobconnectionsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,41 +30,29 @@ public class UserServiceImpl implements UserService {
 
     // Thêm người dùng mới
     @Override
-    public UserEntity addUser(UserEntity user,String phoneNumber, String email) {
-        userRepository.save(user);
-        PhoneNumberEntity phone = new PhoneNumberEntity();
-        phone.setPhoneNumber(phoneNumber);
-        phone.setUser(user);
-        EmailEntity newemail =new EmailEntity();
-        newemail.setEmail(email);
-        phone.setPhoneNumber(email);
-        phone.setUser(user);
-        emailRepository.save(newemail);
-        phoneNumberRepository.save(phone);
-        return user;
-    }
-    public UserEntity addUserNophoneNoemail(UserEntity user) {
+    public UserEntity addUser(UserEntity user, String phoneNumber, String email) {
         Optional<AccountEntity> existingAccount = accountRepository.findByUsername(user.getUsername());
         if (existingAccount.isPresent()) {
             throw new RuntimeException("Username already exists");
-        }
-        userRepository.save(user);
-        return user;
-    }
-    public UserEntity addUserPhone(UserEntity user,String phone) {
 
-        Optional<AccountEntity> existingAccount = accountRepository.findByUsername(user.getUsername());
-        if (existingAccount.isPresent()) {
-            throw new RuntimeException("Username already exists");
-        }
-        PhoneNumberEntity phoneNumber = new PhoneNumberEntity();
-        phoneNumber.setPhoneNumber(phone);
-        phoneNumber.setUser(user);
-        user.getPhoneNumbers().add(phoneNumber);
-        phoneNumberRepository.save(phoneNumber);
-        return user;
-    }
+        } else {
 
+            UserEntity savedUser = userRepository.save(user);
+
+            PhoneNumberEntity phone = new PhoneNumberEntity();
+            phone.setPhoneNumber(phoneNumber);
+            phone.setUser(savedUser);
+
+            EmailEntity newEmail = new EmailEntity();
+            newEmail.setEmail(email);
+            newEmail.setUser(savedUser);
+
+            savedUser.getPhoneNumbers().add(phone);
+            savedUser.getEmails().add(newEmail);
+
+            return userRepository.save(savedUser);
+        }
+    }
     // Lấy tất cả người dùng
     @Override
     public List<UserEntity> getAllUsers() {
@@ -87,15 +76,11 @@ public class UserServiceImpl implements UserService {
         user.setIsPublic(userDetails.getIsPublic());
         user.setIsBanned(userDetails.getIsBanned());
         // cập nhật sdt
-        if (userDetails.getPhoneNumbers() != null) {
-            user.getPhoneNumbers().clear(); // Xóa các số cũ
-            user.getPhoneNumbers().addAll(userDetails.getPhoneNumbers()); // Thêm các số mới
-        }
+        user.getPhoneNumbers().clear(); // Xóa các số cũ
+        user.getPhoneNumbers().addAll(userDetails.getPhoneNumbers()); // Thêm các số mới
         // Cập nhật email
-        if (userDetails.getEmails() != null) {
-            user.getEmails().clear(); // Xóa các email cũ
-            user.getEmails().addAll(userDetails.getEmails()); // Thêm các email mới
-        }
+        user.getEmails().clear(); // Xóa các email cũ
+        user.getEmails().addAll(userDetails.getEmails()); // Thêm các email mới
         // Cập nhật thông tin người dùng
         return userRepository.save(user);  // Lưu lại người dùng đã cập nhật
     }

@@ -13,31 +13,16 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/users")
 public class UserController {
+// done lớp user, xử lí lỗi oke hết khi add 1 user hay update hoàn thành, vì có phụ thuộc nên đã xử lí xong, put ch dùng đc
 
     @Autowired
     private UserService userService;
 
     // Thêm người dùng mới
-    @PostMapping("/add")
+    @PostMapping()
     public ResponseEntity<UserEntity> addUser(@RequestBody UserEntity user,String phone,String email) {
-        UserEntity createdUser = userService.addUser(user,phone,email);
-        return ResponseEntity.ok(createdUser); // Trả về người dùng đã thêm
-    }
-    @PostMapping("/addnophonenoemail")
-    public ResponseEntity<UserEntity> addUserNophoneNoemail(@RequestBody UserEntity user) {
-
         try {
-            UserEntity createdUser = userService.addUserNophoneNoemail(user);
-            return ResponseEntity.ok(createdUser); // Trả về tài khoản đã thêm
-        } catch (RuntimeException e) {
-            // Bắt lỗi nếu username đã tồn tại và trả về mã lỗi 400
-            return ResponseEntity.badRequest().body(null); // Trả về lỗi nếu tài khoản đã tồn tại
-        }
-    }
-    @PostMapping("/addnophone")
-    public ResponseEntity<UserEntity> addUserPhone(@RequestBody UserEntity user,String phone) {
-        try {
-            UserEntity createdUser = userService.addUserPhone(user,phone);
+            UserEntity createdUser = userService.addUser(user,phone,email);
             return ResponseEntity.ok(createdUser); // Trả về tài khoản đã thêm
         } catch (RuntimeException e) {
             // Bắt lỗi nếu username đã tồn tại và trả về mã lỗi 400
@@ -75,7 +60,7 @@ public class UserController {
     }
 
     // Xóa người dùng
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         try {
             userService.deleteUser(id);

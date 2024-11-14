@@ -1,0 +1,68 @@
+package com.javaweb.jobconnectionsystem.controller;
+
+import com.javaweb.jobconnectionsystem.entity.NotificationEntity;
+import com.javaweb.jobconnectionsystem.service.NotificationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/notifications")
+public class NotificationController {
+
+    @Autowired
+    private NotificationService notificationService;
+
+    // Endpoint thêm thông báo
+    @PostMapping
+    public ResponseEntity<NotificationEntity> addNotification(@RequestBody NotificationEntity notification) {
+        NotificationEntity createdNotification = notificationService.addNotification(notification);
+        if (createdNotification == null) {
+            return ResponseEntity.badRequest().body(null); // Trả về lỗi nếu thông báo không hợp lệ
+        }
+        return ResponseEntity.ok(createdNotification); // Trả về thông báo đã thêm
+    }
+
+    // Endpoint lấy tất cả thông báo
+    @GetMapping
+    public ResponseEntity<List<NotificationEntity>> getAllNotifications() {
+        List<NotificationEntity> notifications = notificationService.getAllNotifications();
+        if (notifications.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Nếu không có thông báo, trả về 204 No Content
+        }
+        return ResponseEntity.ok(notifications); // Trả về danh sách thông báo
+    }
+
+    // Endpoint lấy thông báo theo ID
+    @GetMapping("/{id}")
+    public ResponseEntity<NotificationEntity> getNotificationById(@PathVariable Long id) {
+        Optional<NotificationEntity> notification = notificationService.getNotificationById(id);
+        return notification.map(ResponseEntity::ok) // Trả về thông báo nếu tìm thấy
+                .orElseGet(() -> ResponseEntity.notFound().build()); // Trả về 404 nếu không tìm thấy thông báo
+    }
+
+    // Endpoint cập nhật thông báo
+    @PutMapping("/{id}")
+    public ResponseEntity<NotificationEntity> updateNotification(@PathVariable Long id, @RequestBody NotificationEntity notificationDetails) {
+        try {
+            NotificationEntity updatedNotification = notificationService.updateNotification(id, notificationDetails);
+            return ResponseEntity.ok(updatedNotification); // Trả về thông báo đã cập nhật
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(null); // Nếu có lỗi, trả về lỗi
+        }
+    }
+
+    // Endpoint xóa thông báo
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteNotification(@PathVariable Long id) {
+        try {
+            notificationService.deleteNotificationById(id);
+            return ResponseEntity.noContent().build(); // Trả về 204 nếu xóa thành công
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build(); // Nếu không tìm thấy thông báo, trả về 404 Not Found
+        }
+    }
+}

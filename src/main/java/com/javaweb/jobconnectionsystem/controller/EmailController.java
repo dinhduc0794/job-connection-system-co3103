@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/email")
+@RequestMapping("/emails")
 public class EmailController {
 
     @Autowired
