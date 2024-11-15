@@ -27,10 +27,10 @@ public class CertificationEntity {
     @Column(name = "proof")
     private String proof;
 
-    @Column(name = "startDate")
+    @Column(name = "start_date")
     private Date startDate;
 
-    @Column(name = "endDate")
+    @Column(name = "end_date")
     private Date endDate;
 
     @ManyToOne

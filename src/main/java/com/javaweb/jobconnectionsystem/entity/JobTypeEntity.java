@@ -1,9 +1,12 @@
 package com.javaweb.jobconnectionsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -16,7 +19,7 @@ public class JobTypeEntity {
     private Long id;
 
     @Column(name = "name", unique = true, nullable = false)
-    private Long name;
+    private String name;
 
     @ManyToOne
     @JoinColumn(name = "field_id", nullable = false)
@@ -24,4 +27,7 @@ public class JobTypeEntity {
 
     @OneToMany(mappedBy = "jobType", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<SkillEntity> skills;
+
+    @OneToMany(mappedBy = "jobType")
+    private List<JobPostingEntity> jobPostings;
 }

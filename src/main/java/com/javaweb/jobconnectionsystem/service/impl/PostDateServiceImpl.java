@@ -38,7 +38,7 @@ public class PostDateServiceImpl implements PostDateService {
         PostDateEntity postDate = postDateRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("PostDate not found"));
 
-        postDate.setDate(postDateDetails.getDate());
+        postDate.setDatetime(postDateDetails.getDatetime());
 
         return postDateRepository.save(postDate);
     }

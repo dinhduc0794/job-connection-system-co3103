@@ -1,5 +1,6 @@
 package com.javaweb.jobconnectionsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,7 @@ public class EmailEntity {
     private String email;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = true)
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
     private UserEntity user;
 }

@@ -1,12 +1,14 @@
 package com.javaweb.jobconnectionsystem.controller;
 
 import com.javaweb.jobconnectionsystem.entity.JobPostingEntity;
+import com.javaweb.jobconnectionsystem.model.request.JobPostingSearchRequest;
 import com.javaweb.jobconnectionsystem.service.JobPostingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -28,8 +30,8 @@ public class JobPostingController {
 
     // Endpoint lấy tất cả bài đăng công việc
     @GetMapping
-    public ResponseEntity<List<JobPostingEntity>> getAllJobPostings() {
-        List<JobPostingEntity> jobPostings = jobPostingService.getAllJobPostings();
+    public ResponseEntity<List<JobPostingEntity>> getAllJobPostings(@ModelAttribute JobPostingSearchRequest params) {
+        List<JobPostingEntity> jobPostings = jobPostingService.getAllJobPostings(params);
         if (jobPostings.isEmpty()) {
             return ResponseEntity.noContent().build(); // Nếu không có bài đăng công việc, trả về 204 No Content
         }

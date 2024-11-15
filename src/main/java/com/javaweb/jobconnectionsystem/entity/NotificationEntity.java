@@ -1,10 +1,11 @@
 package com.javaweb.jobconnectionsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Time;
+import java.time.ZonedDateTime;
 
 @Getter
 @Setter
@@ -18,10 +19,11 @@ public class NotificationEntity {
     @Column(name = "content")
     private String content;
 
-    @Column(name = "time")
-    private Time time;
+    @Column(name = "datetime")
+    private ZonedDateTime time;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = true)
+    @JsonBackReference
     private UserEntity user;
 }

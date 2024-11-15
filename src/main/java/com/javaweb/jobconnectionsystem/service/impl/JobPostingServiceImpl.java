@@ -1,12 +1,14 @@
 package com.javaweb.jobconnectionsystem.service.impl;
 
 import com.javaweb.jobconnectionsystem.entity.JobPostingEntity;
+import com.javaweb.jobconnectionsystem.model.request.JobPostingSearchRequest;
 import com.javaweb.jobconnectionsystem.repository.JobPostingRepository;
 import com.javaweb.jobconnectionsystem.service.JobPostingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -16,8 +18,8 @@ public class JobPostingServiceImpl implements JobPostingService {
     private JobPostingRepository jobPostingRepository;
 
     @Override
-    public List<JobPostingEntity> getAllJobPostings() {
-        return jobPostingRepository.findAll();
+    public List<JobPostingEntity> getAllJobPostings(JobPostingSearchRequest params) {
+        return jobPostingRepository.findAll(params);
     }
 
     @Override

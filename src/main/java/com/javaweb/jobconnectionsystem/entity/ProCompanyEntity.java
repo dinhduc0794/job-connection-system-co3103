@@ -11,13 +11,14 @@ import java.util.Date;
 
 @Getter
 @Setter
-@Table(name = "pro_company")
+@Table(name = "procompany")
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
 public class ProCompanyEntity extends CompanyEntity {
-    @Column(name = "registdate", nullable = false)
+    @Column(name = "regist_date", nullable = false)
     private Date registDate;
 
-    @Column(name = "expiredate")
+    @Column(name = "expire_date")
     private Date expireDate;
 }
+

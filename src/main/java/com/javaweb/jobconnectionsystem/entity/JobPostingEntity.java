@@ -1,8 +1,13 @@
 package com.javaweb.jobconnectionsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.javaweb.jobconnectionsystem.enums.LevelEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -11,6 +16,7 @@ import lombok.Setter;
 public class JobPostingEntity {
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "description")
@@ -19,19 +25,42 @@ public class JobPostingEntity {
     @Column(name = "schedule")
     private String schedule;
 
-    @Column(name = "minSalary")
+    @Column(name = "min_salary")
     private Long minSalary;
 
-    @Column(name = "maxSalary")
+    @Column(name = "max_salary")
     private Long maxSalary;
 
-    @Column(name = "job_type")
-    private String jobType;
+    @Column(name = "status", nullable = false)
+    private Boolean status = true;
 
-    @Column(name = "status")
-    private String status;
+    @Column(name = "number_of_applicants")
+    private Long numberOfApplicants;
+
+    @Column(name = "allowance")
+    private Long allowance;
+
+    @Column(name = "level")
+    private LevelEnum level;
+
+    @Column(name = "image")
+    private String image;
 
     @ManyToOne
-    @JoinColumn(name = "company_id", nullable = false)
+    @JoinColumn(name = "jobtype_id", nullable = true)
+    @JsonBackReference
+    private JobTypeEntity jobType;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id", nullable = true)
+    @JsonBackReference
     private CompanyEntity company;
+
+    @OneToMany(mappedBy = "jobPosting")
+    @JsonBackReference
+    private List<PostDateEntity> postDates;
+
+    @OneToMany(mappedBy = "jobPosting")
+    @JsonBackReference
+    private List<ApplicationEntity> applications;
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -20,4 +21,7 @@ public class FieldEntity {
 
     @OneToMany(mappedBy = "field", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<JobTypeEntity> jobTypes;
+
+    @ManyToMany(mappedBy="fields", fetch = FetchType.LAZY)
+    private List<CompanyEntity> companies = new ArrayList<>();
 }

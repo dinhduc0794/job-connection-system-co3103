@@ -1,8 +1,10 @@
 package com.javaweb.jobconnectionsystem.service;
 
 import com.javaweb.jobconnectionsystem.entity.JobPostingEntity;
+import com.javaweb.jobconnectionsystem.model.request.JobPostingSearchRequest;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface JobPostingService {
@@ -10,7 +12,7 @@ public interface JobPostingService {
     public JobPostingEntity addJobPosting(JobPostingEntity jobPosting);
 
     // Lấy tất cả bài đăng công việc
-    public List<JobPostingEntity> getAllJobPostings();
+    public List<JobPostingEntity> getAllJobPostings(JobPostingSearchRequest params);
 
     // Lấy bài đăng công việc theo ID
     public Optional<JobPostingEntity> getJobPostingById(Long id);

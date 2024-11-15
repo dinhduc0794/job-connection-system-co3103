@@ -1,8 +1,10 @@
 package com.javaweb.jobconnectionsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.cglib.core.Block;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,25 +15,49 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED )
 @PrimaryKeyJoinColumn(name = "id")
-public class UserEntity extends AccountEntity{
+public class UserEntity extends AccountEntity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "isPublic")
+    @Column(name = "is_public")
     private Boolean isPublic = true;
 
     @Column(name = "is_banned")
     private Boolean isBanned = false;
 
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "image")
+    private String image;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_ward",
+            joinColumns = @JoinColumn(name = "user_id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "ward_id", nullable = false))
+    private List<WardEntity> wards = new ArrayList<>();
+
     // 1 user can have many phone numbers
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PhoneNumberEntity> phoneNumbers;
+    @JsonManagedReference
+    private List<PhoneNumberEntity> phoneNumbers = new ArrayList<>();
 
     // 1 user can have many email
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EmailEntity> emails ;
+    @JsonManagedReference
+    private List<EmailEntity> emails = new ArrayList<>();
 
     // 1 user can have many notification
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<NotificationEntity> notifications;
+    @JsonManagedReference
+    private List<NotificationEntity> notifications = new ArrayList<>();
+
+    @OneToMany(mappedBy = "blocker")
+    private List<BlockUserEntity> blockedUsers = new ArrayList<>(); // Danh sách các mối quan hệ block (User đã block)
+
+    @OneToMany(mappedBy = "blockedUser")
+    private List<BlockUserEntity> blockingUsers = new ArrayList<>(); // Danh sách các mối quan hệ block (User bị block)
 }

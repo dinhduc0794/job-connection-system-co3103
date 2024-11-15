@@ -6,13 +6,12 @@ import lombok.Setter;
 
 import java.time.ZonedDateTime;
 
+@Table(name = "block")
+@Entity
 @Getter
 @Setter
-@Table(name = "postdate")
-@Entity
-public class PostDateEntity {
+public class BlockUserEntity {
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -20,6 +19,10 @@ public class PostDateEntity {
     private ZonedDateTime datetime;
 
     @ManyToOne
-    @JoinColumn(name = "jobposting_id", nullable = false)
-    private JobPostingEntity jobPosting;
+    @JoinColumn(name = "blocker_id", nullable = false)
+    private UserEntity blocker;  // User who blocks another user
+
+    @ManyToOne
+    @JoinColumn(name = "blocked_user_id", nullable = false)
+    private UserEntity blockedUser;  // User who is blocked
 }

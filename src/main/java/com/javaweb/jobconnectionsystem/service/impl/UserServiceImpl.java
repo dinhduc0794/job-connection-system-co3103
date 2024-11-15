@@ -32,6 +32,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity addUser(UserEntity user, String phoneNumber, String email) {
         Optional<AccountEntity> existingAccount = accountRepository.findByUsername(user.getUsername());
+
         if (existingAccount.isPresent()) {
             throw new RuntimeException("Username already exists");
 
@@ -39,18 +40,18 @@ public class UserServiceImpl implements UserService {
 
             UserEntity savedUser = userRepository.save(user);
 
-            PhoneNumberEntity phone = new PhoneNumberEntity();
-            phone.setPhoneNumber(phoneNumber);
-            phone.setUser(savedUser);
+            PhoneNumberEntity newPhone = new PhoneNumberEntity();
+            newPhone.setPhoneNumber(phoneNumber);
+            newPhone.setUser(savedUser);
 
             EmailEntity newEmail = new EmailEntity();
             newEmail.setEmail(email);
             newEmail.setUser(savedUser);
 
-            savedUser.getPhoneNumbers().add(phone);
+            savedUser.getPhoneNumbers().add(newPhone);
             savedUser.getEmails().add(newEmail);
 
-            return userRepository.save(savedUser);
+            return savedUser;
         }
     }
     // Lấy tất cả người dùng
