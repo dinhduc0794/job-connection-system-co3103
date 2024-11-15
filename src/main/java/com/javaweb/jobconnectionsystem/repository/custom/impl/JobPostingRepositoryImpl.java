@@ -19,7 +19,7 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
 
     @Override
     public List<JobPostingEntity> findAll(JobPostingSearchRequest params) {
-        StringBuilder sql = new StringBuilder("SELECT jp.* FROM jobposting jp");
+        StringBuilder sql = new StringBuilder("SELECT jp.* FROM jobposting jp ");
 
         handleJoinTable(params, sql);
         handleWhereCondition(params, sql);
@@ -51,14 +51,18 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
         String city = (String) params.getCity();
         String ward = (String) params.getWard();
 
+        if (StringUtils.notEmptyData(province) || StringUtils.notEmptyData(city) || StringUtils.notEmptyData(ward)) {
+            sql.append(" JOIN company co ON jp.company_id = co.id")
+                    .append(" JOIN user_ward uw ON co.id = uw.user_id")
+                    .append(" JOIN ward wa ON uw.ward_id = wa.id")
+                    .append(" JOIN city ci ON wa.city_id = ci.id")
+                    .append(" JOIN province pr ON ci.province_id = pr.id");
+            return;
+        }
+
         if (StringUtils.notEmptyData(companyName) || companyRating != null) {
             sql.append(" JOIN company co ON jp.company_id = co.id");
-            if (StringUtils.notEmptyData(province) || StringUtils.notEmptyData(city) || StringUtils.notEmptyData(ward)) {
-                sql.append(" JOIN ward wa ON co.ward_id = wa.id")
-                        .append(" JOIN user us ON co.id = us.id")
-                        .append(" JOIN city ci ON w.city_id = ci.id")
-                        .append(" JOIN province pr ON ci.province_id = pr.id");
-            }
+
         }
     }
 
@@ -93,13 +97,13 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
                             sql.append(" AND jt.name " + " LIKE '%" + value.toString() + "%'");
                             break;
                         case "ward":
-                            sql.append(" AND wa.name = " + " LIKE '%" + value.toString() + "%'");
+                            sql.append(" AND wa.name " + " LIKE '%" + value.toString() + "%'");
                             break;
                         case "city":
-                            sql.append(" AND ci.name = " + " LIKE '%" + value.toString() + "%'");
+                            sql.append(" AND ci.name " + " LIKE '%" + value.toString() + "%'");
                             break;
                         case "province":
-                            sql.append(" AND pr.name = " + " LIKE '%" + value.toString() + "%'");
+                            sql.append(" AND pr.name " + " LIKE '%" + value.toString() + "%'");
                             break;
                         case "minOfApplicants":
                             sql.append(" AND jp.number_of_applicants >= " + value);
