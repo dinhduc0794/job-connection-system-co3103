@@ -38,6 +38,8 @@ public class JobPostingController {
         return ResponseEntity.ok(jobPostings); // Trả về danh sách bài đăng công việc
     }
 
+    // Endpoint lấy tất cả bài đăng công việc
+
     // Endpoint lấy bài đăng công việc theo ID
     @GetMapping("/{id}")
     public ResponseEntity<JobPostingEntity> getJobPostingById(@PathVariable Long id) {

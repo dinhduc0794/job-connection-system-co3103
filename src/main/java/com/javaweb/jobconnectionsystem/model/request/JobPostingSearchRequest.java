@@ -9,6 +9,7 @@ import java.util.List;
 @Setter
 public class JobPostingSearchRequest {
     private String id;
+    private String description;
     private String schedule;
     private Long salary;
     private String jobType;

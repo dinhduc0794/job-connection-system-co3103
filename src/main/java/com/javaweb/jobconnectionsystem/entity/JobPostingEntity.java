@@ -3,6 +3,7 @@ package com.javaweb.jobconnectionsystem.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.javaweb.jobconnectionsystem.enums.LevelEnum;
+import com.javaweb.jobconnectionsystem.enums.ScheduleEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +24,7 @@ public class JobPostingEntity {
     private String description;
 
     @Column(name = "schedule")
-    private String schedule;
+    private ScheduleEnum schedule;
 
     @Column(name = "min_salary")
     private Long minSalary;
