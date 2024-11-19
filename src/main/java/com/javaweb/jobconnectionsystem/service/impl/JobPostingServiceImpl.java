@@ -1,25 +1,35 @@
 package com.javaweb.jobconnectionsystem.service.impl;
 
+import com.javaweb.jobconnectionsystem.converter.JobPostingConverter;
 import com.javaweb.jobconnectionsystem.entity.JobPostingEntity;
 import com.javaweb.jobconnectionsystem.model.request.JobPostingSearchRequest;
+import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.repository.JobPostingRepository;
 import com.javaweb.jobconnectionsystem.service.JobPostingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class JobPostingServiceImpl implements JobPostingService {
-
     @Autowired
     private JobPostingRepository jobPostingRepository;
+    @Autowired
+    private JobPostingConverter jobPostingConverter;
 
     @Override
-    public List<JobPostingEntity> getAllJobPostings(JobPostingSearchRequest params) {
-        return jobPostingRepository.findAll(params);
+    public List<JobPostingSearchResponse> getAllJobPostings(JobPostingSearchRequest params) {
+        List<JobPostingEntity> jobPostingEntities = jobPostingRepository.findAll(params);
+
+        List<JobPostingSearchResponse> jobPostingResponses = new ArrayList<>();
+        for (JobPostingEntity ent : jobPostingEntities) {
+            jobPostingResponses.add(jobPostingConverter.toJobPostingSearchResponse(ent));
+        }
+        return jobPostingResponses;
     }
 
     @Override

@@ -48,6 +48,11 @@ public class JobPostingEntity {
     private String image;
 
     @ManyToOne
+    @JoinColumn(name = "ward_id", nullable = true)
+    @JsonBackReference
+    private WardEntity ward;
+
+    @ManyToOne
     @JoinColumn(name = "jobtype_id", nullable = true)
     @JsonBackReference
     private JobTypeEntity jobType;

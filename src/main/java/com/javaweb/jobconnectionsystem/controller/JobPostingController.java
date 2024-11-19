@@ -2,6 +2,7 @@ package com.javaweb.jobconnectionsystem.controller;
 
 import com.javaweb.jobconnectionsystem.entity.JobPostingEntity;
 import com.javaweb.jobconnectionsystem.model.request.JobPostingSearchRequest;
+import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.service.JobPostingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,16 @@ public class JobPostingController {
     @Autowired
     private JobPostingService jobPostingService;
 
+    // Endpoint lấy tất cả bài đăng công việc
+    @GetMapping
+    public ResponseEntity<List<JobPostingSearchResponse>> getAllJobPostings(@ModelAttribute JobPostingSearchRequest params) {
+        List<JobPostingSearchResponse> jobPostings = jobPostingService.getAllJobPostings(params);
+        if (jobPostings.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Nếu không có bài đăng công việc, trả về 204 No Content
+        }
+            return ResponseEntity.ok(jobPostings); // Trả về danh sách bài đăng công việc
+    }
+
     // Endpoint thêm bài đăng công việc
     @PostMapping
     public ResponseEntity<JobPostingEntity> addJobPosting(@RequestBody JobPostingEntity jobPosting) {
@@ -26,16 +37,6 @@ public class JobPostingController {
             return ResponseEntity.badRequest().body(null); // Trả về lỗi nếu bài đăng công việc không hợp lệ
         }
         return ResponseEntity.ok(createdJobPosting); // Trả về bài đăng công việc đã thêm
-    }
-
-    // Endpoint lấy tất cả bài đăng công việc
-    @GetMapping
-    public ResponseEntity<List<JobPostingEntity>> getAllJobPostings(@ModelAttribute JobPostingSearchRequest params) {
-        List<JobPostingEntity> jobPostings = jobPostingService.getAllJobPostings(params);
-        if (jobPostings.isEmpty()) {
-            return ResponseEntity.noContent().build(); // Nếu không có bài đăng công việc, trả về 204 No Content
-        }
-        return ResponseEntity.ok(jobPostings); // Trả về danh sách bài đăng công việc
     }
 
     // Endpoint lấy tất cả bài đăng công việc
