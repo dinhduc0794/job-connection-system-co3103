@@ -2,6 +2,7 @@ package com.javaweb.jobconnectionsystem.model.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,14 +29,14 @@ public class ApplicantDTO {
     private String address;
 
     private String image;
-    @NotNull(message = "Person ward is required")
+    @Size(min = 1, message = "Address is required")
     private List<Long> wardIds;
-    @NotBlank(message ="Phone number is required")
-    private List<String> phoneNumberIds;
+    @Size(min = 1, message = "Applicant phone number is required")
+    private List<String> phoneNumbers;
     @NotNull(message = "Day of birth is required")
     private LocalDate dob;
-    @NotBlank(message="Person email is required")
-    private List<String> emailIds;
+    @Size(min = 1, message = "Applicant email is required")
+    private List<String> emails;
     private List<Long> notificationIds;
     private List<Long> blockedUserIds;
 

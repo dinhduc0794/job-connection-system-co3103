@@ -29,7 +29,7 @@ public class UserEntity extends AccountEntity {
     private String address;
 
     @Column(name = "image")
-    private String image;
+    private String image = "bg.jpg";
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_ward",

@@ -29,7 +29,7 @@ public class JobPostingDTO {
     @Min(value = 0, message = "Salary must not be negative")
     private Long minSalary;
 
-    private Boolean status;
+    private Boolean status = true;
 
     @Size(min = 1, message = "Skill is required")
     private List<String> skills;

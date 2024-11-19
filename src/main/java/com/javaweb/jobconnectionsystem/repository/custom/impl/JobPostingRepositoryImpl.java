@@ -7,12 +7,14 @@ import com.javaweb.jobconnectionsystem.utils.StringUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import org.springframework.stereotype.Repository;
 
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Repository
 public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
     @PersistenceContext
     private EntityManager entityManager;
@@ -46,23 +48,20 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
 
         // join to get company
         String companyName = (String) params.getCompanyName();
-        Integer companyRating = params.getComanyRating();
+        Double companyRating = params.getComanyRating();
         String province = (String) params.getProvince();
         String city = (String) params.getCity();
         String ward = (String) params.getWard();
 
-        if (StringUtils.notEmptyData(province) || StringUtils.notEmptyData(city) || StringUtils.notEmptyData(ward)) {
-            sql.append(" JOIN company co ON jp.company_id = co.id")
-                    .append(" JOIN user_ward uw ON co.id = uw.user_id")
-                    .append(" JOIN ward wa ON uw.ward_id = wa.id")
-                    .append(" JOIN city ci ON wa.city_id = ci.id")
-                    .append(" JOIN province pr ON ci.province_id = pr.id");
-            return;
-        }
-
         if (StringUtils.notEmptyData(companyName) || companyRating != null) {
             sql.append(" JOIN company co ON jp.company_id = co.id");
+        }
 
+        if (StringUtils.notEmptyData(province) || StringUtils.notEmptyData(city) || StringUtils.notEmptyData(ward)) {
+            sql.append(" JOIN company co ON jp.company_id = co.id")
+                    .append(" JOIN ward wa ON jp.ward_id = wa.id")
+                    .append(" JOIN city ci ON wa.city_id = ci.id")
+                    .append(" JOIN province pr ON ci.province_id = pr.id");
         }
     }
 
@@ -107,9 +106,6 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
                             break;
                         case "minOfApplicants":
                             sql.append(" AND jp.number_of_applicants >= " + value);
-                            break;
-                        case "level":
-                            sql.append(" AND jp.level = " + value);
                             break;
                         default:
                             if (value instanceof Number) {

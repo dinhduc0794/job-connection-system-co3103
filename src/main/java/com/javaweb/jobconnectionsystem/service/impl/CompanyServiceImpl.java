@@ -1,12 +1,18 @@
 package com.javaweb.jobconnectionsystem.service.impl;
 
+import com.javaweb.jobconnectionsystem.converter.CompanyConverter;
 import com.javaweb.jobconnectionsystem.entity.CompanyEntity;
+import com.javaweb.jobconnectionsystem.entity.JobPostingEntity;
 import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
+import com.javaweb.jobconnectionsystem.model.request.CompanySearchRequest;
+import com.javaweb.jobconnectionsystem.model.response.CompanySearchResponse;
+import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.repository.CompanyRepository;
 import com.javaweb.jobconnectionsystem.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,21 +20,18 @@ import java.util.Optional;
 public class CompanyServiceImpl implements CompanyService {
     @Autowired
     private CompanyRepository companyRepository;
+    @Autowired
+    private CompanyConverter companyConverter;
 
     @Override
-    public List<CompanyEntity> getAllCompanies() {
-        return companyRepository.findAll();
-    }
+    public List<CompanySearchResponse> getAllCompanies(CompanySearchRequest params) {
+        List<CompanyEntity> companyEntities = companyRepository.findAll(params);
 
-    @Override
-    public CompanyEntity saveCompany(CompanyDTO companyDTO) {
-//        CompanyEntity companyFromDb = companyRepository.findByTaxCode(company.getTaxCode());
-//        if (companyFromDb != null) {
-//            if (company.getTaxCode().equals(companyFromDb.getTaxCode())) {
-//                throw new RuntimeException("Company taxcode already exists");
-//            }}
-//        return companyRepository.save(company);
-        return null;
+        List<CompanySearchResponse> companyResponses = new ArrayList<>();
+        for (CompanyEntity ent : companyEntities) {
+            companyResponses.add(companyConverter.toCompanySearchResponse(ent));
+        }
+        return companyResponses;
     }
 
     @Override
@@ -39,6 +42,19 @@ public class CompanyServiceImpl implements CompanyService {
         }
         return company;
     }
+
+    @Override
+    public CompanyEntity saveCompany(CompanyDTO companyDTO) {
+//        CompanyEntity companyEntity = companyConverter.toCompanyEntity(companyDTO);
+////        CompanyEntity companyFromDb = companyRepository.findByTaxCode(company.getTaxCode());
+//        if (companyFromDb != null) {
+//            if (company.getTaxCode().equals(companyFromDb.getTaxCode())) {
+//                throw new RuntimeException("Company taxcode already exists");
+//            }}
+//        return companyRepository.save(company);
+        return null;
+    }
+
 
     @Override
     public CompanyEntity updateCompany(Long id, CompanyEntity companyDetails) {

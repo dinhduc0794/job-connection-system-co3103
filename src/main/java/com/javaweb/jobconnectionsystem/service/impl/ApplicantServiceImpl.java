@@ -1,6 +1,8 @@
 package com.javaweb.jobconnectionsystem.service.impl;
 
+import com.javaweb.jobconnectionsystem.converter.ApplicantConverter;
 import com.javaweb.jobconnectionsystem.entity.ApplicantEntity;
+import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
 import com.javaweb.jobconnectionsystem.repository.ApplicantRepository;
 import com.javaweb.jobconnectionsystem.service.ApplicantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +16,17 @@ public class ApplicantServiceImpl implements ApplicantService {
 
     @Autowired
     private ApplicantRepository applicantRepository;
-
+    @Autowired
+    private ApplicantConverter applicantConverter ;
     @Override
     public List<ApplicantEntity> getAllApplicants() {
         return applicantRepository.findAll();
     }
 
     @Override
-    public ApplicantEntity addApplicant(ApplicantEntity applicant) {
-        return applicantRepository.save(applicant);
+    public ApplicantEntity saveApplicant(ApplicantDTO applicantDTO) {
+       ApplicantEntity applicantEntity = applicantConverter.toApplicantEntity(applicantDTO);
+        return applicantRepository.save(applicantEntity);
     }
 
     @Override

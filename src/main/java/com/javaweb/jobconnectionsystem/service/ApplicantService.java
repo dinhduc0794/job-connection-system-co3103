@@ -1,6 +1,7 @@
 package com.javaweb.jobconnectionsystem.service;
 
 import com.javaweb.jobconnectionsystem.entity.ApplicantEntity;
+import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +9,7 @@ import java.util.Optional;
 public interface ApplicantService {
 
     // Thêm ứng viên mới
-    public ApplicantEntity addApplicant(ApplicantEntity applicant);
+    public ApplicantEntity saveApplicant(ApplicantDTO applicantDTO);
 
     // Lấy tất cả ứng viên
     public List<ApplicantEntity> getAllApplicants();
