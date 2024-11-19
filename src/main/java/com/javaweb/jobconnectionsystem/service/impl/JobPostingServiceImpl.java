@@ -2,7 +2,10 @@ package com.javaweb.jobconnectionsystem.service.impl;
 
 import com.javaweb.jobconnectionsystem.converter.JobPostingConverter;
 import com.javaweb.jobconnectionsystem.entity.JobPostingEntity;
+import com.javaweb.jobconnectionsystem.entity.JobTypeEntity;
+import com.javaweb.jobconnectionsystem.model.dto.JobPostingDTO;
 import com.javaweb.jobconnectionsystem.model.request.JobPostingSearchRequest;
+import com.javaweb.jobconnectionsystem.model.response.JobPostingDetailResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.repository.JobPostingRepository;
 import com.javaweb.jobconnectionsystem.service.JobPostingService;
@@ -33,21 +36,19 @@ public class JobPostingServiceImpl implements JobPostingService {
     }
 
     @Override
-    public JobPostingEntity saveJobPosting(JobPostingEntity jobPosting) {
-        if (jobPosting == null) {
-            return null;
-        }
-        return jobPostingRepository.save(jobPosting);
+    public JobPostingDetailResponse getJobPostingById(Long id) {
+        JobPostingEntity jobPostingEntity = jobPostingRepository.findById(id).get();
+        JobPostingDetailResponse jobPosting = jobPostingConverter.toJobPostingDetailResponse(jobPostingEntity);
+        return jobPosting;
     }
 
     @Override
-    public Optional<JobPostingEntity> getJobPostingById(Long id) {
-        Optional<JobPostingEntity> jobPosting = jobPostingRepository.findById(id);
-        if (jobPosting.isEmpty()) {
-            return Optional.empty();
-        }
-        return jobPosting;
+    public JobPostingEntity saveJobPosting(JobPostingDTO jobPostingDTO) {
+        JobPostingEntity jobPostingEntity = jobPostingConverter.toJobPostingEntity(jobPostingDTO);
+
+        return jobPostingRepository.save(jobPostingEntity);
     }
+
 
     @Override
     public JobPostingEntity updateJobPosting(Long id, JobPostingEntity jobPostingDetails) {

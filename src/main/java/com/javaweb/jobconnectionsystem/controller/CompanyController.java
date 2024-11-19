@@ -1,9 +1,12 @@
 package com.javaweb.jobconnectionsystem.controller;
 
 import com.javaweb.jobconnectionsystem.entity.CompanyEntity;
+import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
 import com.javaweb.jobconnectionsystem.service.CompanyService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,8 +20,8 @@ public class CompanyController {
     private CompanyService companyService;
     // Endpoint thêm công ty
     @PostMapping
-    public ResponseEntity<CompanyEntity> addCompany(@RequestBody CompanyEntity company) {
-        CompanyEntity createdCompany = companyService.addCompany(company);
+    public ResponseEntity<CompanyEntity> saveCompany(@Valid @RequestBody CompanyDTO companyDTO, BindingResult bindingResult) {
+        CompanyEntity createdCompany = companyService.saveCompany(companyDTO);
         if (createdCompany == null) {
             return ResponseEntity.badRequest().body(null); // Trả về lỗi nếu công ty đã tồn tại
         }

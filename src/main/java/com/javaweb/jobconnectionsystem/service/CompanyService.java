@@ -1,13 +1,14 @@
 package com.javaweb.jobconnectionsystem.service;
 
 import com.javaweb.jobconnectionsystem.entity.CompanyEntity;
+import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
 
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CompanyService {
-    public CompanyEntity addCompany(CompanyEntity company);
+    public CompanyEntity saveCompany(CompanyDTO companyDTO);
 
     public List<CompanyEntity> getAllCompanies();
     // Lấy user theo ID

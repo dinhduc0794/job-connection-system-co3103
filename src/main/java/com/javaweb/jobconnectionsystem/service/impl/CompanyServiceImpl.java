@@ -1,6 +1,7 @@
 package com.javaweb.jobconnectionsystem.service.impl;
 
 import com.javaweb.jobconnectionsystem.entity.CompanyEntity;
+import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
 import com.javaweb.jobconnectionsystem.repository.CompanyRepository;
 import com.javaweb.jobconnectionsystem.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +21,14 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CompanyEntity addCompany(CompanyEntity company) {
-        CompanyEntity companyFromDb = companyRepository.findByTaxCode(company.getTaxCode());
-        if (companyFromDb != null) {
-            if (company.getTaxCode().equals(companyFromDb.getTaxCode())) {
-                throw new RuntimeException("Company taxcode already exists");
-            }}
-        return companyRepository.save(company);
+    public CompanyEntity saveCompany(CompanyDTO companyDTO) {
+//        CompanyEntity companyFromDb = companyRepository.findByTaxCode(company.getTaxCode());
+//        if (companyFromDb != null) {
+//            if (company.getTaxCode().equals(companyFromDb.getTaxCode())) {
+//                throw new RuntimeException("Company taxcode already exists");
+//            }}
+//        return companyRepository.save(company);
+        return null;
     }
 
     @Override

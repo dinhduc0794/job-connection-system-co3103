@@ -49,6 +49,15 @@ public class JobPostingEntity {
     @Column(name = "image")
     private String image;
 
+    @Column(name = "yoe")
+    private Long yoe;
+
+    @Column(name = "contact_email")
+    private String contactEmail;
+
+    @Column(name = "contact_phone")
+    private String contactPhone;
+
     @ManyToOne
     @JoinColumn(name = "ward_id", nullable = true)
     @JsonBackReference
