@@ -35,7 +35,7 @@ public class ProvinceController {
     }
 
     // Endpoint để thêm mới một tỉnh (Province)
-    @PostMapping
+    @PostMapping(consumes = "application/json")
     public ResponseEntity<ProvinceEntity> createProvince(@RequestBody ProvinceEntity newProvince) {
         try {
             ProvinceEntity province = provinceService.addProvince(newProvince);

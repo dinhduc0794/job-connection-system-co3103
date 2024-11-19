@@ -1,6 +1,7 @@
 package com.javaweb.jobconnectionsystem.controller;
 
 import com.javaweb.jobconnectionsystem.entity.WardEntity;
+import com.javaweb.jobconnectionsystem.model.dto.WardDTO;
 import com.javaweb.jobconnectionsystem.service.WardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,11 +33,11 @@ public class WardController {
     }
 
     // Endpoint để thêm mới một phường/xã
-    @PostMapping(value = "/city/{cityId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WardEntity> createWard(@RequestBody WardEntity newWard, @PathVariable Long cityId) {
+    @PostMapping
+    public ResponseEntity<WardEntity> createWard(@RequestBody WardDTO wardDTO) {
         try {
-            WardEntity ward = wardService.addWard(newWard, cityId);
-            return new ResponseEntity<>(ward, HttpStatus.CREATED);
+            WardEntity wardEntity = wardService.addWard(wardDTO);
+            return new ResponseEntity<>(wardEntity, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

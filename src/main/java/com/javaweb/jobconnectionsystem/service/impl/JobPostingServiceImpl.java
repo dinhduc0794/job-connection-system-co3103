@@ -33,7 +33,7 @@ public class JobPostingServiceImpl implements JobPostingService {
     }
 
     @Override
-    public JobPostingEntity addJobPosting(JobPostingEntity jobPosting) {
+    public JobPostingEntity saveJobPosting(JobPostingEntity jobPosting) {
         if (jobPosting == null) {
             return null;
         }

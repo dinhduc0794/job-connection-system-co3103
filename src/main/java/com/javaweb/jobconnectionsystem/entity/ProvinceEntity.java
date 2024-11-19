@@ -23,5 +23,5 @@ public class ProvinceEntity {
     // Quan hệ với CityEntity: Một tỉnh/thành phố có thể có nhiều quận/huyện
     @OneToMany(mappedBy = "province")
     @JsonManagedReference
-    private List<CityEntity> cities=new ArrayList<>();
+    private List<CityEntity> cities = new ArrayList<>();
 }

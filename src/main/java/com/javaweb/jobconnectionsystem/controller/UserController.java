@@ -19,7 +19,7 @@ public class UserController {
     private UserService userService;
 
     // Thêm người dùng mới
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<UserEntity> addUser(@RequestBody UserEntity user,String phone,String email) {
         try {
             UserEntity createdUser = userService.addUser(user,phone,email);

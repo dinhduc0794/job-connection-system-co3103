@@ -31,12 +31,12 @@ public class JobPostingController {
 
     // Endpoint thêm bài đăng công việc
     @PostMapping
-    public ResponseEntity<JobPostingEntity> addJobPosting(@RequestBody JobPostingEntity jobPosting) {
-        JobPostingEntity createdJobPosting = jobPostingService.addJobPosting(jobPosting);
-        if (createdJobPosting == null) {
+    public ResponseEntity<JobPostingEntity> saveJobPosting(@RequestBody JobPostingEntity jobPosting) {
+        JobPostingEntity jobPostingEntity = jobPostingService.saveJobPosting(jobPosting);
+        if (jobPostingEntity == null) {
             return ResponseEntity.badRequest().body(null); // Trả về lỗi nếu bài đăng công việc không hợp lệ
         }
-        return ResponseEntity.ok(createdJobPosting); // Trả về bài đăng công việc đã thêm
+        return ResponseEntity.ok(jobPostingEntity); // Trả về bài đăng công việc đã thêm
     }
 
     // Endpoint lấy tất cả bài đăng công việc

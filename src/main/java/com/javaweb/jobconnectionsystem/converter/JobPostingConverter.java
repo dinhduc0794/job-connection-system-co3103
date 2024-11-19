@@ -35,51 +35,57 @@ public class JobPostingConverter {
         if (ent.getJobType() != null) {
             String jobType = ent.getJobType().getName();
             jobPosting.setJobType(jobType);
+
+            if (ent.getJobType().getSkills() != null) {
+                List<SkillEntity> skills = ent.getJobType().getSkills();
+                if(skills != null){
+                    String strSkills = skills.stream()
+                            .map(it->it.getName().toString())
+                            .collect(Collectors.joining(", "));
+                    jobPosting.setSkills(strSkills);
+                }
+            }
         }
 
         if (ent.getCompany() != null) {
             String companyName = ent.getCompany().getName();
             jobPosting.setCompanyName(companyName);
-        }
 
-        List<SkillEntity> skills = ent.getJobType().getSkills();
-        if(skills != null){
-            String strSkills = skills.stream()
-                    .map(it->it.getName().toString())
+            String emails = ent.getCompany().getEmails().stream()
+                    .map(it->it.getEmail())
                     .collect(Collectors.joining(", "));
-            jobPosting.setSkills(strSkills);
+            jobPosting.setEmails(emails);
+
+            String phoneNumbers = ent.getCompany().getPhoneNumbers().stream()
+                    .map(it->it.getPhoneNumber())
+                    .collect(Collectors.joining(", "));
+            jobPosting.setPhoneNumbers(phoneNumbers);
         }
 
 
-        WardEntity ward = ent.getWard();
-        if(ward != null){
-            String wardName = ward.getName();
-            jobPosting.setWard(wardName);
 
-            String cityName = ward.getCity().getName();
-            jobPosting.setCity(cityName);
+        if(ent.getWard() != null){
+            WardEntity ward = ent.getWard();
+            if(ward != null){
+                String wardName = ward.getName();
+                jobPosting.setWard(wardName);
 
-            String provinceName = ward.getCity().getProvince().getName();
-            jobPosting.setProvince(provinceName);
+                String cityName = ward.getCity().getName();
+                jobPosting.setCity(cityName);
 
-            jobPosting.setAddress(wardName + ", " + cityName + ", " + provinceName);
+                String provinceName = ward.getCity().getProvince().getName();
+                jobPosting.setProvince(provinceName);
+
+                jobPosting.setAddress(wardName + ", " + cityName + ", " + provinceName);
+            }
         }
 
         // postDate to GMT+7
-        ZonedDateTime postedDate = ent.getPostDates().get(0).getDatetime();
-        ZonedDateTime gmt7PostedDate = postedDate.withZoneSameInstant(ZoneId.of("GMT+7"));
-        jobPosting.setPostedDate(gmt7PostedDate);
-
-        // emails, phoneNumbers are not mapped
-        String emails = ent.getCompany().getEmails().stream()
-                .map(it->it.getEmail())
-                .collect(Collectors.joining(", "));
-        jobPosting.setEmails(emails);
-
-        String phoneNumbers = ent.getCompany().getPhoneNumbers().stream()
-                .map(it->it.getPhoneNumber())
-                .collect(Collectors.joining(", "));
-        jobPosting.setPhoneNumbers(phoneNumbers);
+        if (ent.getPostDates() != null && !ent.getPostDates().isEmpty()) {
+            ZonedDateTime postedDate = ent.getPostDates().get(0).getDatetime();
+            ZonedDateTime gmt7PostedDate = postedDate.withZoneSameInstant(ZoneId.of("GMT+7"));
+            jobPosting.setPostedDate(gmt7PostedDate);
+        }
 
         return jobPosting;
     }

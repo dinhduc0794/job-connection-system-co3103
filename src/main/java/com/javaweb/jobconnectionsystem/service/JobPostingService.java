@@ -13,7 +13,7 @@ public interface JobPostingService {
     public List<JobPostingSearchResponse> getAllJobPostings(JobPostingSearchRequest params);
 
     // Thêm bài đăng công việc
-    public JobPostingEntity addJobPosting(JobPostingEntity jobPosting);
+    public JobPostingEntity saveJobPosting(JobPostingEntity jobPosting);
 
 
     // Lấy bài đăng công việc theo ID
