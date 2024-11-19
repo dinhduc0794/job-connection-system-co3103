@@ -65,10 +65,10 @@ public class JobPostingEntity {
     private CompanyEntity company;
 
     @OneToMany(mappedBy = "jobPosting")
-    @JsonBackReference
+    @JsonManagedReference
     private List<PostDateEntity> postDates;
 
     @OneToMany(mappedBy = "jobPosting")
-    @JsonBackReference
+    @JsonManagedReference
     private List<ApplicationEntity> applications;
 }

@@ -4,6 +4,7 @@ import com.javaweb.jobconnectionsystem.entity.WardEntity;
 import com.javaweb.jobconnectionsystem.service.WardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,10 +32,10 @@ public class WardController {
     }
 
     // Endpoint để thêm mới một phường/xã
-    @PostMapping
-    public ResponseEntity<WardEntity> createWard(@RequestBody WardEntity newWard) {
+    @PostMapping(value = "/city/{cityId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<WardEntity> createWard(@RequestBody WardEntity newWard, @PathVariable Long cityId) {
         try {
-            WardEntity ward = wardService.AddWard(newWard);
+            WardEntity ward = wardService.addWard(newWard, cityId);
             return new ResponseEntity<>(ward, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

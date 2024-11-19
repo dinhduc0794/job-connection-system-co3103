@@ -1,6 +1,7 @@
 package com.javaweb.jobconnectionsystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,14 +30,18 @@ public class CompanyEntity extends UserEntity {
     @JoinTable(name = "company_field",
             joinColumns = @JoinColumn(name = "company_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "field_id", nullable = false))
+    @JsonManagedReference
     private List<FieldEntity> fields = new ArrayList<>();
 
     @OneToMany(mappedBy = "company", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<CompanyRateApplicantEntity> companyRateApplicantEntities = new ArrayList<>();
 
     @OneToMany(mappedBy = "company", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<ApplicantRateCompanyEntity> applicantRateCompanyEntities = new ArrayList<>();
 
     @OneToMany(mappedBy = "company", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<FollowCompanyEntity> followCompanyEntities = new ArrayList<>();
 }

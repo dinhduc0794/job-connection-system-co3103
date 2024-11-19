@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface CityService {
     public ProvinceEntity findProvince(Long ProvinceID);
-    public CityEntity AddCity (CityEntity city);
+    public CityEntity addCity (CityEntity city);
     public List<WardEntity> findWard(Long WardId);
 }

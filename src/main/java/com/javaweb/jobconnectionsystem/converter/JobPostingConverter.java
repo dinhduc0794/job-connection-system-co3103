@@ -22,17 +22,25 @@ public class JobPostingConverter {
         JobPostingSearchResponse jobPosting = modelMapper.map(ent, JobPostingSearchResponse.class);
 
         // level, schedule, jobType, company, skills, province, city, ward, postDate are not mapped
-        String level = ent.getLevel().toString();
-        jobPosting.setLevel(level);
+        if (ent.getLevel() != null) {
+            String level = ent.getLevel().getValue();
+            jobPosting.setLevel(level);
+        }
 
-        String schedule = ent.getSchedule().toString();
-        jobPosting.setSchedule(schedule);
+        if (ent.getSchedule() != null) {
+            String schedule = ent.getSchedule().getValue();
+            jobPosting.setSchedule(schedule);
+        }
 
-        String jobType = ent.getJobType().getName();
-        jobPosting.setJobType(jobType);
+        if (ent.getJobType() != null) {
+            String jobType = ent.getJobType().getName();
+            jobPosting.setJobType(jobType);
+        }
 
-        String companyName = ent.getCompany().getName();
-        jobPosting.setCompanyName(companyName);
+        if (ent.getCompany() != null) {
+            String companyName = ent.getCompany().getName();
+            jobPosting.setCompanyName(companyName);
+        }
 
         List<SkillEntity> skills = ent.getJobType().getSkills();
         if(skills != null){

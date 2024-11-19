@@ -1,5 +1,6 @@
 package com.javaweb.jobconnectionsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.javaweb.jobconnectionsystem.enums.RateEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -28,10 +29,12 @@ public class ApplicantRateCompanyEntity {
 
     @ManyToOne
     @JoinColumn(name = "applicant_id", nullable = false)
+    @JsonBackReference
     private ApplicantEntity applicant;
 
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
+    @JsonBackReference
     private CompanyEntity company;
 
 }

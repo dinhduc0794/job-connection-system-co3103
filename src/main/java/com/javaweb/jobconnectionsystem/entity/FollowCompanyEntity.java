@@ -1,5 +1,6 @@
 package com.javaweb.jobconnectionsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,9 +21,11 @@ public class FollowCompanyEntity {
 
     @ManyToOne
     @JoinColumn(name = "company_id")
+    @JsonBackReference
     private CompanyEntity company;
 
     @ManyToOne
     @JoinColumn(name = "applicant_id")
+    @JsonBackReference
     private ApplicantEntity applicant;
 }

@@ -1,6 +1,7 @@
 package com.javaweb.jobconnectionsystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +22,7 @@ public class WardEntity {
 
     // Quan hệ với CityEntity (quận/huyện)
     @ManyToOne
-    @JoinColumn(name = "city_id", nullable = false)
+    @JoinColumn(name = "city_id", nullable = true)
     @JsonBackReference
     private CityEntity city;
 
@@ -32,8 +33,6 @@ public class WardEntity {
 
     // Quan hệ với JobPostingEntity: Một phường/xã có thể có nhiều bài đăng tuyển dụng
     @OneToMany(mappedBy = "ward", fetch = FetchType.LAZY)
-    @JsonBackReference
+    @JsonManagedReference
     private List<JobPostingEntity> jobPostings;
-
-
 }

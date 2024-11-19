@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface WardService {
     public List<WardEntity> findWardbyCity(Long CityID);
-    public WardEntity AddWard (WardEntity ward);
+    public WardEntity addWard (WardEntity wardEntity, Long cityId);
 }

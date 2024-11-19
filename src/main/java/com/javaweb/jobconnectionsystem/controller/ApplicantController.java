@@ -17,7 +17,7 @@ public class ApplicantController {
     private ApplicantService applicantService;
 
     // Endpoint thêm ứng viên
-    @PostMapping
+    @PostMapping( consumes = "application/json")
     public ResponseEntity<ApplicantEntity> addApplicant(@RequestBody ApplicantEntity applicant) {
         ApplicantEntity createdApplicant = applicantService.addApplicant(applicant);
         return ResponseEntity.ok(createdApplicant); // Trả về ứng viên đã thêm

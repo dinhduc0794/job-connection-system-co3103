@@ -1,10 +1,12 @@
 package com.javaweb.jobconnectionsystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -27,5 +29,6 @@ public class CityEntity {
 
     // Quan hệ với WardEntity: Một quận/huyện có thể có nhiều phường/xã
     @OneToMany(mappedBy = "city")
-    private List<WardEntity> wards;
+    @JsonManagedReference
+    private List<WardEntity> wards= new ArrayList<>();
 }

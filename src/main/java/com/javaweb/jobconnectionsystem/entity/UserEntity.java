@@ -35,6 +35,7 @@ public class UserEntity extends AccountEntity {
     @JoinTable(name = "user_ward",
             joinColumns = @JoinColumn(name = "user_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "ward_id", nullable = false))
+    @JsonManagedReference
     private List<WardEntity> wards = new ArrayList<>();
 
     // 1 user can have many phone numbers

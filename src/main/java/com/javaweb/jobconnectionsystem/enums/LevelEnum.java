@@ -9,13 +9,13 @@ public enum LevelEnum {
     MANAGER("Manager"),        // Quản lý
     DIRECTOR("Director");
 
-    private String level;
+    private String value;
 
-    LevelEnum(String level) {
-        this.level = level;
+    LevelEnum(String value) {
+        this.value = value;
     }
 
-    public String getLevel() {
-        return level;
+    public String getValue() {
+        return value;
     }
 }

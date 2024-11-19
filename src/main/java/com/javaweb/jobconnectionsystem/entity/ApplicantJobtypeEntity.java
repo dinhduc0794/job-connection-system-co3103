@@ -1,5 +1,6 @@
 package com.javaweb.jobconnectionsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.javaweb.jobconnectionsystem.enums.LevelEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -26,5 +27,6 @@ public class ApplicantJobtypeEntity {
 
     @ManyToOne
     @JoinColumn(name = "jobtype_id")
+    @JsonBackReference
     private JobTypeEntity jobType;
 }

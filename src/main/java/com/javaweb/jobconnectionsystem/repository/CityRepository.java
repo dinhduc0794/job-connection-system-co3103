@@ -9,5 +9,4 @@ import java.util.List;
 
 @Repository
 public interface CityRepository extends JpaRepository<CityEntity,Long> {
-    ProvinceEntity findByProvinceId(Long Id);
 }

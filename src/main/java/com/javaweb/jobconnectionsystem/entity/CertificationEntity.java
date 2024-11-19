@@ -1,5 +1,6 @@
 package com.javaweb.jobconnectionsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,5 +36,6 @@ public class CertificationEntity {
 
     @ManyToOne
     @JoinColumn(name = "applicant_id", nullable = false)
+    @JsonBackReference
     private ApplicantEntity applicant;
 }

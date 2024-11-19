@@ -31,14 +31,16 @@ public class CityController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);  // Trường hợp có lỗi
         }
     }
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<CityEntity> createCity(@RequestBody CityEntity city) {
-        try {
-            CityEntity newCity = cityService.AddCity(city);
-            return new ResponseEntity<>(newCity, HttpStatus.CREATED);  // Trả về thành phố mới thêm với status CREATED
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);  // Trường hợp có lỗi
-        }
+//        try {
+//            CityEntity newCity = cityService.addCity(city, provinceId);
+//            return new ResponseEntity<>(newCity, HttpStatus.CREATED);  // Trả về thành phố mới thêm với status CREATED
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);  // Trường hợp có lỗi
+//        }
+        CityEntity savedCity = cityService.addCity(city);
+        return ResponseEntity.ok(savedCity);
     }
 
     @GetMapping("/{cityId}/wards")

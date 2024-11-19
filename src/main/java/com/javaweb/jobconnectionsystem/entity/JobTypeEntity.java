@@ -21,13 +21,20 @@ public class JobTypeEntity {
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
+    @OneToMany(mappedBy = "jobType", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<ApplicantJobtypeEntity> applicantJobtypeEntities = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "field_id", nullable = false)
+    @JsonBackReference
     private FieldEntity field;
 
     @OneToMany(mappedBy = "jobType", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<SkillEntity> skills;
 
     @OneToMany(mappedBy = "jobType")
+    @JsonManagedReference
     private List<JobPostingEntity> jobPostings;
 }

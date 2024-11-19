@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -22,5 +23,5 @@ public class ProvinceEntity {
     // Quan hệ với CityEntity: Một tỉnh/thành phố có thể có nhiều quận/huyện
     @OneToMany(mappedBy = "province")
     @JsonManagedReference
-    private List<CityEntity> cities;
+    private List<CityEntity> cities=new ArrayList<>();
 }

@@ -1,5 +1,7 @@
 package com.javaweb.jobconnectionsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,21 +36,26 @@ public class ApplicantEntity extends UserEntity{
     @JoinTable(name = "applicant_skill",
             joinColumns = @JoinColumn(name = "applicant_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "skill_id", nullable = false))
+    @JsonManagedReference
     private List<SkillEntity> skills = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "applicant_jobtype_id")
-    private ApplicantJobtypeEntity applicantJobtype;
+    @OneToMany(mappedBy = "applicant", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<ApplicantJobtypeEntity> applicantJobtypeEntities = new ArrayList<>();
 
     @OneToMany(mappedBy = "applicant", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<ApplicationEntity> applications = new ArrayList<>();
 
     @OneToMany(mappedBy = "applicant", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<CompanyRateApplicantEntity> companyRateApplicantEntities = new ArrayList<>();
 
     @OneToMany(mappedBy = "applicant", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<ApplicantRateCompanyEntity> applicantRateCompanyEntities = new ArrayList<>();
 
     @OneToMany(mappedBy = "applicant", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<FollowCompanyEntity> followCompanyEntities = new ArrayList<>();
 }

@@ -26,5 +26,6 @@ public class SkillEntity {
     private JobTypeEntity jobType;
 
     @ManyToMany(mappedBy="skills", fetch = FetchType.LAZY)
+    @JsonBackReference
     private List<ApplicantEntity> applicants = new ArrayList<>();
 }
