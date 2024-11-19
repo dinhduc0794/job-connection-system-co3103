@@ -17,6 +17,7 @@ public class ApplicantJobtypeEntity {
     private Long id;
 
     @Column(name = "level")
+    @Enumerated(EnumType.STRING) // Lưu enum dưới dạng chuỗi trong cơ sở dữ liệu
     private LevelEnum level;
     
     @ManyToOne

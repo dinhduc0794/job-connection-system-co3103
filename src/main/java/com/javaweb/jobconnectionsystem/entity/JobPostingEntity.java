@@ -24,6 +24,7 @@ public class JobPostingEntity {
     private String description;
 
     @Column(name = "schedule")
+    @Enumerated(EnumType.STRING) // Lưu enum dưới dạng chuỗi trong cơ sở dữ liệu
     private ScheduleEnum schedule;
 
     @Column(name = "min_salary")
@@ -42,6 +43,7 @@ public class JobPostingEntity {
     private Long allowance;
 
     @Column(name = "level")
+    @Enumerated(EnumType.STRING) // Lưu enum dưới dạng chuỗi trong cơ sở dữ liệu
     private LevelEnum level;
 
     @Column(name = "image")
