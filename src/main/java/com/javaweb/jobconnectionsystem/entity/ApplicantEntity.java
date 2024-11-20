@@ -30,6 +30,7 @@ public class ApplicantEntity extends UserEntity{
     private Boolean isAvailable = true;
 
     @OneToMany(mappedBy = "applicant", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<CertificationEntity> certifications = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)

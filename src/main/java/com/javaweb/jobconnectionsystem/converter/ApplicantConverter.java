@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class ApplicantConverter {
@@ -35,29 +36,48 @@ public class ApplicantConverter {
                 applicantEntity.getWards().add(wardEntity); // Cần phương thức `addWard` trong `ApplicantEntity`
             }
         }
-        List<String> phoneNumbers = applicantDTO.getPhoneNumbers();
-        if (phoneNumbers != null && !phoneNumbers.isEmpty()) {
-            for (String phoneNumber : phoneNumbers) {
-                if (!phoneNumberRepository.existsByPhoneNumber(phoneNumber)) {
-                    PhoneNumberEntity newPhoneNumber = new PhoneNumberEntity();
-                    newPhoneNumber.setPhoneNumber(phoneNumber);
-                    newPhoneNumber.setUser(applicantEntity);
-                    applicantEntity.getPhoneNumbers().add(newPhoneNumber);
+//
+            List<String> phoneNumbers = applicantDTO.getPhoneNumbers();
+            if (phoneNumbers != null && !phoneNumbers.isEmpty()) {
+                applicantEntity.setPhoneNumbers(
+                        applicantEntity.getPhoneNumbers().stream()
+                                .filter(p -> p.getPhoneNumber() != null)
+                                .collect(Collectors.toList())
+                );
+
+                for (String phoneNumber : phoneNumbers) {
+                    boolean alreadyExistsInEntity = applicantEntity.getPhoneNumbers().stream()
+                            .anyMatch(p -> p.getPhoneNumber().equals(phoneNumber));
+                    boolean alreadyExistsInDatabase = phoneNumberRepository.existsByPhoneNumber(phoneNumber);
+
+                    if (!alreadyExistsInEntity && !alreadyExistsInDatabase) {
+                        PhoneNumberEntity newPhoneNumber = new PhoneNumberEntity();
+                        newPhoneNumber.setPhoneNumber(phoneNumber);
+                        newPhoneNumber.setUser(applicantEntity);
+                        applicantEntity.getPhoneNumbers().add(newPhoneNumber);
+                    }
                 }
             }
+
             List<String> emails = applicantDTO.getEmails();
             if (emails != null && !emails.isEmpty()) {
+                applicantEntity.setEmails(
+                        applicantEntity.getEmails().stream()
+                                .filter(e -> e.getEmail() != null)
+                                .collect(Collectors.toList())
+                );
                 for (String email : emails) {
+                    boolean alreadyExistsInEntity = applicantEntity.getEmails().stream()
+                            .anyMatch(e -> e.getEmail().equals(email));
+                    boolean alreadyExistsInDatabase = emailRepository.existsByEmail(email);
 
-                    if (!emailRepository.existsByEmail(email)) {
+                    if (!alreadyExistsInEntity && !alreadyExistsInDatabase) {
                         EmailEntity newEmail = new EmailEntity();
                         newEmail.setEmail(email);
                         newEmail.setUser(applicantEntity);
                         applicantEntity.getEmails().add(newEmail);
                     }
                 }
-
-
             }
             List<Long> notificationIds = applicantDTO.getNotificationIds();
             if (notificationIds != null && !notificationIds.isEmpty()) {
@@ -78,7 +98,6 @@ public class ApplicantConverter {
                 }
             }
 
-        }
     return applicantEntity;
 
     }

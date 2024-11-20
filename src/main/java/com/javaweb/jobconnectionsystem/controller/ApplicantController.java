@@ -26,7 +26,7 @@ public class ApplicantController {
     private ApplicantService applicantService;
 
     // Endpoint thêm ứng viên
-    @PostMapping( consumes = "application/json")
+    @PostMapping()
     public ResponseEntity<?> saveApplicant(@Valid @RequestBody ApplicantDTO applicantDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
         try{

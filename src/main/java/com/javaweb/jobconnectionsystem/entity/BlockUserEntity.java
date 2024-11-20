@@ -1,5 +1,6 @@
 package com.javaweb.jobconnectionsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,9 +21,11 @@ public class BlockUserEntity {
 
     @ManyToOne
     @JoinColumn(name = "blocker_id", nullable = false)
+    @JsonBackReference
     private UserEntity blocker;  // User who blocks another user
 
     @ManyToOne
     @JoinColumn(name = "blocked_user_id", nullable = false)
+    @JsonBackReference
     private UserEntity blockedUser;  // User who is blocked
 }

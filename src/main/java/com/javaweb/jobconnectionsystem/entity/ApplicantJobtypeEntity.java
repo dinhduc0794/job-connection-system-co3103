@@ -23,6 +23,7 @@ public class ApplicantJobtypeEntity {
     
     @ManyToOne
     @JoinColumn(name = "applicant_id")
+    @JsonBackReference
     private ApplicantEntity applicant;
 
     @ManyToOne

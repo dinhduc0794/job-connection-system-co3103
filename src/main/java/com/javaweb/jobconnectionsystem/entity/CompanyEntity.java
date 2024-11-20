@@ -31,7 +31,7 @@ public class CompanyEntity extends UserEntity {
     @JoinTable(name = "company_field",
             joinColumns = @JoinColumn(name = "company_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "field_id", nullable = false))
-    @JsonManagedReference
+    @JsonBackReference
     private List<FieldEntity> fields = new ArrayList<>();
 
     @OneToMany(mappedBy = "company", orphanRemoval = true, cascade = CascadeType.ALL)

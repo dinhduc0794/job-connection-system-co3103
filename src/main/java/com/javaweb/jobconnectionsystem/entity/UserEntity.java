@@ -1,5 +1,6 @@
 package com.javaweb.jobconnectionsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -35,7 +36,7 @@ public class UserEntity extends AccountEntity {
     @JoinTable(name = "user_ward",
             joinColumns = @JoinColumn(name = "user_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "ward_id", nullable = false))
-    @JsonManagedReference
+    @JsonBackReference
     private List<WardEntity> wards = new ArrayList<>();
 
     // 1 user can have many phone numbers
@@ -57,8 +58,10 @@ public class UserEntity extends AccountEntity {
     private List<NotificationEntity> notifications = new ArrayList<>();
 
     @OneToMany(mappedBy = "blocker")
+    @JsonManagedReference
     private List<BlockUserEntity> blockedUsers = new ArrayList<>(); // Danh sách các mối quan hệ block (User đã block)
 
     @OneToMany(mappedBy = "blockedUser")
+    @JsonManagedReference
     private List<BlockUserEntity> blockingUsers = new ArrayList<>(); // Danh sách các mối quan hệ block (User bị block)
 }
