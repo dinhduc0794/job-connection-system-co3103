@@ -70,39 +70,14 @@ public class JobPostingConverter {
             jobPosting.setCompanyImage(companyImage);
         }
 
+        // postDate to GMT+7
+        if (ent.getPostDates() != null && !ent.getPostDates().isEmpty()) {
+            ZonedDateTime postedDate = ent.getPostDates().get(0).getDatetime();
+            ZonedDateTime gmt7PostedDate = postedDate.withZoneSameInstant(ZoneId.of("GMT+7"));
+            jobPosting.setPostedDate(gmt7PostedDate);
+        }
+
         return jobPosting;
-    }
-
-    public JobPostingEntity toJobPostingEntity(JobPostingDTO jobPostingDTO){
-        JobPostingEntity jobPostingEntity = modelMapper.map(jobPostingDTO, JobPostingEntity.class);
-        // level, schedule, jobType, company, skills, province, city, ward, postDate are not mapped
-        if (jobPostingDTO.getLevel() != null) {
-            jobPostingEntity.setLevel(jobPostingDTO.getLevel());
-        }
-
-        if (jobPostingDTO.getSchedule() != null) {
-            jobPostingEntity.setSchedule(jobPostingDTO.getSchedule());
-        }
-
-        if (jobPostingDTO.getJobTypeId() != null) {
-            JobTypeEntity jobTypeEntity = new JobTypeEntity();
-            jobTypeEntity.setId(jobPostingDTO.getJobTypeId());
-            jobPostingEntity.setJobType(jobTypeEntity);
-        }
-
-        if (jobPostingDTO.getCompanyId() != null) {
-            CompanyEntity companyEntity = new CompanyEntity();
-            companyEntity.setId(jobPostingDTO.getCompanyId());
-            jobPostingEntity.setCompany(companyEntity);
-        }
-
-        if (jobPostingDTO.getWardId() != null) {
-            WardEntity wardEntity = new WardEntity();
-            wardEntity.setId(jobPostingDTO.getWardId());
-            jobPostingEntity.setWard(wardEntity);
-        }
-
-        return jobPostingEntity;
     }
 
     public JobPostingDetailResponse toJobPostingDetailResponse(JobPostingEntity ent) {
@@ -189,4 +164,38 @@ public class JobPostingConverter {
 
         return jobPosting;
     }
+
+    public JobPostingEntity toJobPostingEntity(JobPostingDTO jobPostingDTO){
+        JobPostingEntity jobPostingEntity = modelMapper.map(jobPostingDTO, JobPostingEntity.class);
+        // level, schedule, jobType, company, skills, province, city, ward, postDate are not mapped
+        if (jobPostingDTO.getLevel() != null) {
+            jobPostingEntity.setLevel(jobPostingDTO.getLevel());
+        }
+
+        if (jobPostingDTO.getSchedule() != null) {
+            jobPostingEntity.setSchedule(jobPostingDTO.getSchedule());
+        }
+
+        if (jobPostingDTO.getJobTypeId() != null) {
+            JobTypeEntity jobTypeEntity = new JobTypeEntity();
+            jobTypeEntity.setId(jobPostingDTO.getJobTypeId());
+            jobPostingEntity.setJobType(jobTypeEntity);
+        }
+
+        if (jobPostingDTO.getCompanyId() != null) {
+            CompanyEntity companyEntity = new CompanyEntity();
+            companyEntity.setId(jobPostingDTO.getCompanyId());
+            jobPostingEntity.setCompany(companyEntity);
+        }
+
+        if (jobPostingDTO.getWardId() != null) {
+            WardEntity wardEntity = new WardEntity();
+            wardEntity.setId(jobPostingDTO.getWardId());
+            jobPostingEntity.setWard(wardEntity);
+        }
+
+        return jobPostingEntity;
+    }
+
+
 }

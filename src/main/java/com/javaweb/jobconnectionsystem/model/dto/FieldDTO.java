@@ -5,8 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class WardDTO {
+public class FieldDTO {
     private Long id;
-    private String name;
-    private Long city_id;
+
 }

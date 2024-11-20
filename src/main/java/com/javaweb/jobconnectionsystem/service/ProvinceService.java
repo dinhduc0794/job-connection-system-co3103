@@ -2,6 +2,7 @@ package com.javaweb.jobconnectionsystem.service;
 
 import com.javaweb.jobconnectionsystem.entity.CityEntity;
 import com.javaweb.jobconnectionsystem.entity.ProvinceEntity;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 

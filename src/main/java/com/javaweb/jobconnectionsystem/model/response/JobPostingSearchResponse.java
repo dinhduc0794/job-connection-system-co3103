@@ -24,4 +24,5 @@ public class JobPostingSearchResponse {
     private String jobType;
     private String skills;
     private String yoe;
+    private ZonedDateTime postedDate;
 }
