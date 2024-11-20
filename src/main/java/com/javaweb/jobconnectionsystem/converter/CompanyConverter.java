@@ -168,7 +168,7 @@ public class CompanyConverter {
         if (companyEntity.getApplicantRateCompanyEntities() != null && !companyEntity.getApplicantRateCompanyEntities().isEmpty()) {
             double totalRating = companyEntity.getApplicantRateCompanyEntities().stream()
                     .filter(it -> it != null && it.getRate() != null) // check null
-                    .map(it -> Double.parseDouble(it.getRate().getValue())) // RateEnum -> Double
+                    .map(it -> it.getRate().getValue().doubleValue())  // RateEnum -> Double
                     .reduce(0.0, Double::sum); // Tính tổng
             int count = (int) companyEntity.getApplicantRateCompanyEntities().stream()
                     .filter(it -> it != null && it.getRate() != null)

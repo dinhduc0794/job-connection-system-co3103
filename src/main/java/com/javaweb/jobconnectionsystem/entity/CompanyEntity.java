@@ -20,8 +20,10 @@ public class CompanyEntity extends UserEntity {
     private String name;
     @Column(name = "tax_code", unique = true, nullable = false)
     private String taxCode;
-    @Column(name = "number_of_free_post", nullable = false)
-    private Long numberOfFreePost = 5L;
+    @Column(name = "remaining_post", nullable = false)
+    private Long remainingPost = 5L;
+    @Column(name = "rating")
+    private Double rating = 0.0;
 
     @OneToMany(mappedBy = "company", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<JobPostingEntity> jobPostings;

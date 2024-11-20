@@ -160,8 +160,6 @@ public class JobPostingConverter {
             jobPosting.setCompanyField(companyField);
         }
 
-
-
         return jobPosting;
     }
 
