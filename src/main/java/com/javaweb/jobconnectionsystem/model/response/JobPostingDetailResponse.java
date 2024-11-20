@@ -23,6 +23,7 @@ public class JobPostingDetailResponse {
     private String city;
     private String ward;
     private String address;
+    private Long companyId;
     private String companyName;
     private Double comanyRating;
     private String companyImage;

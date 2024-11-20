@@ -1,9 +1,11 @@
 package com.javaweb.jobconnectionsystem.converter;
 
 import com.javaweb.jobconnectionsystem.entity.*;
+import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
 import com.javaweb.jobconnectionsystem.model.response.CompanyDetailResponse;
 import com.javaweb.jobconnectionsystem.model.response.CompanySearchResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
+import com.javaweb.jobconnectionsystem.repository.WardRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,61 +21,24 @@ public class CompanyConverter {
     private ModelMapper modelMapper;
     @Autowired
     private JobPostingConverter jobPostingConverter;
+    @Autowired
+    private WardRepository wardRepository;
 
-//    public CompanyEntity toCompanyEntity (CompanyDTO CompanyDTO) {
-//        CompanyEntity companyEntity = modelMapper.map(companyDTO, CompanyEntity.class);
-//        Map<String, Long> addressWardIds = companyDTO.getAddressIds();
-//        if (addressWardIds != null && !addressWardIds.isEmpty()) {
-//            for (Map.Entry<String, Long> entry : addressWardIds.entrySet()) {
-//                String address = entry.getKey();
-//                Long wardId = entry.getValue();
-//                WardEntity wardEntity = wardRepository.findById(wardId).get();
-//                // Ví dụ thêm WardEntity vào CompanyEntity (giả sử companyEntity đã được khởi tạo)
-//                companyEntity.getWards().add(wardEntity); // Cần phương thức `addWard` trong `CompanyEntity`
-//                companyEntity.setAddress(address);
-//            }
-//        }
-//        List<String> phoneIds = applicantDTO.getPhoneNumberIds();
-//        if( phoneIds != null && !phoneIds.isEmpty()){
-//            for(String id : phoneIds){
-//                PhoneNumberEntity phoneNumber = new PhoneNumberEntity();
-//                phoneNumber.setPhoneNumber(id);
-//                phoneNumber.setUser(applicantEntity);
-//                applicantEntity.getPhoneNumbers().add(phoneNumber);
-//            }
-//        }
-//        List<String> emailIds = applicantDTO.getEmailIds();
-//        if( emailIds != null && !emailIds.isEmpty()){
-//            for(String id : emailIds){
-//                EmailEntity email = new EmailEntity();
-//                email.setEmail(id);
-//                email.setUser(applicantEntity);
-//                applicantEntity.getEmails().add(email);
-//            }
-//
-//        }
-//        List<Long> notificationIds = applicantDTO.getNotificationIds();
-//        if (notificationIds != null && !notificationIds.isEmpty()) {
-//            for (Long id : notificationIds) {
-//                NotificationEntity notificationEntity = notificationRepository.findById(id).get();
-//                if (notificationEntity != null) {
-//                    applicantEntity.getNotifications().add(notificationEntity);
-//                }
-//            }
-//        }
-//        List<Long> blockedUserIds = applicantDTO.getBlockedUserIds();
-//        if (blockedUserIds != null && !blockedUserIds.isEmpty()) {
-//            for (Long id : blockedUserIds) {
-//                BlockUserEntity blockedUserEntity = blockUserRepository.findByBlockedUser_Id(id);
-//                if (blockedUserEntity != null) {
-//                    applicantEntity.getBlockedUsers().add(blockedUserEntity);
-//                }
-//            }
-//        }
-//
-//
-//        return  applicantEntity;
-//    }
+    public CompanyEntity toCompanyEntity (CompanyDTO companyDTO) {
+        CompanyEntity companyEntity = modelMapper.map(companyDTO, CompanyEntity.class);
+        Map<String, Long> addressWardIds = companyDTO.getAddressWardIds();
+        if (addressWardIds != null && !addressWardIds.isEmpty()) {
+            for (Map.Entry<String, Long> entry : addressWardIds.entrySet()) {
+                String address = entry.getKey();
+                Long wardId = entry.getValue();
+                WardEntity wardEntity = wardRepository.findById(wardId).get();
+                // Ví dụ thêm WardEntity vào CompanyEntity (giả sử companyEntity đã được khởi tạo)
+                companyEntity.getWards().add(wardEntity); // Cần phương thức `addWard` trong `CompanyEntity`
+                companyEntity.setAddress(address);
+            }
+        }
+        return  companyEntity;
+    }
 
     public CompanySearchResponse toCompanySearchResponse(CompanyEntity companyEntity) {
         CompanySearchResponse companySearchResponse = modelMapper.map(companyEntity, CompanySearchResponse.class);

@@ -13,11 +13,16 @@ import java.util.Map;
 @Setter
 public class CompanyDTO {
     private Long id;
+    @NotBlank(message ="Username is required")
+    private String username;
+    @NotBlank(message ="User password is required")
+    private String password;
+    private Boolean getIsActive;
     @NotBlank(message = "Company name is required")
     private String name;
     @NotBlank(message = "Company tax code is required")
     private String taxCode;
-    private Long numberOfFreePost;
+    private Long remainingPost;
     private String image = "bg.jpg";
     @Size(min = 1, message = "Address is required")
     Map<String, Long> addressWardIds;

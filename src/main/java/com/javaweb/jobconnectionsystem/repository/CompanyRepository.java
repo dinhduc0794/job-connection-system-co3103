@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface CompanyRepository extends JpaRepository<CompanyEntity,Long>, CompanyRepositoryCustom {
     @Query("SELECT c FROM CompanyEntity c WHERE c.taxCode = :taxCode")
     CompanyEntity findByTaxCode(@Param("taxCode") String taxCode);
+    CompanyEntity findByName(String companyName);
 }

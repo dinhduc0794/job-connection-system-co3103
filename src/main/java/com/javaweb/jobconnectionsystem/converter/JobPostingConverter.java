@@ -63,6 +63,9 @@ public class JobPostingConverter {
         }
 
         if (ent.getCompany() != null) {
+            Long companyId = ent.getCompany().getId();
+            jobPosting.setCompanyId(companyId);
+
             String companyName = ent.getCompany().getName();
             jobPosting.setCompanyName(companyName);
 
@@ -110,6 +113,9 @@ public class JobPostingConverter {
         }
 
         if (ent.getCompany() != null) {
+            Long companyId = ent.getCompany().getId();
+            jobPosting.setCompanyId(companyId);
+            
             String companyName = ent.getCompany().getName();
             jobPosting.setCompanyName(companyName);
 

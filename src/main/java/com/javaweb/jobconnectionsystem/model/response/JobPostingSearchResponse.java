@@ -19,6 +19,7 @@ public class JobPostingSearchResponse {
     private String province;
     private String city;
     private String ward;
+    private Long companyId;
     private String companyName;
     private String companyImage;
     private String jobType;

@@ -14,7 +14,7 @@ public class ApplicantDTO {
     private Long id;
     @NotBlank(message ="Username is required")
     private String username;
-    @NotBlank(message ="User PassWord is required")
+    @NotBlank(message ="User password is required")
     private String password;
     private Boolean isActive;
     @NotBlank(message = "Person firt name is required ")
