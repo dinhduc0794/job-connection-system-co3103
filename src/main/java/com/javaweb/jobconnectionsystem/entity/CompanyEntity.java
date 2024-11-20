@@ -14,7 +14,6 @@ import java.util.List;
 @Table(name = "company")
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "clazz_", discriminatorType = DiscriminatorType.STRING)
 @PrimaryKeyJoinColumn(name = "id")
 public class CompanyEntity extends UserEntity {
     @Column(name = "name", nullable = false)

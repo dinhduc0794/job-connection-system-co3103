@@ -5,9 +5,7 @@ import com.javaweb.jobconnectionsystem.entity.JobPostingEntity;
 import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
 import com.javaweb.jobconnectionsystem.model.request.CompanySearchRequest;
 import com.javaweb.jobconnectionsystem.model.request.JobPostingSearchRequest;
-import com.javaweb.jobconnectionsystem.model.response.CompanySearchResponse;
-import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
-import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
+import com.javaweb.jobconnectionsystem.model.response.*;
 import com.javaweb.jobconnectionsystem.service.CompanyService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +37,12 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CompanyEntity> getCompanyById(@PathVariable Long id) {
-        Optional<CompanyEntity> company = companyService.getCompanyById(id);
-        return company.map(ResponseEntity::ok) // Trả về công ty nếu tìm thấy
-                .orElseGet(() -> ResponseEntity.notFound().build()); // Trả về 404 nếu không tìm thấy công ty
+    public ResponseEntity<?> getCompanyById(@PathVariable Long id) {
+        CompanyDetailResponse companyDetail = companyService.getCompanyById(id);
+        if (companyDetail == null) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(companyDetail);
     }
 
     // Endpoint thêm công ty

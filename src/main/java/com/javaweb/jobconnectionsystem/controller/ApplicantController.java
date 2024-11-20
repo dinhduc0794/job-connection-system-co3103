@@ -83,13 +83,18 @@ public class ApplicantController {
     }
 
     // Endpoint xóa ứng viên
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteApplicant(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteApplicant(@PathVariable Long id) {
+        ResponseDTO responseDTO = new ResponseDTO();
         try {
             applicantService.deleteApplicantById(id);
-            return ResponseEntity.noContent().build(); // Trả về 204 nếu xóa thành công
+            responseDTO.setMessage("Delete successfully");
+            responseDTO.setDetail(Collections.singletonList("Applicant has been deleted"));
+            return ResponseEntity.ok().body(responseDTO);
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build(); // Nếu không tìm thấy ứng viên, trả về 404 Not Found
+            responseDTO.setMessage("Internal server error");
+            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
         }
     }
 }

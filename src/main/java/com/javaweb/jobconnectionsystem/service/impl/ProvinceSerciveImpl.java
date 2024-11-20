@@ -22,6 +22,11 @@ public class ProvinceSerciveImpl implements ProvinceService {
     public CityRepository cityrepository;
 
     @Override
+    public List<ProvinceEntity> findAllProvinces() {
+        return provinceRepository.findAll();
+    }
+
+    @Override
     public List<CityEntity> findCity(Long id) {
         return provinceRepository.findById(id).get().getCities();
     }

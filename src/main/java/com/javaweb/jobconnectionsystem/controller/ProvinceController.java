@@ -17,6 +17,21 @@ public class ProvinceController {
     @Autowired
     private ProvinceService provinceService;
 
+    @GetMapping
+    public ResponseEntity<List<ProvinceEntity>> getAllProvinces() {
+        try {
+            List<ProvinceEntity> provinces = provinceService.findAllProvinces();
+
+            if (provinces.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+            return new ResponseEntity<>(provinces, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     // Endpoint để lấy danh sách các thành phố (City) theo provinceId
     @GetMapping("/{provinceId}/cities")
     public ResponseEntity<List<CityEntity>> getCitiesByProvinceId(@PathVariable Long provinceId) {

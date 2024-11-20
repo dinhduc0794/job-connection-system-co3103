@@ -21,7 +21,7 @@ public class JobTypeEntity {
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "jobType", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "jobType")
     @JsonManagedReference
     private List<ApplicantJobtypeEntity> applicantJobtypeEntities = new ArrayList<>();
 

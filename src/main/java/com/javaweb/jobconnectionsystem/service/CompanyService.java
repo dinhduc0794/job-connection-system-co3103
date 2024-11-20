@@ -3,6 +3,7 @@ package com.javaweb.jobconnectionsystem.service;
 import com.javaweb.jobconnectionsystem.entity.CompanyEntity;
 import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
 import com.javaweb.jobconnectionsystem.model.request.CompanySearchRequest;
+import com.javaweb.jobconnectionsystem.model.response.CompanyDetailResponse;
 import com.javaweb.jobconnectionsystem.model.response.CompanySearchResponse;
 
 
@@ -14,7 +15,7 @@ public interface CompanyService {
 
     public List<CompanySearchResponse> getAllCompanies(CompanySearchRequest params);
     // Lấy user theo ID
-    public Optional<CompanyEntity> getCompanyById(Long id);
+    public CompanyDetailResponse getCompanyById(Long id);
     // Sửa use
     public CompanyEntity updateCompany(Long id, CompanyEntity companyDetails);
     // Xoa user

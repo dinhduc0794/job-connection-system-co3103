@@ -2,10 +2,13 @@ package com.javaweb.jobconnectionsystem.service.impl;
 
 import com.javaweb.jobconnectionsystem.converter.CompanyConverter;
 import com.javaweb.jobconnectionsystem.entity.CompanyEntity;
+import com.javaweb.jobconnectionsystem.entity.EmailEntity;
 import com.javaweb.jobconnectionsystem.entity.JobPostingEntity;
 import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
 import com.javaweb.jobconnectionsystem.model.request.CompanySearchRequest;
+import com.javaweb.jobconnectionsystem.model.response.CompanyDetailResponse;
 import com.javaweb.jobconnectionsystem.model.response.CompanySearchResponse;
+import com.javaweb.jobconnectionsystem.model.response.JobPostingDetailResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.repository.CompanyRepository;
 import com.javaweb.jobconnectionsystem.service.CompanyService;
@@ -35,17 +38,16 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Optional<CompanyEntity> getCompanyById(Long id) {
-        Optional<CompanyEntity> company = companyRepository.findById(id);
-        if (company.isEmpty()) {
-            return null;
-        }
-        return company;
+    public CompanyDetailResponse getCompanyById(Long id) {
+        CompanyEntity companyEntity = companyRepository.findById(id).get();
+        CompanyDetailResponse companyDetailResponse = companyConverter.toCompanyDetailResponse(companyEntity);
+        return companyDetailResponse;
     }
 
     @Override
     public CompanyEntity saveCompany(CompanyDTO companyDTO) {
 //        CompanyEntity companyEntity = companyConverter.toCompanyEntity(companyDTO);
+//        EmailEntity emailEntity =
 ////        CompanyEntity companyFromDb = companyRepository.findByTaxCode(company.getTaxCode());
 //        if (companyFromDb != null) {
 //            if (company.getTaxCode().equals(companyFromDb.getTaxCode())) {

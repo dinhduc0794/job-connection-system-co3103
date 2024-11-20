@@ -10,6 +10,7 @@ import java.util.List;
 @Setter
 public class JobPostingSearchResponse {
     private Long id;
+    private String title;
     private String schedule;    //Enum
     private String level;    //Enum
     private Long minSalary;

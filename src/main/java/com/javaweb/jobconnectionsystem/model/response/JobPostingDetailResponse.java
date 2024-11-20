@@ -9,6 +9,7 @@ import java.time.ZonedDateTime;
 @Setter
 public class JobPostingDetailResponse {
     private Long id;
+    private String title;
     private String description;
     private String schedule;    //Enum
     private String level;    //Enum
@@ -21,6 +22,7 @@ public class JobPostingDetailResponse {
     private String province;
     private String city;
     private String ward;
+    private String address;
     private String companyName;
     private Double comanyRating;
     private String companyImage;
@@ -31,7 +33,6 @@ public class JobPostingDetailResponse {
     private String phoneNumbers;
     private String contactEmail;
     private String contactPhone;
-    private String address;
     private ZonedDateTime postedDate;
     private Long yoe;
 }

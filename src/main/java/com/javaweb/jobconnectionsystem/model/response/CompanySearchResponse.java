@@ -10,11 +10,12 @@ import java.util.List;
 public class CompanySearchResponse {
     private Long id;
     private String name;
+    private Double rating;
     private String taxCode;
     private List<String> addresses;
     private List<String> phoneNumbers;
     private List<String> emails;
     private String description;
     private String image;
-    private String field;
+    private String fields;
 }

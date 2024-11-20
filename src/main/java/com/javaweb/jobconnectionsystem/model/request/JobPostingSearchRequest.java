@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 public class JobPostingSearchRequest {
     private String id;
-    private String description;
+    private String title;
     private ScheduleEnum schedule;
     private LevelEnum level;
     private Long yoe;
