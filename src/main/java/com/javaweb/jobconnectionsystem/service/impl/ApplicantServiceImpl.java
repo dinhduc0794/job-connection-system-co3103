@@ -2,8 +2,10 @@ package com.javaweb.jobconnectionsystem.service.impl;
 
 import com.javaweb.jobconnectionsystem.converter.ApplicantConverter;
 import com.javaweb.jobconnectionsystem.entity.ApplicantEntity;
+import com.javaweb.jobconnectionsystem.entity.BlockUserEntity;
 import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
 import com.javaweb.jobconnectionsystem.repository.ApplicantRepository;
+import com.javaweb.jobconnectionsystem.repository.BlockUserRepository;
 import com.javaweb.jobconnectionsystem.service.ApplicantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ public class ApplicantServiceImpl implements ApplicantService {
     private ApplicantRepository applicantRepository;
     @Autowired
     private ApplicantConverter applicantConverter ;
+    @Autowired
+    private BlockUserRepository blockUserRepository;
     @Override
     public List<ApplicantEntity> getAllApplicants() {
         return applicantRepository.findAll();
@@ -52,6 +56,12 @@ public class ApplicantServiceImpl implements ApplicantService {
     public void deleteApplicantById(Long id) {
         ApplicantEntity applicant = applicantRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Applicant not found"));
+        List<BlockUserEntity> blockUser = applicant.getBlockedUsers().stream().toList();
+        for(BlockUserEntity blockUserEntity : blockUser) {
+            applicant.getBlockedUsers().remove(blockUserEntity);
+            blockUserRepository.delete(blockUserEntity);
+        }
+
         applicantRepository.delete(applicant);
     }
 }
