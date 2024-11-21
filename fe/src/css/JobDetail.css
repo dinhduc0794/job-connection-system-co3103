@@ -18,6 +18,10 @@
   flex-direction: column;
   gap: 30px;
 }
+#job-detail-container .job-overview h2 {
+  font-weight: bold;
+  font-size: 25px;
+}
 
 #job-detail-container .job-info {
   display: flex;
@@ -70,6 +74,13 @@
   padding: 10px;
   background-color: white;
   border-radius: 8px;
+}
+#job-detail-container .company-info h3,
+#job-detail-container .general-info h3,
+#job-detail-container .specialty-tags h3 {
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 7px;
 }
 
 #job-detail-container .general-info, 
