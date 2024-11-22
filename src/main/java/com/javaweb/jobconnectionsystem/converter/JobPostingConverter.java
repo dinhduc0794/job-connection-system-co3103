@@ -115,20 +115,37 @@ public class JobPostingConverter {
         if (ent.getCompany() != null) {
             Long companyId = ent.getCompany().getId();
             jobPosting.setCompanyId(companyId);
-            
+
             String companyName = ent.getCompany().getName();
             jobPosting.setCompanyName(companyName);
 
-            String emails = ent.getCompany().getEmails().stream()
-                    .map(it->it.getEmail())
-                    .collect(Collectors.joining(", "));
-            jobPosting.setEmails(emails);
+            if (ent.getCompany().getFields() != null) {
+                String companyField = ent.getCompany().getFields().stream()
+                        .map(it->it.getName())
+                        .collect(Collectors.joining(", "));
+                jobPosting.setCompanyField(companyField);
+            }
 
-            String phoneNumbers = ent.getCompany().getPhoneNumbers().stream()
-                    .map(it->it.getPhoneNumber())
-                    .collect(Collectors.joining(", "));
-            jobPosting.setPhoneNumbers(phoneNumbers);
+            if (ent.getCompany().getEmails() != null) {
+                String emails = ent.getCompany().getEmails().stream()
+                        .map(it->it.getEmail())
+                        .collect(Collectors.joining(", "));
+                jobPosting.setEmails(emails);
+            }
+
+            if (ent.getCompany().getPhoneNumbers() != null) {
+                String phoneNumbers = ent.getCompany().getPhoneNumbers().stream()
+                        .map(it->it.getPhoneNumber())
+                        .collect(Collectors.joining(", "));
+                jobPosting.setPhoneNumbers(phoneNumbers);
+            }
+
+            if (ent.getCompany().getRating() != null) {
+                Double companyRating = ent.getCompany().getRating();
+                jobPosting.setComanyRating(companyRating);
+            }
         }
+
 
         if(ent.getWard() != null){
             WardEntity ward = ent.getWard();
@@ -151,19 +168,6 @@ public class JobPostingConverter {
             ZonedDateTime postedDate = ent.getPostDates().get(0).getDatetime();
             ZonedDateTime gmt7PostedDate = postedDate.withZoneSameInstant(ZoneId.of("GMT+7"));
             jobPosting.setPostedDate(gmt7PostedDate);
-        }
-
-        if (ent.getCompany() != null) {
-            String companyName = ent.getCompany().getName();
-            jobPosting.setCompanyName(companyName);
-
-            String companyImage = ent.getCompany().getImage();
-            jobPosting.setCompanyImage(companyImage);
-
-            String companyField = ent.getCompany().getFields().stream()
-                    .map(it->it.getName())
-                    .collect(Collectors.joining(", "));
-            jobPosting.setCompanyField(companyField);
         }
 
         return jobPosting;
