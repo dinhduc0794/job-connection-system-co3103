@@ -40,7 +40,7 @@ public class ApplicantEntity extends UserEntity{
     @JsonManagedReference
     private List<SkillEntity> skills = new ArrayList<>();
 
-    @OneToMany(mappedBy = "applicant")
+    @OneToMany(mappedBy = "applicant" )
     @JsonManagedReference
     private List<ApplicantJobtypeEntity> applicantJobtypeEntities = new ArrayList<>();
 

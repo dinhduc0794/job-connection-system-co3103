@@ -57,11 +57,11 @@ public class UserEntity extends AccountEntity {
     @JsonManagedReference
     private List<NotificationEntity> notifications = new ArrayList<>();
 
-    @OneToMany(mappedBy = "blocker")
+    @OneToMany(mappedBy = "blocker",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<BlockUserEntity> blockedUsers = new ArrayList<>(); // Danh sách các mối quan hệ block (User đã block)
 
-    @OneToMany(mappedBy = "blockedUser")
+    @OneToMany(mappedBy = "blockedUser",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<BlockUserEntity> blockingUsers = new ArrayList<>(); // Danh sách các mối quan hệ block (User bị block)
 }

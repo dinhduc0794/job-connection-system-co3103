@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +30,8 @@ public class ApplicantServiceImpl implements ApplicantService {
     private PhoneNumberRepository phoneRepository;
     @Autowired
     private EmailRepository emailRepository;
+    @Autowired
+    private JobTypeRepository jobTypeRepository;
     @Override
     public List<ApplicantEntity> getAllApplicants() {
         return applicantRepository.findAll();
@@ -40,7 +43,12 @@ public class ApplicantServiceImpl implements ApplicantService {
             List<String> phoneNum= applicantDTO.getPhoneNumbers();
             for(String a : phoneNum) {
                 if(phoneRepository.existsByPhoneNumber(a)){
-                    phoneRepository.deleteByPhoneNumber(a);
+                    if(phoneRepository.findByPhoneNumber(a).getUser().getId()==applicantDTO.getId()) {
+                        phoneRepository.deleteByPhoneNumber(a);
+                    }
+                    else {
+                        throw new RuntimeException("Phone number "+a+" already exists");
+                    }
                 }
             }
         }
@@ -48,7 +56,12 @@ public class ApplicantServiceImpl implements ApplicantService {
             List<String> email = applicantDTO.getEmails();
             for(String a : email){
                 if(emailRepository.existsByEmail(a)){
-                   emailRepository.deleteByEmail(a);
+                    if(emailRepository.findByEmail(a).getUser().getId()==applicantDTO.getId()) {
+                        emailRepository.deleteByEmail(a);
+                    }
+                    else{
+                        throw new RuntimeException("Email "+a+" already exists");
+                    }
                 }
             }
         }
@@ -89,11 +102,16 @@ public class ApplicantServiceImpl implements ApplicantService {
             skillRepository.delete(skillEntity);
         }
         List<ApplicantJobtypeEntity> applicantJobType = new ArrayList<>(applicant.getApplicantJobtypeEntities());
+        applicant.getApplicantJobtypeEntities().clear();
         for(ApplicantJobtypeEntity applicantJobTypeEntity : applicantJobType){
-            applicantJobTypeEntity.getJobType().getApplicantJobtypeEntities().remove(applicantJobTypeEntity);
-            applicant.getApplicantJobtypeEntities().remove(applicantJobTypeEntity);
-
+            applicantJobTypeEntity.setApplicant(null);
+            JobTypeEntity job=applicantJobTypeEntity.getJobType();
+            job.getApplicantJobtypeEntities().remove(applicantJobTypeEntity);
+            applicantJobTypeEntity.setJobType(null);
         }
         applicantRepository.delete(applicant);
+        for(ApplicantJobtypeEntity applicantJobTypeEntity : applicantJobType){
+            applicanJobTypeRepository.delete(applicantJobTypeEntity);
+        }
     }
 }

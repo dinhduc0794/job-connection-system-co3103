@@ -36,7 +36,7 @@ public class ApplicantConverter {
                 applicantEntity.getWards().add(wardEntity); // Cần phương thức `addWard` trong `ApplicantEntity`
             }
         }
-//
+////
             List<String> phoneNumbers = applicantDTO.getPhoneNumbers();
             if (phoneNumbers != null && !phoneNumbers.isEmpty()) {
                 applicantEntity.setPhoneNumbers(
@@ -46,16 +46,18 @@ public class ApplicantConverter {
                 );
 
                 for (String phoneNumber : phoneNumbers) {
-                    boolean alreadyExistsInEntity = applicantEntity.getPhoneNumbers().stream()
-                            .anyMatch(p -> p.getPhoneNumber().equals(phoneNumber));
-                    boolean alreadyExistsInDatabase = phoneNumberRepository.existsByPhoneNumber(phoneNumber);
-
-                    if (!alreadyExistsInEntity && !alreadyExistsInDatabase) {
+//                    boolean alreadyExistsInEntity = applicantEntity.getPhoneNumbers().stream()
+//
+//
+//                            .anyMatch(p -> p.getPhoneNumber().equals(phoneNumber));
+//                    boolean alreadyExistsInDatabase = phoneNumberRepository.existsByPhoneNumber(phoneNumber);
+//
+//                    if (!alreadyExistsInEntity && !alreadyExistsInDatabase) {
                         PhoneNumberEntity newPhoneNumber = new PhoneNumberEntity();
                         newPhoneNumber.setPhoneNumber(phoneNumber);
                         newPhoneNumber.setUser(applicantEntity);
                         applicantEntity.getPhoneNumbers().add(newPhoneNumber);
-                    }
+//                    }
                 }
             }
 
@@ -67,16 +69,16 @@ public class ApplicantConverter {
                                 .collect(Collectors.toList())
                 );
                 for (String email : emails) {
-                    boolean alreadyExistsInEntity = applicantEntity.getEmails().stream()
-                            .anyMatch(e -> e.getEmail().equals(email));
-                    boolean alreadyExistsInDatabase = emailRepository.existsByEmail(email);
-
-                    if (!alreadyExistsInEntity && !alreadyExistsInDatabase) {
+//                    boolean alreadyExistsInEntity = applicantEntity.getEmails().stream()
+//                            .anyMatch(e -> e.getEmail().equals(email));
+//                    boolean alreadyExistsInDatabase = emailRepository.existsByEmail(email);
+//
+//                    if (!alreadyExistsInEntity && !alreadyExistsInDatabase) {
                         EmailEntity newEmail = new EmailEntity();
                         newEmail.setEmail(email);
                         newEmail.setUser(applicantEntity);
                         applicantEntity.getEmails().add(newEmail);
-                    }
+//                    }
                 }
             }
             List<Long> notificationIds = applicantDTO.getNotificationIds();
