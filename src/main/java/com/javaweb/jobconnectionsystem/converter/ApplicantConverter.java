@@ -37,15 +37,15 @@ public class ApplicantConverter {
             }
         }
 ////
-            List<String> phoneNumbers = applicantDTO.getPhoneNumbers();
-            if (phoneNumbers != null && !phoneNumbers.isEmpty()) {
-                applicantEntity.setPhoneNumbers(
-                        applicantEntity.getPhoneNumbers().stream()
-                                .filter(p -> p.getPhoneNumber() != null)
-                                .collect(Collectors.toList())
-                );
+        List<String> phoneNumbers = applicantDTO.getPhoneNumbers();
+        if (phoneNumbers != null && !phoneNumbers.isEmpty()) {
+            applicantEntity.setPhoneNumbers(
+                    applicantEntity.getPhoneNumbers().stream()
+                            .filter(p -> p.getPhoneNumber() != null)
+                            .collect(Collectors.toList())
+            );
 
-                for (String phoneNumber : phoneNumbers) {
+            for (String phoneNumber : phoneNumbers) {
 //                    boolean alreadyExistsInEntity = applicantEntity.getPhoneNumbers().stream()
 //
 //
@@ -53,54 +53,54 @@ public class ApplicantConverter {
 //                    boolean alreadyExistsInDatabase = phoneNumberRepository.existsByPhoneNumber(phoneNumber);
 //
 //                    if (!alreadyExistsInEntity && !alreadyExistsInDatabase) {
-                        PhoneNumberEntity newPhoneNumber = new PhoneNumberEntity();
-                        newPhoneNumber.setPhoneNumber(phoneNumber);
-                        newPhoneNumber.setUser(applicantEntity);
-                        applicantEntity.getPhoneNumbers().add(newPhoneNumber);
+                PhoneNumberEntity newPhoneNumber = new PhoneNumberEntity();
+                newPhoneNumber.setPhoneNumber(phoneNumber);
+                newPhoneNumber.setUser(applicantEntity);
+                applicantEntity.getPhoneNumbers().add(newPhoneNumber);
 //                    }
-                }
             }
+        }
 
-            List<String> emails = applicantDTO.getEmails();
-            if (emails != null && !emails.isEmpty()) {
-                applicantEntity.setEmails(
-                        applicantEntity.getEmails().stream()
-                                .filter(e -> e.getEmail() != null)
-                                .collect(Collectors.toList())
-                );
-                for (String email : emails) {
+        List<String> emails = applicantDTO.getEmails();
+        if (emails != null && !emails.isEmpty()) {
+            applicantEntity.setEmails(
+                    applicantEntity.getEmails().stream()
+                            .filter(e -> e.getEmail() != null)
+                            .collect(Collectors.toList())
+            );
+            for (String email : emails) {
 //                    boolean alreadyExistsInEntity = applicantEntity.getEmails().stream()
 //                            .anyMatch(e -> e.getEmail().equals(email));
 //                    boolean alreadyExistsInDatabase = emailRepository.existsByEmail(email);
 //
 //                    if (!alreadyExistsInEntity && !alreadyExistsInDatabase) {
-                        EmailEntity newEmail = new EmailEntity();
-                        newEmail.setEmail(email);
-                        newEmail.setUser(applicantEntity);
-                        applicantEntity.getEmails().add(newEmail);
+                EmailEntity newEmail = new EmailEntity();
+                newEmail.setEmail(email);
+                newEmail.setUser(applicantEntity);
+                applicantEntity.getEmails().add(newEmail);
 //                    }
+            }
+        }
+        List<Long> notificationIds = applicantDTO.getNotificationIds();
+        if (notificationIds != null && !notificationIds.isEmpty()) {
+            for (Long id : notificationIds) {
+                NotificationEntity notificationEntity = notificationRepository.findById(id).get();
+                if (notificationEntity != null) {
+                    applicantEntity.getNotifications().add(notificationEntity);
                 }
             }
-            List<Long> notificationIds = applicantDTO.getNotificationIds();
-            if (notificationIds != null && !notificationIds.isEmpty()) {
-                for (Long id : notificationIds) {
-                    NotificationEntity notificationEntity = notificationRepository.findById(id).get();
-                    if (notificationEntity != null) {
-                        applicantEntity.getNotifications().add(notificationEntity);
-                    }
+        }
+        List<Long> blockedUserIds = applicantDTO.getBlockedUserIds();
+        if (blockedUserIds != null && !blockedUserIds.isEmpty()) {
+            for (Long id : blockedUserIds) {
+                BlockUserEntity blockedUserEntity = blockUserRepository.findById(id).get();
+                if (blockedUserEntity != null) {
+                    applicantEntity.getBlockedUsers().add(blockedUserEntity);
                 }
             }
-            List<Long> blockedUserIds = applicantDTO.getBlockedUserIds();
-            if (blockedUserIds != null && !blockedUserIds.isEmpty()) {
-                for (Long id : blockedUserIds) {
-                    BlockUserEntity blockedUserEntity = blockUserRepository.findById(id).get();
-                    if (blockedUserEntity != null) {
-                        applicantEntity.getBlockedUsers().add(blockedUserEntity);
-                    }
-                }
-            }
+        }
 
-    return applicantEntity;
+        return applicantEntity;
 
     }
 }
