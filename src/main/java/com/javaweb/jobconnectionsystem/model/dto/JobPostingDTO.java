@@ -21,6 +21,9 @@ public class JobPostingDTO {
     private String description;
     private Long allowance;
 
+    @NotBlank(message = "Job title is required")
+    private String title;
+
     @NotNull(message = "Salary must not be null")
     @Min(value = 0, message = "Salary must not be negative")
     private Long maxSalary;
