@@ -1,11 +1,14 @@
 package com.javaweb.jobconnectionsystem.controller;
 
 import com.javaweb.jobconnectionsystem.entity.JobTypeEntity;
+import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
 import com.javaweb.jobconnectionsystem.service.JobTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,13 +59,18 @@ public class JobTypeController {
     }
 
     // Endpoint xóa loại công việc
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteJobType(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteJobType(@PathVariable Long id) {
+        ResponseDTO responseDTO = new ResponseDTO();
         try {
             jobTypeService.deleteJobTypeById(id);
-            return ResponseEntity.noContent().build(); // Trả về 204 nếu xóa thành công
+            responseDTO.setMessage("Delete successfully");
+            responseDTO.setDetail(Collections.singletonList("Job type has been deleted"));
+            return ResponseEntity.ok().body(responseDTO);
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build(); // Nếu không tìm thấy loại công việc, trả về 404 Not Found
+            responseDTO.setMessage("Internal server error");
+            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
         }
     }
 }

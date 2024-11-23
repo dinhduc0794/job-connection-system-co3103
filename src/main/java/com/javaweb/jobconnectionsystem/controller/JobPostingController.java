@@ -88,13 +88,18 @@ public class JobPostingController {
     }
 
     // Endpoint xóa bài đăng công việc
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteJobPosting(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteJobPosting(@PathVariable Long id) {
+        ResponseDTO responseDTO = new ResponseDTO();
         try {
             jobPostingService.deleteJobPostingById(id);
-            return ResponseEntity.noContent().build(); // Trả về 204 nếu xóa thành công
+            responseDTO.setMessage("Delete successfully");
+            responseDTO.setDetail(Collections.singletonList("Job posting has been deleted"));
+            return ResponseEntity.ok().body(responseDTO);
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build(); // Nếu không tìm thấy bài đăng công việc, trả về 404 Not Found
+            responseDTO.setMessage("Internal server error");
+            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
         }
     }
 }

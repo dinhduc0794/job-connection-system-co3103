@@ -88,13 +88,18 @@ public class CompanyController {
     }
 
     // Endpoint xóa công ty
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteCompany(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCompany(@PathVariable Long id) {
+        ResponseDTO responseDTO = new ResponseDTO();
         try {
             companyService.deleteCompanyById(id);
-            return ResponseEntity.noContent().build(); // Trả về 204 nếu xóa thành công
+            responseDTO.setMessage("Delete successfully");
+            responseDTO.setDetail(Collections.singletonList("Company has been deleted"));
+            return ResponseEntity.ok().body(responseDTO);
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build(); // Nếu không tìm thấy công ty, trả về 404 Not Found
+            responseDTO.setMessage("Internal server error");
+            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
         }
     }
 }

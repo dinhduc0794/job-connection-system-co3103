@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
 
     // Xóa người dùng
     @Override
-    public void deleteUser(Long id) {
+    public void deleteUserById(Long id) {
         Optional<UserEntity> user = userRepository.findById(id);
         if (user.isEmpty()) {
             throw new RuntimeException("User not found");

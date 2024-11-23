@@ -16,7 +16,7 @@ public interface UserService {
     // Sửa use
     public UserEntity updateUser(Long id, UserEntity userDetails);
     // Xoa user
-    public void deleteUser(Long id);
+    public void deleteUserById(Long id);
 
 }
 
