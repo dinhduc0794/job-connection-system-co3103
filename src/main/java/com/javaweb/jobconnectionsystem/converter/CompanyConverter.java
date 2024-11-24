@@ -2,6 +2,7 @@ package com.javaweb.jobconnectionsystem.converter;
 
 import com.javaweb.jobconnectionsystem.entity.*;
 import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
+import com.javaweb.jobconnectionsystem.model.dto.AddressDTO;
 import com.javaweb.jobconnectionsystem.model.response.CompanyDetailResponse;
 import com.javaweb.jobconnectionsystem.model.response.CompanySearchResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
@@ -26,11 +27,11 @@ public class CompanyConverter {
 
     public CompanyEntity toCompanyEntity (CompanyDTO companyDTO) {
         CompanyEntity companyEntity = modelMapper.map(companyDTO, CompanyEntity.class);
-        Map<String, Long> addressWardIds = companyDTO.getAddressWardIds();
+        List<AddressDTO> addressWardIds = companyDTO.getAddressWardIds();
         if (addressWardIds != null && !addressWardIds.isEmpty()) {
-            for (Map.Entry<String, Long> entry : addressWardIds.entrySet()) {
-                String address = entry.getKey();
-                Long wardId = entry.getValue();
+            for (AddressDTO addressWardId : addressWardIds) {
+                String address = addressWardId.getAddress();
+                Long wardId = addressWardId.getWardId();
                 WardEntity wardEntity = wardRepository.findById(wardId).get();
                 // Ví dụ thêm WardEntity vào CompanyEntity (giả sử companyEntity đã được khởi tạo)
                 companyEntity.getWards().add(wardEntity); // Cần phương thức `addWard` trong `CompanyEntity`

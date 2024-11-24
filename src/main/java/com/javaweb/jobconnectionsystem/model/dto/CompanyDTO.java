@@ -17,7 +17,6 @@ public class CompanyDTO {
     private String username;
     @NotBlank(message ="User password is required")
     private String password;
-    private Boolean getIsActive;
     @NotBlank(message = "Company name is required")
     private String name;
     @NotBlank(message = "Company tax code is required")
@@ -25,7 +24,7 @@ public class CompanyDTO {
     private Long remainingPost;
     private String image = "bg.jpg";
     @Size(min = 1, message = "Address is required")
-    Map<String, Long> addressWardIds;
+    List<AddressDTO> addressWardIds;
     private String description;
     private Boolean isPublic;
     private Boolean isBanned;

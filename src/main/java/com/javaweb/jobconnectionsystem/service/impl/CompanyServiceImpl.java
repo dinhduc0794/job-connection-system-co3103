@@ -54,21 +54,25 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CompanyEntity saveCompany(CompanyDTO companyDTO) {
         CompanyEntity companyEntity = companyConverter.toCompanyEntity(companyDTO);
+        if (companyDTO.getId() == null) { // Trường hợp tạo mới company
+            CompanyEntity companyFromTaxCode = companyRepository.findByTaxCode(companyDTO.getTaxCode());
+            if (companyFromTaxCode != null) throw new RuntimeException("Company tax code already exists");
+            CompanyEntity companyFromName = companyRepository.findByName(companyDTO.getName());
+            if (companyFromName != null) throw new RuntimeException("Company name already exists");
 
-        CompanyEntity companyFromTaxCode = companyRepository.findByTaxCode(companyDTO.getTaxCode());
-        if (companyFromTaxCode != null) {
-            if(companyDTO.getId() == null) throw new RuntimeException("Company tax code already exists");
+            companyRepository.save(companyEntity);
+        } else { // trường hợp chỉnh sửa thông tin
+            CompanyEntity existingCompany = companyRepository.findById(companyDTO.getId())
+                    .orElseThrow(() -> new RuntimeException("Company not found"));
+            companyEntity.setJobPostings(existingCompany.getJobPostings());
+            companyRepository.save(companyEntity);
         }
-        CompanyEntity companyFromName = companyRepository.findByName(companyDTO.getName());
-        if (companyFromName != null) {
-            if(companyDTO.getId() == null) throw new RuntimeException("Company name already exists");
-        }
-
-        companyRepository.save(companyEntity);
-
-        List<PhoneNumberEntity> oldPhoneNumberEntitys = phoneNumberRepository.findByUser_Id(companyEntity.getId());
-        if (oldPhoneNumberEntitys != null && !oldPhoneNumberEntitys.isEmpty()) {
-            phoneNumberRepository.deleteAll(oldPhoneNumberEntitys);
+//        List<PhoneNumberEntity> oldPhoneNumberEntitys = phoneNumberRepository.findByUser_Id(companyEntity.getId());
+//        if (oldPhoneNumberEntitys != null && !oldPhoneNumberEntitys.isEmpty()) {
+//            phoneNumberRepository.deleteAll(oldPhoneNumberEntitys);
+//        }
+        if (companyEntity.getPhoneNumbers() != null) {
+            companyEntity.getPhoneNumbers().clear();
         }
 
         for (String phoneNumber : companyDTO.getPhoneNumbers()) {
@@ -77,14 +81,18 @@ public class CompanyServiceImpl implements CompanyService {
             }
 
             PhoneNumberEntity phoneNumberEntity = new PhoneNumberEntity();
-            phoneNumberEntity.setPhoneNumber(phoneNumber);
+            phoneNumberEntity.setPhoneNumber(phoneNumber + "a");
             phoneNumberEntity.setUser(companyEntity);
             phoneNumberRepository.save(phoneNumberEntity);
+            companyEntity.getPhoneNumbers().add(phoneNumberEntity);
         }
 
-        List<EmailEntity> oldEmailrEntitys = emailRepository.findByUser_Id(companyEntity.getId());
-        if (oldEmailrEntitys != null && !oldEmailrEntitys.isEmpty()) {
-            emailRepository.deleteAll(oldEmailrEntitys);
+//        List<EmailEntity> oldEmailrEntitys = emailRepository.findByUser_Id(companyEntity.getId());
+//        if (oldEmailrEntitys != null && !oldEmailrEntitys.isEmpty()) {
+//            emailRepository.deleteAll(oldEmailrEntitys);
+//        }
+        if (companyEntity.getEmails() != null) {
+            companyEntity.getEmails().clear(); // Làm sạch danh sách
         }
 
         for (String email : companyDTO.getEmails()) {
@@ -96,10 +104,11 @@ public class CompanyServiceImpl implements CompanyService {
             emailEntity.setEmail(email);
             emailEntity.setUser(companyEntity);
             emailRepository.save(emailEntity);
+            companyEntity.getEmails().add(emailEntity);
         }
-
         return companyEntity;
     }
+
 
 
     @Override
