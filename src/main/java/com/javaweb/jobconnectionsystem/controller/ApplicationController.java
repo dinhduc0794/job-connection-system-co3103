@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/application")
+@RequestMapping("/applications")
 public class ApplicationController {
     @Autowired
     private ApplicationService applicationService;

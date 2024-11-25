@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @Getter
@@ -12,7 +13,6 @@ import java.time.ZonedDateTime;
 public class ApplicationDTO {
     private int id;
     private StatusEnum status;
-    private ZonedDateTime datetime;
     private String description;
     @NotBlank(message="resume is required")
     private String resume;
