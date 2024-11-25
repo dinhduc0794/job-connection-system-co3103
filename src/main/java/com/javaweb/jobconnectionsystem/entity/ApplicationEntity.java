@@ -9,7 +9,6 @@ import lombok.Setter;
 
 import java.time.ZonedDateTime;
 
-@Data
 @Table(name = "application")
 @Entity
 @Getter
@@ -21,9 +20,6 @@ public class ApplicationEntity extends BaseEntity {
 
     @Column(name = "status", nullable = false)
     private StatusEnum status = StatusEnum.WAITING;
-
-    @Column(name = "datetime", nullable = false)
-    private ZonedDateTime datetime;
 
     @Column(name = "description")
     private String description;

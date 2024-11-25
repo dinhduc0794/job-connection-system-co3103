@@ -11,7 +11,6 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Data
 @Getter
 @Setter
 @Table(name = "jobposting")
@@ -77,10 +76,6 @@ public class JobPostingEntity extends BaseEntity {
     @JoinColumn(name = "company_id", nullable = true)
     @JsonBackReference
     private CompanyEntity company;
-
-    @OneToMany(mappedBy = "jobPosting")
-    @JsonManagedReference
-    private List<PostDateEntity> postDates;
 
     @OneToMany(mappedBy = "jobPosting")
     @JsonManagedReference

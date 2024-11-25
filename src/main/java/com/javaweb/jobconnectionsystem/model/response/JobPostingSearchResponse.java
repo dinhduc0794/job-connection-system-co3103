@@ -3,6 +3,7 @@ package com.javaweb.jobconnectionsystem.model.response;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -25,5 +26,6 @@ public class JobPostingSearchResponse {
     private String jobType;
     private String skills;
     private String yoe;
-    private ZonedDateTime postedDate;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

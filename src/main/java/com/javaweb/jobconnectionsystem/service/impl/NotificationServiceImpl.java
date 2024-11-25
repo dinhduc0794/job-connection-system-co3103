@@ -39,7 +39,6 @@ public class NotificationServiceImpl implements NotificationService {
                 .orElseThrow(() -> new RuntimeException("Notification not found"));
 
         notification.setContent(notificationDetails.getContent());
-        notification.setTime(notificationDetails.getTime());
         notification.setUser(notificationDetails.getUser());
 
         return notificationRepository.save(notification);

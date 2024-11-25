@@ -10,7 +10,6 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
 @Getter
 @Setter
 @Table(name = "company")
@@ -48,4 +47,8 @@ public class CompanyEntity extends UserEntity {
     @OneToMany(mappedBy = "company", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<FollowCompanyEntity> followCompanyEntities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "company", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<UsedToWorkEntity> usedToWorkEntities = new ArrayList<>();
 }

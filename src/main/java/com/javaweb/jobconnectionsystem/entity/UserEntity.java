@@ -11,7 +11,6 @@ import org.springframework.cglib.core.Block;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
 @Getter
 @Setter
 @Table(name = "\"user\"")
@@ -66,4 +65,12 @@ public class UserEntity extends AccountEntity {
     @OneToMany(mappedBy = "blockedUser",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<BlockUserEntity> blockingUsers = new ArrayList<>(); // Danh sách các mối quan hệ block (User bị block)
+
+    @OneToMany(mappedBy = "reporter",cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<ReportEntity> reportedUsers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "reportedUser",cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<ReportEntity> reportingUsers = new ArrayList<>();
 }

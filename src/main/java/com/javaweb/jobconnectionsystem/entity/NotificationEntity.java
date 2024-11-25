@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import java.time.ZonedDateTime;
 
-@Data
 @Getter
 @Setter
 @Table(name = "notification")
@@ -20,9 +19,6 @@ public class NotificationEntity extends BaseEntity{
 
     @Column(name = "content")
     private String content;
-
-    @Column(name = "datetime")
-    private ZonedDateTime time;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = true)

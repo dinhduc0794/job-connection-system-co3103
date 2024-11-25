@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
 @Getter
 @Setter
 @Entity
@@ -60,5 +59,5 @@ public class ApplicantEntity extends UserEntity{
 
     @OneToMany(mappedBy = "applicant", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<FollowCompanyEntity> followCompanyEntities = new ArrayList<>();
+    private List<UsedToWorkEntity> usedToWorkEntities = new ArrayList<>();
 }

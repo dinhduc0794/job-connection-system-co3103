@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import java.time.ZonedDateTime;
 
-@Data
 @Table(name = "block")
 @Entity
 @Getter
@@ -17,9 +16,6 @@ public class BlockUserEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "datetime", nullable = false)
-    private ZonedDateTime datetime;
 
     @ManyToOne
     @JoinColumn(name = "blocker_id", nullable = false)

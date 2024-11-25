@@ -9,7 +9,6 @@ import lombok.Setter;
 
 import java.time.ZonedDateTime;
 
-@Data
 @Table(name = "company_rate_applicant")
 @Entity
 @Getter
@@ -24,9 +23,6 @@ public class CompanyRateApplicantEntity extends BaseEntity{
 
     @Column(name = "feedback")
     private String feedback;
-
-    @Column(name = "date", nullable = false)
-    private ZonedDateTime date;
 
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)

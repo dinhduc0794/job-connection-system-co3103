@@ -8,26 +8,14 @@ import lombok.Setter;
 
 import java.util.Date;
 
+@Table(name = "used_to_work")
+@Entity
 @Getter
 @Setter
-@Table(name = "certification")
-@Entity
-public class CertificationEntity {
+public class UsedToWorkEntity {
     @Id
-    @Column(name = "id")
+    @GeneratedValue
     private Long id;
-
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @Column(name = "level")
-    private String level;
-
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "proof")
-    private String proof;
 
     @Column(name = "start_date")
     private Date startDate;
@@ -35,8 +23,21 @@ public class CertificationEntity {
     @Column(name = "end_date")
     private Date endDate;
 
+    @Column(name = "position")
+    private String position;
+
+    @Column(name = "description")
+    private String description;
+
     @ManyToOne
-    @JoinColumn(name = "applicant_id", nullable = false)
+    @JoinColumn(name = "applicant_id")
     @JsonBackReference
     private ApplicantEntity applicant;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    @JsonBackReference
+    private CompanyEntity company;
 }
+
+//27 BANG

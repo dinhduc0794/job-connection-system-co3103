@@ -9,7 +9,6 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Data
 @Table(name = "applicant_jobtype")
 @Entity
 @Getter

@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Data
 @Table(name = "follow_company")
 @Entity
 @Getter
@@ -17,9 +16,6 @@ public class FollowCompanyEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "date")
-    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "company_id")

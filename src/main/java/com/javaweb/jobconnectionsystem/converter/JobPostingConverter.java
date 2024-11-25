@@ -73,13 +73,6 @@ public class JobPostingConverter {
             jobPosting.setCompanyImage(companyImage);
         }
 
-        // postDate to GMT+7
-        if (ent.getPostDates() != null && !ent.getPostDates().isEmpty()) {
-            ZonedDateTime postedDate = ent.getPostDates().get(0).getDatetime();
-            ZonedDateTime gmt7PostedDate = postedDate.withZoneSameInstant(ZoneId.of("GMT+7"));
-            jobPosting.setPostedDate(gmt7PostedDate);
-        }
-
         return jobPosting;
     }
 
@@ -161,13 +154,6 @@ public class JobPostingConverter {
 
                 jobPosting.setAddress(wardName + ", " + cityName + ", " + provinceName);
             }
-        }
-
-        // postDate to GMT+7
-        if (ent.getPostDates() != null && !ent.getPostDates().isEmpty()) {
-            ZonedDateTime postedDate = ent.getPostDates().get(0).getDatetime();
-            ZonedDateTime gmt7PostedDate = postedDate.withZoneSameInstant(ZoneId.of("GMT+7"));
-            jobPosting.setPostedDate(gmt7PostedDate);
         }
 
         return jobPosting;

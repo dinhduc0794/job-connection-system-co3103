@@ -3,6 +3,7 @@ package com.javaweb.jobconnectionsystem.model.response;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @Getter
@@ -34,6 +35,7 @@ public class JobPostingDetailResponse {
     private String phoneNumbers;
     private String contactEmail;
     private String contactPhone;
-    private ZonedDateTime postedDate;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private Long yoe;
 }
