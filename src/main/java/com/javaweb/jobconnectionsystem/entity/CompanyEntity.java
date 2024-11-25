@@ -3,7 +3,6 @@ package com.javaweb.jobconnectionsystem.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,11 +37,11 @@ public class CompanyEntity extends UserEntity {
 
     @OneToMany(mappedBy = "company", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<CompanyRateApplicantEntity> companyRateApplicantEntities = new ArrayList<>();
+    private List<RateApplicantEntity> companyRateApplicantEntities = new ArrayList<>();
 
     @OneToMany(mappedBy = "company", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<ApplicantRateCompanyEntity> applicantRateCompanyEntities = new ArrayList<>();
+    private List<RateCompanyEntity> applicantRateCompanyEntities = new ArrayList<>();
 
     @OneToMany(mappedBy = "company", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference

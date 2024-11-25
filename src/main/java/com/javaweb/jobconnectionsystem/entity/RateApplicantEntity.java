@@ -3,17 +3,14 @@ package com.javaweb.jobconnectionsystem.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.javaweb.jobconnectionsystem.enums.RateEnum;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.ZonedDateTime;
 
 @Table(name = "company_rate_applicant")
 @Entity
 @Getter
 @Setter
-public class CompanyRateApplicantEntity extends BaseEntity{
+public class RateApplicantEntity extends BaseEntity{
     @Id
     @GeneratedValue
     private Long id;

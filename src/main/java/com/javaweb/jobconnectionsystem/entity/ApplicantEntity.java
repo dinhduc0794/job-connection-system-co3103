@@ -1,14 +1,10 @@
 package com.javaweb.jobconnectionsystem.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,11 +47,11 @@ public class ApplicantEntity extends UserEntity{
 
     @OneToMany(mappedBy = "applicant", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<CompanyRateApplicantEntity> companyRateApplicantEntities = new ArrayList<>();
+    private List<RateApplicantEntity> companyRateApplicantEntities = new ArrayList<>();
 
     @OneToMany(mappedBy = "applicant", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<ApplicantRateCompanyEntity> applicantRateCompanyEntities = new ArrayList<>();
+    private List<RateCompanyEntity> applicantRateCompanyEntities = new ArrayList<>();
 
     @OneToMany(mappedBy = "applicant", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference

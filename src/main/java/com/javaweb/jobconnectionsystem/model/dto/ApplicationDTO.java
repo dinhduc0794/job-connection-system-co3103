@@ -18,5 +18,4 @@ public class ApplicationDTO {
     private String resume;
     private Long applicantId;
     private Long jobPostingId;
-
 }
