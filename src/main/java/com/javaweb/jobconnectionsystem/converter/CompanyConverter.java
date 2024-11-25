@@ -131,12 +131,12 @@ public class CompanyConverter {
             companyDetailResponse.setJobPostings(jobPostings);
         }
 
-        if (companyEntity.getApplicantRateCompanyEntities() != null && !companyEntity.getApplicantRateCompanyEntities().isEmpty()) {
-            double totalRating = companyEntity.getApplicantRateCompanyEntities().stream()
+        if (companyEntity.getRateCompanyEntities() != null && !companyEntity.getRateCompanyEntities().isEmpty()) {
+            double totalRating = companyEntity.getRateCompanyEntities().stream()
                     .filter(it -> it != null && it.getRate() != null) // check null
                     .map(it -> it.getRate().getValue().doubleValue())  // RateEnum -> Double
                     .reduce(0.0, Double::sum); // Tính tổng
-            int count = (int) companyEntity.getApplicantRateCompanyEntities().stream()
+            int count = (int) companyEntity.getRateCompanyEntities().stream()
                     .filter(it -> it != null && it.getRate() != null)
                     .count(); // dem so luong
             companyDetailResponse.setRating(count > 0 ? totalRating / count : 0.0);

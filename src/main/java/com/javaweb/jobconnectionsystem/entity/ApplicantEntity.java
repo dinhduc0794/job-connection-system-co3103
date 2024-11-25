@@ -55,5 +55,9 @@ public class ApplicantEntity extends UserEntity{
 
     @OneToMany(mappedBy = "applicant", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference
+    private List<InterestedPostEntity> interestedPostEntities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "applicant", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<UsedToWorkEntity> usedToWorkEntities = new ArrayList<>();
 }

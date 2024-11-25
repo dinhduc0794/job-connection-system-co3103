@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -80,4 +81,8 @@ public class JobPostingEntity extends BaseEntity {
     @OneToMany(mappedBy = "jobPosting")
     @JsonManagedReference
     private List<ApplicationEntity> applications;
+
+    @OneToMany(mappedBy = "jobPosting", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<InterestedPostEntity> interestedPostEntities = new ArrayList<>();
 }

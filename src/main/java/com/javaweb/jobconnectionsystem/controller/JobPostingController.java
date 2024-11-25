@@ -6,6 +6,7 @@ import com.javaweb.jobconnectionsystem.model.request.JobPostingSearchRequest;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingDetailResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
+import com.javaweb.jobconnectionsystem.service.InterestedPostService;
 import com.javaweb.jobconnectionsystem.service.JobPostingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class JobPostingController {
 
     @Autowired
     private JobPostingService jobPostingService;
+
+    @Autowired
+    private InterestedPostService interestedPostService;
 
     // Endpoint lấy tất cả bài đăng công việc theo nhiều tiêu chí
     @GetMapping

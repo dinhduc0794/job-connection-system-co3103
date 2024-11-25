@@ -7,7 +7,7 @@ public enum LevelEnum {
     SENIOR("Senior"),          // Nhân viên dày dạn kinh nghiệm
     LEAD("Lead"),              // Trưởng nhóm
     MANAGER("Manager"),        // Quản lý
-    DIRECTOR("Director");
+    DIRECTOR("Director");       // Giám đốc
 
     private String value;
 

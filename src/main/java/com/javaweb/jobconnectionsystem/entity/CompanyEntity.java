@@ -41,7 +41,7 @@ public class CompanyEntity extends UserEntity {
 
     @OneToMany(mappedBy = "company", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<RateCompanyEntity> applicantRateCompanyEntities = new ArrayList<>();
+    private List<RateCompanyEntity> RateCompanyEntities = new ArrayList<>();
 
     @OneToMany(mappedBy = "company", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference

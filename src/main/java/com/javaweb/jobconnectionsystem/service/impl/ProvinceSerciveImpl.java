@@ -2,7 +2,7 @@ package com.javaweb.jobconnectionsystem.service.impl;
 
 import com.javaweb.jobconnectionsystem.entity.CityEntity;
 import com.javaweb.jobconnectionsystem.entity.ProvinceEntity;
-import com.javaweb.jobconnectionsystem.model.dto.ProvinceDTO;
+import com.javaweb.jobconnectionsystem.model.location.ProvinceDTO;
 import com.javaweb.jobconnectionsystem.repository.CityRepository;
 import com.javaweb.jobconnectionsystem.repository.ProvinceRepository;
 import com.javaweb.jobconnectionsystem.service.ProvinceService;

@@ -1,4 +1,4 @@
-package com.javaweb.jobconnectionsystem.model.dto;
+package com.javaweb.jobconnectionsystem.model.location;
 
 import com.javaweb.jobconnectionsystem.entity.WardEntity;
 import lombok.Getter;

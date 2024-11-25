@@ -2,7 +2,7 @@ package com.javaweb.jobconnectionsystem.controller;
 
 import com.javaweb.jobconnectionsystem.entity.CityEntity;
 import com.javaweb.jobconnectionsystem.entity.ProvinceEntity;
-import com.javaweb.jobconnectionsystem.model.dto.ProvinceDTO;
+import com.javaweb.jobconnectionsystem.model.location.ProvinceDTO;
 import com.javaweb.jobconnectionsystem.service.ProvinceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,7 @@
 package com.javaweb.jobconnectionsystem.repository;
 
 import com.javaweb.jobconnectionsystem.entity.ProvinceEntity;
-import com.javaweb.jobconnectionsystem.model.dto.ProvinceDTO;
+import com.javaweb.jobconnectionsystem.model.location.ProvinceDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
