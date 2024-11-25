@@ -11,14 +11,14 @@ function AppNavbar() {
     //     navigate('/ApplicantProfile');
     // };
     return (
-        <div className="headernavapp">
+        <div className="headernav">
         <div className="nav">
         <div className='nav__logo'>
               <a className="navbar-brand-custom" href="/">
                 <img 
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXkI3X3ldqL1YTY2TZhVx-8QeRWlqvCiqtxg&s"
-                  width="50"
-                  height="50"
+                  src="https://images.vexels.com/media/users/3/245747/isolated/preview/fc5e5179e126bb8b8878c65ed0639179-great-job-badge.png"
+                  width="40"
+                  height="40"
                   alt="logo"
                 />
               </a>

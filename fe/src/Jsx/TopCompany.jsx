@@ -26,52 +26,45 @@ function TopCompany() {
             url: 'https://vnexpress.net/cong-ty-elite-la-nha-phan-phoi-cua-vmware-by-broadcom-4808365.html',
             imageUrl: 'https://i1-sohoa.vnecdn.net/2024/10/25/edit-JPG-9894-1729844398.jpg?w=1020&h=0&q=100&dpr=1&fit=crop&s=Clz5SI1KXcBaIBsVpJMC2Q' },
       ];
-      const [currentNewsIndex, setCurrentNewsIndex] = useState(0);
+    const [currentNewsIndex, setCurrentNewsIndex] = useState(0);
+    // Tự động chuyển trang
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentNewsIndex((prevIndex) => (prevIndex + 1) % newsList.length);
+        }, 3000); // 3 giây
+        return () => clearInterval(interval); // Xóa interval khi component unmount
+    }, [newsList.length]);
 
-    const handleNext = () => {
-        setCurrentNewsIndex((prevIndex) =>
-        prevIndex === newsList.length - 1 ? 0 : prevIndex + 1
-        );
-    };
-
-    const handlePrevious = () => {
-        setCurrentNewsIndex((prevIndex) =>
-        prevIndex === 0 ? newsList.length - 1 : prevIndex - 1
-        );
+    const handleDotClick = (index) => {
+        setCurrentNewsIndex(index);
     };
 
     const handleNewsClick = (url) => {
-        window.location.href = url; // Điều hướng đến trang tin tức tương ứng
+        window.location.href = url;
     };
+
     const companies = [
         { name: 'FSI', logo: 'https://fsivietnam.com.vn/wp-content/uploads/2020/08/logo.svg', url: '/company-a' },
         { name: 'FOXCONN INDUSTRIAL INTERNET', logo: 'https://www.vietnamworks.com/_next/image?url=https%3A%2F%2Fimages.vietnamworks.com%2Flogo%2Ffuyu_vip_128291.png&w=128&q=70', url: '/company-b' },
         { name: 'V-GREEN', logo: 'https://www.vietnamworks.com/_next/image?url=https%3A%2F%2Fimages.vietnamworks.com%2Flogo%2Fvgreen_vip_129144.jpg&w=128&q=70', url: '/company-c' },
         { name: 'LG', logo: 'https://www.vietnamworks.com/_next/image?url=https%3A%2F%2Fimages.vietnamworks.com%2Flogo%2Flghn_vip1_129127.png&w=128&q=70', url: '/company-d' },
         { name: 'MUFG BANK', logo: 'https://www.vietnamworks.com/_next/image?url=https%3A%2F%2Fimages.vietnamworks.com%2Flogo%2FmufgN_vip_129059.jpg&w=128&q=70', url: '/company-e' }
-        // { name: 'Công ty F', logo: 'https://via.placeholder.com/100', url: '/company-f' }
       ];
       const handleCompanyClick = (url) => {
         // Điều hướng đến trang giới thiệu công ty
         window.location.href = url;
       };
     return (
-        <div id="hometopcompany-container">
+        <div className='container-wrapper'>
+            <div id="hometopcompany-container">
             <div className="news-carousel-container">
-            <button className="carousel-control left" onClick={handlePrevious}>
-                {"<"}
-            </button>
-
             <div
                 className="news-card"
                 style={{
-                    // position: 'relative', // Đặt relative để các phần tử con định vị theo cha
                     backgroundImage: `url(${newsList[currentNewsIndex].imageUrl})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
-                    //color: 'white', // Đảm bảo nội dung nổi bật
-                    overflow: 'hidden',
                 }}
                 onClick={() => handleNewsClick(newsList[currentNewsIndex].url)}
             >
@@ -79,35 +72,42 @@ function TopCompany() {
                 <h2>{newsList[currentNewsIndex].title}</h2>
                 <p>{newsList[currentNewsIndex].description}</p>
             </div>
-
-            <button className="carousel-control right" onClick={handleNext}>
-                {">"}
-            </button>
-            </div>
-
-
-            
-            <div className='top-company-home'>
-                <h2 className="section-title">Các Công Ty Hàng Đầu</h2>
-                <div className="topcompany-list">
-                    {companies.map((company, index) => (
+            {/* Pagination dots */}
+            <div className="pagination-dots">
+                {newsList.map((_, index) => (
                     <div
                         key={index}
-                        className="topcompany-card"
-                        onClick={() => handleCompanyClick(company.url)}
-                    >
-                        <div className="logo-container">
-                            <img src={company.logo} alt={company.name} className="topcompany-logo" />
+                        className={`dot ${currentNewsIndex === index ? 'active' : ''}`}
+                        onClick={() => handleDotClick(index)}
+                    ></div>
+                ))}
+            </div>
+        </div>
+
+
+                
+                <div className='top-company-home'>
+                    <h2 className="section-title">Các Công Ty Hàng Đầu</h2>
+                    <div className="topcompany-list">
+                        {companies.map((company, index) => (
+                        <div
+                            key={index}
+                            className="topcompany-card"
+                            onClick={() => handleCompanyClick(company.url)}
+                        >
+                            <div className="logo-container">
+                                <img src={company.logo} alt={company.name} className="topcompany-logo" />
+                            </div>
+                            <div className='name-container'>
+                            <p className="topcompany-name" title={company.name}>
+                                {company.name.length > 30 ? company.name.slice(0, 30) + '...' : company.name}
+                            </p>
+                            </div>
                         </div>
-                        <div className='name-container'>
-                        <p className="topcompany-name" title={company.name}>
-                            {company.name.length > 30 ? company.name.slice(0, 30) + '...' : company.name}
-                        </p>
-                        </div>
+                        ))}
                     </div>
-                    ))}
                 </div>
-             </div>
+            </div>
         </div>
     );
 }

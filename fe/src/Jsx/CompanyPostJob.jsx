@@ -382,33 +382,7 @@ const CompanyPostJob = () => {
         <label>Mô tả công việc</label>
         <textarea
           rows="5" 
-          placeholder="Nhập chi tiết bao gồm: Mô tả công việc, Yêu cầu ứng viên, Quyền lợi, Địa điểm làm việc, Thời gian làm việc, Cách thưc ứng tuyển. Mỗi ý là 1 gạch đầu dòng
-          Dưới đây là ví dụ: 
-          Mô tả công việc
-          - Tiếp cận khách hàng để nắm bắt yêu cầu từ khách hàng từ giai đoạn đầu chưa hợp đồng. Từ đó phân tích, đánh giá nhu cầu/mong muốn và tư vấn xây dựng giải pháp thực hiện tới khách hàng.
-
-          - Chủ trì tổ chức triển khai dự án.
-
-          Yêu cầu ứng viên
-          - Tốt nghiệp đại học trở lên về CNTT, điện tử viễn thông, hệ thống thông tin và các ngành có liên quan
-
-          - Có kiến thức tốt về CNTT và hiểu được thiết kế kỹ thuật phân tích, thiết kế hệ thống CNTT
-
-          Quyền lợi
-          - Lương: Thỏa thuận theo năng lực
-
-          - Thưởng tháng 13 + Thưởng thi đua quý/năm + Thưởng KPI (2-3 tháng)
-
-          Địa điểm làm việc
-          - Thành phố Hồ Chí Minh: Hiệp Tân, Quận Tân Phú, Thành phố Hồ Chí Minh
-
-          Thời gian làm việc
-          - Thứ 2 - Thứ 6 (từ 08:00 đến 17:00)
-
-          Cách thức ứng tuyển
-          Ứng viên nộp hồ sơ trực tuyến bằng cách bấm Ứng tuyển ngay dưới đây.
-
-          Hạn nộp hồ sơ: 30/11/2024"
+          placeholder="Nhập chi tiết bao gồm: Mô tả công việc, Yêu cầu ứng viên, Quyền lợi, Địa điểm làm việc, Thời gian làm việc, Cách thưc ứng tuyển. Mỗi ý là 1 gạch đầu dòng"
           value={description}
           onChange={(e) => setDescription(e.target.value)} 
           ></textarea>

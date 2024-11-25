@@ -1,11 +1,4 @@
 
-:root {
-    --firstColor: #002792;
-    --secondColor: #0c89dc;
-    --themeColor: #ebf3ff;
-  }
-  
-  
   * {
     margin: 0;
     padding: 0;
@@ -20,16 +13,26 @@
   .headernav {
     width: 100%;
     height: 80px;
-    background-color: #ebf3ff;
+    background-color: var(--themeColor);
+    z-index: 10;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
   }
+  
   
   .nav {
     display: flex;
     align-items: center;
-    background-color: #B6FFA1;   
+    background-color: var(--themeColor);   
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     position: relative; /* Thiết lập làm gốc cho các thành phần con */
     z-index: 1; /* Đảm bảo thanh menu nằm trên các thành phần khác */
+    
+    top: 0;
+    left: 0;
+    right: 0;
   } 
   
   .nav .nav__logo {
@@ -43,6 +46,7 @@
     text-decoration: none;
     margin-left: 50px;
     border-radius: 50%;
+    
   }
   
   
@@ -92,7 +96,7 @@
   .nav .menu-job:hover>a,
   .nav .menu-company:hover>a,
   .nav .menu-courses:hover>a {
-    color: var(--secondColor);
+    color: var(--thirdColor);
   }
   
   .nav .ava-icon:hover .subnav,
@@ -124,7 +128,8 @@
   }
   
   .nav .subnav li:hover {
-    background-color: #8abee0;
+    background-color: var(--firstColor);
+    color: #FEF3E2;
     border-radius: 20px;
   }
   
@@ -157,46 +162,6 @@
     width: 100%;
   }
   
-/*   
-  .nav .nav__icon {
-    max-height: 80px;
-    color: var(--firstColor);
-    line-height: 80px;
-    display: flex;
-    align-items: center;
-  }
-  
-  
-  .nav .nav__icon .noti-icon {
-    padding: 0 8px;
-    font-size: 24px;
-  }
-  
-  .nav .nav__icon .ava-icon {
-    padding-left: 16px;
-    font-size: 48px;
-    position: relative;
-    margin-right: -12px;
-  }
-  
-  .nav .nav__icon .ava-icon .arrow-down {
-    font-size: 16px;
-    margin-left: -10px;
-    margin-right: 12px;
-  }
-  
-  .nav .nav__icon .subnav {
-    position: absolute;
-    right: 0;
-  }
-  
-  
-  .nav .nav__icon .noti-icon:hover,
-  .nav .nav__icon .ava-icon:hover {
-    color: var(--secondColor);
-    cursor: pointer;
-  } */
-  
   .nav__icons {
     display: flex;
     align-items: center;
@@ -219,10 +184,11 @@
 }
 
 .nav__avatar .avatar-icon {
-    width: 40px;
-    height: 40px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     margin-right: 5px;
+    padding: 20px;
 }
 
 .nav__avatar i {
@@ -248,7 +214,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     width: 350px;
-    padding: 15px 0;
+    padding: 0;
     z-index: 99;
     list-style-type: none;  /* Loại bỏ dấu chấm */
 }
@@ -263,21 +229,21 @@
 }
 
 .dropdown-menu li {
-    background-color: #f5f5f5;  /* Màu nền xám nhạt */
-    padding: 20px 30px;  /* Thêm khoảng cách bên trong */
+    background-color: white;  /* Màu nền xám nhạt */
+    padding: 20px 30px;
+      /* Thêm khoảng cách bên trong */
     border-radius: 8px;  /* Bo góc phần tử */
     transition: background-color 0.3s ease, color 0.3s ease;  /* Hiệu ứng chuyển màu khi hover */
-    margin-top: 15px;
 }
 
 .dropdown-menu li:hover {
-    background-color: #e0e0e0;  /* Màu nền khi hover (xám nhạt hơn) */
-    color: #0c89dc;  /* Màu chữ xanh dương nhạt khi hover */
+    background-color: var(--firstColor);  /* Màu nền khi hover (xám nhạt hơn) */
+    color: var(--themeColor);  /* Màu chữ xanh dương nhạt khi hover */
 }
 
 .dropdown-menu li i {
     font-size: 18px;
-    color: #4CAF50; /* Green icon color */
+    color: var(--secondColor); /* Green icon color */
     margin-right: 15px;
 }
 
@@ -289,7 +255,7 @@
 }
 
 .dropdown-menu li.logout {
-    color: #e74c3c; /* Red color for logout */
+    color: #FA4032; /* Red color for logout */
 }
 
 .dropdown-menu li.logout:hover {
@@ -304,7 +270,7 @@
 
 
 .infor-application {
-    background-color: white;
+    background-color: var(--themeColor);
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: auto;
@@ -313,7 +279,7 @@
   }
   
   .infor-application h4 {
-    color: #2cc9d7;
+    color: var(--thirdColor);
     font-size: 18px;
     font-weight: 600;
     margin: 0;

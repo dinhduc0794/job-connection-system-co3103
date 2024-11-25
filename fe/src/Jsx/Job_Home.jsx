@@ -9,11 +9,10 @@ import {
     Clock,
     DollarSign
   } from "lucide-react";
-
+import loadinggif from '../images/Evitare loader.gif'
 import '../css/Job_Home.css';
 import '../css/JobList.css';
 import DefaultImage from '../images/logo1.png'
-// import a from '../images/bg.jpg';
 
 function Job_Home() {
     const [selectedFilter, setSelectedFilter] = useState('nganh-nghe');
@@ -21,7 +20,8 @@ function Job_Home() {
     const [currentPage, setCurrentPage] = useState(0);
     const [jobPage, setJobPage] = useState(1);
     const [posts, setPosts] = useState([]);
-    
+    const [isLoading, setIsLoading] = useState(true); // Trạng thái tải dữ liệu
+
     const [savedJobs, setSavedJobs] = useState(() => {
         const saved = localStorage.getItem('savedJobs');
         return saved ? JSON.parse(saved) : [];
@@ -40,21 +40,23 @@ function Job_Home() {
     };
 
     useEffect(() => {
-        // Fetch job data from backend
         const fetchJobs = async () => {
-          try {
-            const response = await fetch('/jobpostings');
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
+            setIsLoading(true); // Bắt đầu tải
+            try {
+                const response = await fetch('/jobpostings');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                setPosts(data);
+            } catch (error) {
+                console.error('Error fetching jobs:', error);
+            } finally {
+                setIsLoading(false); // Kết thúc tải
             }
-            const data = await response.json();
-            setPosts(data);
-          } catch (error) {
-            console.error('Error fetching jobs:', error);
-          }
         };
         fetchJobs();
-      }, []);
+    }, []);
 
     const allValues = {
         'nganh-nghe': ['Kinh doanh', 'Phiên dịch', 'Báo chí', 'Viễn thông', 'Game', 'IT'],
@@ -115,46 +117,25 @@ function Job_Home() {
     const paginate = (pageNumber) => setJobPage(pageNumber);
 
     return (
-        <div>
-            <div id="jobhome-container">
-                {/* Hàng đầu tiên - Việc làm tốt nhất và nút Xem tất cả */}
-                <div className="header">
-                    <h1>Việc làm tốt nhất</h1>
-                    <button className="view-all-btn" onClick={() => alert('Chuyển sang trang khác')}>Xem tất cả</button>
-                </div>
+        <div id="jobhome-container">
+        <div className="header">
+            <h1>Việc làm tốt nhất</h1>
+            <button className="view-all-btn" onClick={() => alert('Chuyển sang trang khác')}>Xem tất cả</button>
+        </div>
 
-                {/* Bộ lọc */}
-                <div className="filter-container">
-                    <div className="filter-left">
-                        <label>Lọc theo:</label>
-                        <select onChange={handleFilterChange}>
-                            <option value="nganh-nghe">Ngành nghề</option>
-                            <option value="muc-luong">Mức lương</option>
-                            <option value="dia-diem">Địa điểm</option>
-                        </select>
+        <div className="job-list-container">
+            <div className="job-list">
+                {isLoading ? ( // Hiển thị khi đang tải
+                    <div className="loading-container">
+                        <img src={loadinggif} alt="Loading..." className="loading-gif" />
                     </div>
-
-                    <div className="filter-right">
-                        <button className="arrow-btn" onClick={handlePreviousClick}>{"<"}</button>
-                        <div className="filter-values">
-                            {currentValues.map((value, index) => (
-                                <span key={index} className="filter-value">{value}</span>
-                            ))}
-                        </div>
-                        <button className="arrow-btn" onClick={handleNextClick}>{">"}</button>
-                    </div>
-                </div>
-
-                {/* Hàng thứ ba - Danh sách các job */}
-                <div className="job-list-container">
-                <div className="job-list">
-                    {(currentJobs && currentJobs.length > 0) ? (
-                        currentJobs.map((job) => (
-                            <div
+                ) : currentJobs.length > 0 ? ( // Hiển thị danh sách công việc
+                    currentJobs.map((job) => (
+                        <div
                             key={job.id}
                             className="job-card"
                             onClick={() => handleJobDetail(job.id)}
-                            >
+                        >
                             <div className="job-heart">
                                 <Heart size={20} className="heart-icon" />
                             </div>
@@ -162,54 +143,49 @@ function Job_Home() {
                                 <img
                                     src={job.companyImage ? require(`../images/${job.companyImage}`) : DefaultImage}
                                     alt={`${job.companyName || "Công ty"} logo`}
-                                    // alt={`${job.company} logo`} 
-                                    className="job-logo" 
+                                    className="job-logo"
                                 />
-                            <div className="job-info">
-                                <h3 className='job-title' title={job.title}>
-                                    {job.title?.length > 25 ? job.title.slice(0, 25) + '...' : job.title || "Chưa có tiêu đề"}
-                                </h3>
-                                <p className='job-company' title={job.companyName}> 
-                                    {typeof job.companyName === 'string' && job.companyName.length > 40
-                                        ? job.companyName.slice(0, 40) + '...'
-                                        : job.companyName || 'Không có tên công ty'}
-                                </p>
-                                <p className="job-salary" title={job.minSalary}>
-                                    <span className="icon-and-text">
-                                        <DollarSign size={16} />
-                                        {job.minSalary} - {job.maxSalary}
-                                    </span>
-                                </p>
-                                <p className="job-location" title={job.province}>
-                                    <span className='icon-and-text'>
-                                        <MapPin size={16} />
-                                        {job.province}
-                                    </span>
-                                </p>
+                                <div className="job-info">
+                                    <h3 className="job-title" title={job.title}>
+                                        {job.title?.length > 25 ? job.title.slice(0, 25) + '...' : job.title || "Chưa có tiêu đề"}
+                                    </h3>
+                                    <p className="job-company" title={job.companyName}>
+                                        {job.companyName || 'Không có tên công ty'}
+                                    </p>
+                                    <p className="job-salary" title={job.minSalary}>
+                                        <span className="icon-and-text">
+                                            <DollarSign size={16} />
+                                            {job.minSalary} - {job.maxSalary}
+                                        </span>
+                                    </p>
+                                    <p className="job-location" title={job.province}>
+                                        <span className="icon-and-text">
+                                            <MapPin size={16} />
+                                            {job.province}
+                                        </span>
+                                    </p>
+                                </div>
                             </div>
-                            </div>
-                            </div>
-                        ))
-                        ) : (
-                            <p>{posts.length === 0 ? "Không có công việc nào" : "Đang tải công việc..."}</p>
-                        )}
-                </div>
+                        </div>
+                    ))
+                ) : (
+                    <p>Không có công việc nào.</p>
+                )}
+            </div>
 
-                    {/* Phân trang */}
-                    <div className="pagination">
-                        {Array.from({ length: totalPages }, (_, index) => (
-                            <button
-                                key={index + 1}
-                                onClick={() => paginate(index + 1)}
-                                className={jobPage === index + 1 ? 'active' : ''}
-                            >
-                                {index + 1}
-                            </button>
-                        ))}
-                    </div>
-                </div>
+            <div className="pagination">
+                {Array.from({ length: totalPages }, (_, index) => (
+                    <button
+                        key={index + 1}
+                        onClick={() => paginate(index + 1)}
+                        className={jobPage === index + 1 ? 'active' : ''}
+                    >
+                        {index + 1}
+                    </button>
+                ))}
             </div>
         </div>
+    </div>
     );
 }
 

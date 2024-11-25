@@ -2,11 +2,10 @@
 #jobhome-container {
     width: 70%;
     max-height: 1200px;
-    height:710px;
     margin: 0 auto;
     margin-top: 20px;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: white;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   }
 
@@ -21,13 +20,14 @@
   }
   
   #jobhome-container  .header h1 {
-    font-size: 24px;
-    color: #333;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--thirdColor);
   }
   
   #jobhome-container .view-all-btn {
-    background-color: #7AB2D3;
-    color: white;
+    background-color: var(--secondColor);
+    color: var(--themeColor);
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -35,76 +35,10 @@
   }
   
   #jobhome-container .view-all-btn:hover {
-    background-color: #4A628A;
+    background-color: var(--thirdColor);
+    color: white;
   }
-  
-  /* Bộ lọc */
-  #jobhome-container  .filter-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-    margin-bottom: 20px;
-  }
-  
-  /* Phần bên trái của filter */
-  #jobhome-container .filter-left {
-    display: flex;
-    align-items: center;
-  }
-  
-  #jobhome-container  .filter-left label {
-    margin-right: 10px;
-    font-weight: bold;
-  }
-  
-  #jobhome-container  .filter-left select {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  /* Phần bên phải chứa các giá trị */
-  #jobhome-container .filter-right {
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-  }
-  
-  #jobhome-container .filter-values {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center; /* Căn giữa các giá trị */
-    align-items: center; /* Căn giữa theo chiều dọc */
-    gap: 15px;
-    overflow: hidden; /* Để chỉ hiển thị các giá trị trong không gian giới hạn */
-    transition: transform 0.3s ease; /* Hiệu ứng mượt khi chuyển trang */
-    width: 500px; /* Chiều rộng giới hạn để các nút chuyển trang hoạt động */
-  }
-  
-  #jobhome-container .filter-value {
-    white-space: nowrap;
-    padding: 8px 10px;
-    background-color: #f0f0f0;
-    border-radius: 5px;
-    font-size: 14px;
-  }
-  
-  #jobhome-container .arrow-btn {
-    background-color: #f9f9f9;
-    color: black;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  #jobhome-container .arrow-btn:hover {
-    background-color: #4A628A;
-  }
-  
+
+
   /* Danh sách công việc */
   

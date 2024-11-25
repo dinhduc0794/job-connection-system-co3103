@@ -5,6 +5,8 @@ import DefaultImage from '../images/logo1.png'; // Thay thế bằng hình ảnh
 import Navbar from './navbar';
 import Footer from './Footer';
 import ApplicationForm from "./ApplicationForm";
+import Loading from "./Loading";
+import ErrorBoundary from 'antd/es/alert/ErrorBoundary';
 import '../css/JobDetail.css'; // File CSS để style
 
 function JobDetail() {
@@ -47,11 +49,11 @@ function JobDetail() {
   }, [id]);
 
     if (loading) {
-        return <div>Đang tải thông tin công việc...</div>;
+        return <Loading/>;
     }
 
     if (!job) {
-        return <div>Không tìm thấy công việc!</div>;
+        return <ErrorBoundary/>;
     }
 
     return (
@@ -77,7 +79,7 @@ function JobDetail() {
               {isPopupOpen && <ApplicationForm onClose={handleClosePopup} />}
               <div className="job-details">
                 <h3>Chi tiết tin tuyển dụng</h3>
-                <div className="job-description">
+                {/* <div className="job-description">
                   <h4>Mô tả công việc</h4>
                   <p>- Tiếp cận khách hàng để nắm bắt yêu cầu từ khách hàng từ giai đoạn đầu chưa hợp đồng. Từ đó phân tích, đánh giá nhu cầu/mong muốn và tư vấn xây dựng giải pháp thực hiện tới khách hàng.</p>
                   <p>- Chủ trì tổ chức triển khai dự án.</p>
@@ -128,7 +130,10 @@ function JobDetail() {
                   <h4>Cách thức ứng tuyển</h4>
                   <p>Ứng viên nộp hồ sơ trực tuyến bằng cách bấm Ứng tuyển ngay dưới đây.</p>
                 </div>
-                <p>Hạn nộp hồ sơ: 30/11/2024</p>
+                <p>Hạn nộp hồ sơ: 30/11/2024</p> */}
+                <p>{job.description && job.description.split('\n').map((line, index) => (
+                    <span key={index}>{line}<br /></span>
+                ))}</p>
 
 
               </div>

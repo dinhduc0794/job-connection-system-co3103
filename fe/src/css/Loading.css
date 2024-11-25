@@ -1,0 +1,27 @@
+/* Tổng thể trang loading */
+.loading-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Chiều cao toàn màn hình */
+    background-color: white; /* Màu nền nhạt */
+}
+
+
+/* Text hiển thị */
+.loading-text {
+    font-size: 18px;
+    color: #5a5a5a;
+    font-weight: 500;
+    animation: pulse 1.5s infinite;
+}
+
+/* Hiệu ứng "nhấp nháy" chữ */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}

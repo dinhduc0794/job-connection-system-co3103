@@ -29,7 +29,7 @@
   }
   
   #company-profile-container .sidebar li:hover {
-    color: #42b7ce;
+    color: var(--thirdColor);
   }
   
   #company-profile-container .sidebar li::after {
@@ -39,7 +39,7 @@
     bottom: 0;
     width: 0;
     height: 2px;
-    background-color: #42b7ce;
+    background-color: var(--thirdColor);
     transition: width 0.3s;
   }
   
@@ -48,7 +48,7 @@
   }
   
   #company-profile-container .sidebar .active {
-    color: #42b7ce;
+    color: var(--thirdColor);
     font-weight: bold;
   }
   

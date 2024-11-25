@@ -1,13 +1,4 @@
 import React, { useState } from 'react';
-import {
-  BusinessOutline,
-  LocationOutline,
-  PeopleOutline,
-  TimeOutline,
-  GlobeOutline,
-  StarOutline,
-  TrendingUpOutline
-} from "react-ionicons";
 import { useNavigate } from "react-router-dom";
 import { companies } from '../data/company';
 import Navbar from '../Jsx/navbar';
@@ -20,7 +11,7 @@ const AllCompany = () => {
   return (
     <>
       <Navbar/>
-      <div className="container mx-auto px-4 py-8">
+      {/* <div className="container mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold mb-6">All Companies</h1>
         <div className="w-full flex items-center justify-between flex-wrap mt-8">
           {filteredCompanies.map((company) => (
@@ -138,7 +129,7 @@ const AllCompany = () => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

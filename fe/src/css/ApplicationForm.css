@@ -173,13 +173,13 @@ label span.required {
 }
 
 .submit-btn {
-  background-color: #42b7ce;
+  background-color: var(--secondColor);
   color: white;
   border: none;
 }
 
 .submit-btn:hover {
-  background-color: #349eac;
+  background-color: var(--thirdColor);
 }
 
 .cancel-btn:hover {
