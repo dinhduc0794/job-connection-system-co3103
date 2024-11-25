@@ -3,15 +3,17 @@ package com.javaweb.jobconnectionsystem.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+@Data
 @Getter
 @Setter
 @Entity
 @Table(name = "account")
 @Inheritance(strategy = InheritanceType.JOINED )
-public class AccountEntity {
+public class AccountEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

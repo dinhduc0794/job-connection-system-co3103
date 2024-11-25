@@ -3,6 +3,7 @@ package com.javaweb.jobconnectionsystem.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.cglib.core.Block;
@@ -10,6 +11,7 @@ import org.springframework.cglib.core.Block;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 @Getter
 @Setter
 @Table(name = "\"user\"")

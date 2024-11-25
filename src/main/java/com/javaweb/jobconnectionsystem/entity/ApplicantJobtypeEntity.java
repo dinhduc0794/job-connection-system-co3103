@@ -3,11 +3,13 @@ package com.javaweb.jobconnectionsystem.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.javaweb.jobconnectionsystem.enums.LevelEnum;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
 
+@Data
 @Table(name = "applicant_jobtype")
 @Entity
 @Getter

@@ -2,16 +2,18 @@ package com.javaweb.jobconnectionsystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.ZonedDateTime;
 
+@Data
 @Table(name = "block")
 @Entity
 @Getter
 @Setter
-public class BlockUserEntity {
+public class BlockUserEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
