@@ -19,6 +19,7 @@ public class ApplicationEntity extends BaseEntity {
     private Long id;
 
     @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
     private StatusEnum status = StatusEnum.WAITING;
 
     @Column(name = "description")

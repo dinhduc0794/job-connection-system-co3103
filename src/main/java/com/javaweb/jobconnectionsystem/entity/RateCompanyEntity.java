@@ -30,5 +30,4 @@ public class RateCompanyEntity extends BaseEntity {
     @JoinColumn(name = "company_id", nullable = false)
     @JsonBackReference
     private CompanyEntity company;
-
 }

@@ -2,6 +2,7 @@ package com.javaweb.jobconnectionsystem.controller;
 
 import com.javaweb.jobconnectionsystem.entity.CityEntity;
 import com.javaweb.jobconnectionsystem.entity.ProvinceEntity;
+import com.javaweb.jobconnectionsystem.model.dto.ProvinceDTO;
 import com.javaweb.jobconnectionsystem.service.ProvinceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,16 +12,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/provinces")
 public class ProvinceController {
 
     @Autowired
     private ProvinceService provinceService;
 
-    @GetMapping
-    public ResponseEntity<List<ProvinceEntity>> getAllProvinces() {
+    @GetMapping("/locations")
+    public ResponseEntity<?> getLocations() {
         try {
-            List<ProvinceEntity> provinces = provinceService.findAllProvinces();
+            List<ProvinceDTO> provinces = provinceService.findAllLocations();
 
             if (provinces.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -33,7 +33,7 @@ public class ProvinceController {
     }
 
     // Endpoint để lấy danh sách các thành phố (City) theo provinceId
-    @GetMapping("/{provinceId}/cities")
+    @GetMapping("/provinces/{provinceId}/cities")
     public ResponseEntity<List<CityEntity>> getCitiesByProvinceId(@PathVariable Long provinceId) {
         try {
             // Gọi phương thức trong service để lấy danh sách thành phố
@@ -50,7 +50,7 @@ public class ProvinceController {
     }
 
     // Endpoint để thêm mới một tỉnh (Province)
-    @PostMapping(consumes = "application/json")
+    @PostMapping("provinces")
     public ResponseEntity<ProvinceEntity> createProvince(@RequestBody ProvinceEntity newProvince) {
         try {
             ProvinceEntity province = provinceService.addProvince(newProvince);

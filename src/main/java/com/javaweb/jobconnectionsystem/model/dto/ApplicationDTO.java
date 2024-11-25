@@ -11,8 +11,8 @@ import java.time.ZonedDateTime;
 @Getter
 @Setter
 public class ApplicationDTO {
-    private int id;
-    private StatusEnum status;
+    private Long id;
+    private StatusEnum status = StatusEnum.WAITING;
     private String description;
     @NotBlank(message="resume is required")
     private String resume;

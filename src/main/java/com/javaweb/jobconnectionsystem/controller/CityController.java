@@ -16,7 +16,7 @@ import java.util.List;
 public class CityController {
 
     @Autowired
-    private CityService cityService;  
+    private CityService cityService;
 
     // Endpoint để lấy tỉnh theo ProvinceID
     @GetMapping("/province/{provinceId}")

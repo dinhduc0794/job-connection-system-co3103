@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 public class ApplicationConverter {
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
     private ApplicantRepository applicantRepository;
     @Autowired
     private JobPostingRepository jobPostingRepository;

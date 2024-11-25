@@ -26,6 +26,7 @@ public class JobPostingSearchResponse {
     private String jobType;
     private String skills;
     private String yoe;
+    private String field;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

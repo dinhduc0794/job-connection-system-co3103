@@ -22,7 +22,7 @@ public class ProvinceEntity {
     private String name;
 
     // Quan hệ với CityEntity: Một tỉnh/thành phố có thể có nhiều quận/huyện
-    @OneToMany(mappedBy = "province")
+    @OneToMany(mappedBy = "province", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<CityEntity> cities = new ArrayList<>();
 }

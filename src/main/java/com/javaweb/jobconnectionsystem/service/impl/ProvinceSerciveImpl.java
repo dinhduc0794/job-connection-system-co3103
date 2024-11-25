@@ -1,9 +1,8 @@
 package com.javaweb.jobconnectionsystem.service.impl;
 
-import com.javaweb.jobconnectionsystem.entity.AccountEntity;
 import com.javaweb.jobconnectionsystem.entity.CityEntity;
 import com.javaweb.jobconnectionsystem.entity.ProvinceEntity;
-import com.javaweb.jobconnectionsystem.entity.WardEntity;
+import com.javaweb.jobconnectionsystem.model.dto.ProvinceDTO;
 import com.javaweb.jobconnectionsystem.repository.CityRepository;
 import com.javaweb.jobconnectionsystem.repository.ProvinceRepository;
 import com.javaweb.jobconnectionsystem.service.ProvinceService;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProvinceSerciveImpl implements ProvinceService {
@@ -22,8 +20,8 @@ public class ProvinceSerciveImpl implements ProvinceService {
     public CityRepository cityrepository;
 
     @Override
-    public List<ProvinceEntity> findAllProvinces() {
-        return provinceRepository.findAll();
+    public List<ProvinceDTO> findAllLocations() {
+        return provinceRepository.findAllProvinces();
     }
 
     @Override

@@ -2,12 +2,12 @@ package com.javaweb.jobconnectionsystem.service;
 
 import com.javaweb.jobconnectionsystem.entity.CityEntity;
 import com.javaweb.jobconnectionsystem.entity.ProvinceEntity;
-import org.springframework.data.jpa.repository.Query;
+import com.javaweb.jobconnectionsystem.model.dto.ProvinceDTO;
 
 import java.util.List;
 
 public interface ProvinceService {
-    public List<ProvinceEntity> findAllProvinces();
+    public List<ProvinceDTO> findAllLocations();
     public ProvinceEntity addProvince(ProvinceEntity newProvince);
     public List<CityEntity> findCity(Long ProvinceId);
 }
