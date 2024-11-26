@@ -17,4 +17,5 @@ public interface AccountService {
     public AccountEntity updateAccount(Long id, AccountEntity accountDetails);
     // Xoa tai khoan
     public void deleteAccount(Long id);
+    public Long getIdAccountByUsername(String username);
 }

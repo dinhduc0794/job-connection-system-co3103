@@ -20,4 +20,5 @@ public interface AdminService {
 
     // Xóa tài khoản admin
     public void deleteAdmin(Long id);
+    public AdminEntity getAdminByUsername(String username);
 }

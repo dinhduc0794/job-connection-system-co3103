@@ -26,6 +26,10 @@ public class AdminServiceImpl implements AdminService {
         return adminRepository.save(admin);
     }
 
+    @Override
+    public AdminEntity getAdminByUsername(String username) {
+        return adminRepository.findByUsername(username).get();
+    }
     // Lấy tất cả tài khoản admin
     @Override
     public List<AdminEntity> getAllAdmins() {

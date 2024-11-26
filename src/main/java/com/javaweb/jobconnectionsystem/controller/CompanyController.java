@@ -49,6 +49,9 @@ public class CompanyController {
     @PostMapping
     public ResponseEntity<?> saveCompany(@Valid @RequestBody CompanyDTO companyDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
+        if(companyDTO.getId()==null){
+            return ResponseEntity.badRequest().body("sửa thì id của tao đâu ");
+        }
         try{
             if (bindingResult.hasErrors()) {
                 List<String> errorMessages = bindingResult.getFieldErrors()

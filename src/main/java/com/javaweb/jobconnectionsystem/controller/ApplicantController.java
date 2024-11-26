@@ -29,6 +29,9 @@ public class ApplicantController {
     @PostMapping()
     public ResponseEntity<?> saveApplicant(@Valid @RequestBody ApplicantDTO applicantDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
+        if(applicantDTO.getId()==null){
+            return ResponseEntity.badRequest().body("sửa thì id của tao đâu ");
+        }
         try{
             if (bindingResult.hasErrors()) {
                 List<String> errorMessages = bindingResult.getFieldErrors()

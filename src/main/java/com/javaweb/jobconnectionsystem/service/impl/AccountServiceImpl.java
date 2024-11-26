@@ -26,6 +26,14 @@ public class AccountServiceImpl implements AccountService {
         // Lưu tài khoản mới nếu username chưa tồn tại
         return accountRepository.save(account);
     }
+    @Override
+    public Long getIdAccountByUsername(String username) {
+        Optional<AccountEntity> existingAccount = accountRepository.findByUsername(username);
+        if (existingAccount.isPresent()) {
+            return existingAccount.get().getId();
+        }
+        return null;
+    }
 
     @Override
     public List<AccountEntity> getAllAccounts() {
