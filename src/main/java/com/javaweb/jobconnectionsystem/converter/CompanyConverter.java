@@ -1,6 +1,7 @@
 package com.javaweb.jobconnectionsystem.converter;
 
 import com.javaweb.jobconnectionsystem.entity.*;
+import com.javaweb.jobconnectionsystem.enums.StatusEnum;
 import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
 import com.javaweb.jobconnectionsystem.model.dto.AddressDTO;
 import com.javaweb.jobconnectionsystem.model.response.CompanyDetailResponse;
@@ -78,6 +79,18 @@ public class CompanyConverter {
                     .map(it->it.getName())
                     .collect(Collectors.joining(", "));
             companySearchResponse.setFields(strField);
+        }
+
+        if (companyEntity.getJobPostings() != null && !companyEntity.getJobPostings().isEmpty()) {
+            List<JobPostingEntity> jobPostings = companyEntity.getJobPostings();
+            Long recruitQuantity = 0L;
+            for (JobPostingEntity jobPostingEntity : jobPostings) {
+                if (jobPostingEntity.getStatus() == true) {
+                    recruitQuantity += jobPostingEntity.getNumberOfApplicants();
+                }
+
+            }
+            companySearchResponse.setRecruitQuantity(recruitQuantity);
         }
 
         return companySearchResponse;

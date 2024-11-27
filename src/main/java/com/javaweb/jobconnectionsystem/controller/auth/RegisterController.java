@@ -1,4 +1,4 @@
-package com.javaweb.jobconnectionsystem.controller.custom;
+package com.javaweb.jobconnectionsystem.controller.auth;
 
 import com.javaweb.jobconnectionsystem.entity.ApplicantEntity;
 import com.javaweb.jobconnectionsystem.entity.CompanyEntity;

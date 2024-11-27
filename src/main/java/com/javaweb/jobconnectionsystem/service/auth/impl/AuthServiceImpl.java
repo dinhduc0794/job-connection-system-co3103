@@ -4,25 +4,24 @@ import com.javaweb.jobconnectionsystem.entity.AccountEntity;
 import com.javaweb.jobconnectionsystem.model.dto.LoginDTO;
 import com.javaweb.jobconnectionsystem.repository.AccountRepository;
 import com.javaweb.jobconnectionsystem.service.auth.AuthService;
-import com.javaweb.jobconnectionsystem.service.auth.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthServiceImpl implements AuthService {
-
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
-    private UserDetailService userDetailservice;
+    private UserDetailsService userDetailservice;
     @Autowired
     private com.javaweb.jobconnectionsystem.component.JwtUtils JwtUtils;
 

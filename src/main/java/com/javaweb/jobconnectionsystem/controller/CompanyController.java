@@ -1,12 +1,15 @@
 package com.javaweb.jobconnectionsystem.controller;
 
+import com.javaweb.jobconnectionsystem.entity.ApplicationEntity;
 import com.javaweb.jobconnectionsystem.entity.CompanyEntity;
 import com.javaweb.jobconnectionsystem.entity.JobPostingEntity;
 import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
+import com.javaweb.jobconnectionsystem.model.dto.JobPostingDTO;
 import com.javaweb.jobconnectionsystem.model.request.CompanySearchRequest;
 import com.javaweb.jobconnectionsystem.model.request.JobPostingSearchRequest;
 import com.javaweb.jobconnectionsystem.model.response.*;
 import com.javaweb.jobconnectionsystem.service.CompanyService;
+import com.javaweb.jobconnectionsystem.service.JobPostingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +33,15 @@ public class CompanyController {
     @GetMapping
     public ResponseEntity<List<CompanySearchResponse>> getCompaniesByConditions(@ModelAttribute CompanySearchRequest params) {
         List<CompanySearchResponse> companyResponses = companyService.getAllCompanies(params);
+
+        int totalItems = companyService.countTotalItems(params);
+        int totalPage = (int) Math.ceil((double) totalItems / params.getMaxPageItems());
+
+        CompanySearchResponse response = new CompanySearchResponse();
+        response.setListResult(companyResponses);
+        response.setTotalItems(totalItems);
+        response.setTotalPage(totalPage);
+
         if (companyResponses.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -76,7 +88,6 @@ public class CompanyController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
         }
     }
-
 
 
     // Endpoint cập nhật công ty

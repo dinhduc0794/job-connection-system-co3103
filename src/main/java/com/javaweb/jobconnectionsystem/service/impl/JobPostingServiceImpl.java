@@ -10,6 +10,7 @@ import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.repository.JobPostingRepository;
 import com.javaweb.jobconnectionsystem.service.JobPostingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,14 +26,19 @@ public class JobPostingServiceImpl implements JobPostingService {
     private JobPostingConverter jobPostingConverter;
 
     @Override
-    public List<JobPostingSearchResponse> getAllJobPostings(JobPostingSearchRequest params) {
-        List<JobPostingEntity> jobPostingEntities = jobPostingRepository.findAll(params);
+    public List<JobPostingSearchResponse> getAllJobPostings(JobPostingSearchRequest params, Pageable pageable) {
+        List<JobPostingEntity> jobPostingEntities = jobPostingRepository.findAll(params, pageable);
 
         List<JobPostingSearchResponse> jobPostingResponses = new ArrayList<>();
         for (JobPostingEntity ent : jobPostingEntities) {
             jobPostingResponses.add(jobPostingConverter.toJobPostingSearchResponse(ent));
         }
         return jobPostingResponses;
+    }
+
+    @Override
+    public int countTotalItems(JobPostingSearchRequest params) {
+        return jobPostingRepository.countTotalItems(params);
     }
 
     @Override

@@ -14,7 +14,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class JobPostingDTO {
+public class JobPostingDTO extends AbstractDTO {
     private Long id;
 
     @NotBlank(message = "Job description is required")
@@ -40,6 +40,8 @@ public class JobPostingDTO {
     @NotNull(message = "Job type is required")
     private Long jobTypeId;
     private String image;
+
+    @NotNull(message = "Number of applicants is required")
     private Long numberOfApplicants;
     private LevelEnum level;
 

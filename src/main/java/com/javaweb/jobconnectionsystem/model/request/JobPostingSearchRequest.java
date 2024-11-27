@@ -2,6 +2,7 @@ package com.javaweb.jobconnectionsystem.model.request;
 
 import com.javaweb.jobconnectionsystem.enums.LevelEnum;
 import com.javaweb.jobconnectionsystem.enums.ScheduleEnum;
+import com.javaweb.jobconnectionsystem.model.dto.AbstractDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,8 +10,8 @@ import java.util.List;
 
 @Getter
 @Setter
-public class JobPostingSearchRequest {
-    private String id;
+public class JobPostingSearchRequest extends AbstractDTO {
+    private Long id;
     private String title;
     private ScheduleEnum schedule;
     private LevelEnum level;

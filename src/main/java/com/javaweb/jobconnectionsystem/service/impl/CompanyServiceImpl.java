@@ -7,6 +7,7 @@ import com.javaweb.jobconnectionsystem.entity.JobPostingEntity;
 import com.javaweb.jobconnectionsystem.entity.PhoneNumberEntity;
 import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
 import com.javaweb.jobconnectionsystem.model.request.CompanySearchRequest;
+import com.javaweb.jobconnectionsystem.model.request.JobPostingSearchRequest;
 import com.javaweb.jobconnectionsystem.model.response.CompanyDetailResponse;
 import com.javaweb.jobconnectionsystem.model.response.CompanySearchResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingDetailResponse;
@@ -42,6 +43,11 @@ public class CompanyServiceImpl implements CompanyService {
             companyResponses.add(companyConverter.toCompanySearchResponse(ent));
         }
         return companyResponses;
+    }
+
+    @Override
+    public int countTotalItems(CompanySearchRequest params) {
+        return companyRepository.countTotalItems(params);
     }
 
     @Override

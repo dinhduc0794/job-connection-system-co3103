@@ -1,5 +1,6 @@
 package com.javaweb.jobconnectionsystem.model.response;
 
+import com.javaweb.jobconnectionsystem.model.dto.AbstractDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class JobPostingSearchResponse {
+public class JobPostingSearchResponse extends AbstractDTO {
     private Long id;
     private String title;
     private String schedule;    //Enum

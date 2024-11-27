@@ -7,6 +7,7 @@ import com.javaweb.jobconnectionsystem.utils.StringUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.lang.reflect.Field;
@@ -20,13 +21,17 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
     private EntityManager entityManager;
 
     @Override
-    public List<JobPostingEntity> findAll(JobPostingSearchRequest params) {
+    public List<JobPostingEntity> findAll(JobPostingSearchRequest params, Pageable pageable) {
         StringBuilder sql = new StringBuilder("SELECT jp.* FROM jobposting jp ");
 
         handleJoinTable(params, sql);
         handleWhereCondition(params, sql);
 
         sql.append(" GROUP BY jp.id");	//handle duplicate
+
+        // phan trang dong
+        String pagination = " LIMIT " + pageable.getPageSize() + " OFFSET " + pageable.getOffset();
+        sql.append(pagination);
 
         Query query = entityManager.createNativeQuery(sql.toString(), JobPostingEntity.class);
         return query.getResultList();
@@ -121,5 +126,16 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public int countTotalItems(JobPostingSearchRequest params) {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(DISTINCT jp.id) FROM jobposting jp ");
+
+        handleJoinTable(params, sql);
+        handleWhereCondition(params, sql);
+
+        Query query = entityManager.createNativeQuery(sql.toString());
+        return ((Number) query.getSingleResult()).intValue();
     }
 }

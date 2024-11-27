@@ -59,6 +59,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     }
     private boolean isBypassToken(@NonNull HttpServletRequest request) {
         final List<Pair<String, String>> bypassTokens = Arrays.asList(
+                Pair.of("/jobpostings", "GET"),
                 Pair.of("/login", "POST"), Pair.of("/register/applicant","POST"),
                 Pair.of("/register/company","POST") // Bỏ qua xác thực cho POST /public/login
         );

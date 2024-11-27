@@ -7,6 +7,7 @@ import com.javaweb.jobconnectionsystem.repository.custom.CompanyRepositoryCustom
 import com.javaweb.jobconnectionsystem.utils.StringUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
@@ -105,5 +106,16 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public int countTotalItems(CompanySearchRequest params) {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(DISTINCT co.id) FROM company co ");
+
+        handleJoinTable(params, sql);
+        handleWhereCondition(params, sql);
+
+        Query query = entityManager.createNativeQuery(sql.toString());
+        return ((Number) query.getSingleResult()).intValue();
     }
 }

@@ -11,6 +11,7 @@ import com.javaweb.jobconnectionsystem.repository.ApplicationRepository;
 import com.javaweb.jobconnectionsystem.repository.JobPostingRepository;
 import com.javaweb.jobconnectionsystem.repository.NotificationRepository;
 import com.javaweb.jobconnectionsystem.service.ApplicationService;
+import jdk.jshell.spi.ExecutionControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,9 @@ public class ApplicationServiceImpl implements ApplicationService {
             } else {
                 throw new RuntimeException("Company information is missing in job posting");
             }
-            notificationEntity.setContent(applicationEntity.getApplicant().getFirstName() + " has registered your job posting " + applicationEntity.getJobPosting().getTitle());
+            notificationEntity.setContent(applicationEntity.getApplicant().getFirstName() + " has registered your job posting "
+                    + applicationEntity.getJobPosting().getTitle() + "with email"
+                    + applicationDTO.getEmail() + " and phone " + applicationDTO.getPhoneNum());
             notificationRepository.save(notificationEntity);
             return applicationRepository.save(applicationEntity);
         }
@@ -54,7 +57,9 @@ public class ApplicationServiceImpl implements ApplicationService {
                 } else {
                     throw new RuntimeException("Application information is missing");
                 }
-                notificationEntity.setContent(applicationEntity.getJobPosting().getCompany().getName() + " has " + applicationDTO.getStatus() + " your application for the job " + applicationEntity.getJobPosting().getTitle());
+                notificationEntity.setContent(applicationEntity.getJobPosting().getCompany().getName() + " has "
+                        + applicationDTO.getStatus() + " your application for the job "
+                        + applicationEntity.getJobPosting().getTitle());
                 notificationRepository.save(notificationEntity);
                 return applicationRepository.save(applicationEntity);
             }
@@ -62,12 +67,28 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<ApplicationEntity> getAllApplication() {
-        return null;
+    public List<ApplicationEntity> getAllApplicationByApplicantId(Long id) {
+        List<ApplicationEntity> listApplication = applicationRepository.findByApplicant_Id(id);
+        return listApplication;
     }
 
     @Override
-    public void DeleteApplication(Long applicationID) {
+    public List<ApplicationEntity> getAllApplicationByJobpostingId(Long id) {
+        List<ApplicationEntity> listApplication = applicationRepository.findByJobPosting_Id(id);
+        return listApplication;
+    }
 
+
+    @Override
+    public void DeleteApplicationByJobposting(Long applicationId) {
+        ApplicationEntity newApplication = applicationRepository.findById(applicationId).get();
+        if(newApplication.getStatus()!= StatusEnum.REJECTED){
+            throw new RuntimeException("Can not delete this application");
+        }
+        else applicationRepository.deleteById(applicationId);
+    }
+    @Override
+    public void DeleteApplicationByApplicant(Long applicantId) {
+         applicationRepository.deleteById(applicantId);
     }
 }

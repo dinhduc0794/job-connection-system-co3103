@@ -14,6 +14,8 @@ public class ApplicationDTO {
     private Long id;
     private StatusEnum status = StatusEnum.WAITING;
     private String description;
+    private String phoneNum;
+    private String email;
     @NotBlank(message="resume is required")
     private String resume;
     private Long applicantId;

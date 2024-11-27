@@ -1,4 +1,4 @@
-package com.javaweb.jobconnectionsystem.controller.custom;
+package com.javaweb.jobconnectionsystem.controller.auth;
 
 import com.javaweb.jobconnectionsystem.model.dto.LoginDTO;
 import com.javaweb.jobconnectionsystem.model.response.LoginResponse;

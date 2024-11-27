@@ -6,7 +6,10 @@ import com.javaweb.jobconnectionsystem.model.dto.ApplicationDTO;
 import java.util.List;
 
 public interface ApplicationService {
-    public ApplicationEntity saveApplication(ApplicationDTO applicationDTO);
-    public List<ApplicationEntity> getAllApplication();
-    public void DeleteApplication (Long applicationID);
+    ApplicationEntity saveApplication(ApplicationDTO applicationDTO);
+    List<ApplicationEntity> getAllApplicationByApplicantId(Long id);
+    List<ApplicationEntity> getAllApplicationByJobpostingId(Long id);
+    void DeleteApplicationByJobposting (Long jobpostingId);
+    void DeleteApplicationByApplicant (Long applicantId);
+
 }

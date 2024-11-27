@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface CompanyRepositoryCustom {
     List<CompanyEntity> findAll(CompanySearchRequest params);
+    int countTotalItems(CompanySearchRequest params);
 }

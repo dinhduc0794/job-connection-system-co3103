@@ -1,10 +1,12 @@
 package com.javaweb.jobconnectionsystem.controller;
 
 import com.javaweb.jobconnectionsystem.entity.ApplicantEntity;
+import com.javaweb.jobconnectionsystem.entity.ApplicationEntity;
 import com.javaweb.jobconnectionsystem.entity.CompanyEntity;
 import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
 import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
 import com.javaweb.jobconnectionsystem.service.ApplicantService;
+import com.javaweb.jobconnectionsystem.service.ApplicationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +26,8 @@ public class ApplicantController {
 
     @Autowired
     private ApplicantService applicantService;
+    @Autowired
+    private ApplicationService applicationService;
 
     // Endpoint thêm ứng viên
     @PostMapping()
@@ -55,6 +59,7 @@ public class ApplicantController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
         }
     }
+
 
     // Endpoint lấy tất cả ứng viên
     @GetMapping
@@ -99,5 +104,34 @@ public class ApplicantController {
             responseDTO.setDetail(Collections.singletonList(e.getMessage()));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
         }
+    }
+    @GetMapping("/applications/{id}")
+    public ResponseEntity<?> getAllApplication(@PathVariable Long id){
+        ResponseDTO responseDTO = new ResponseDTO();
+        List<ApplicationEntity> applicationByApplicanID = applicationService.getAllApplicationByApplicantId(id);
+        if (applicationByApplicanID.isEmpty()){
+            responseDTO.setMessage("you have no application");
+            return ResponseEntity.ok(responseDTO);
+        }
+        else {
+            responseDTO.setMessage("application with jobposting");
+            responseDTO.setData(applicationByApplicanID);
+            return ResponseEntity.ok(responseDTO);
+        }
+    }
+    @DeleteMapping("/application/{id}")
+    public ResponseEntity<?> deleteApplication(@PathVariable Long id){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try{
+            applicationService.getAllApplicationByApplicantId(id);
+            responseDTO.setMessage("delete succesfully");
+            responseDTO.setDetail(Collections.singletonList("application has been deleted"));
+            return ResponseEntity.ok(responseDTO);
+        }catch(RuntimeException e ){
+            responseDTO.setMessage("canot delete this application");
+            responseDTO.setDetail(Collections.singletonList("some thing wrong"));
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+
     }
 }
