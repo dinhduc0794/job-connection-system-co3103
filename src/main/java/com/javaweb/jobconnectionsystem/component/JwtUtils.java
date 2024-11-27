@@ -1,4 +1,4 @@
-package com.javaweb.jobconnectionsystem.service.impl;
+package com.javaweb.jobconnectionsystem.component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -8,11 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -61,7 +58,7 @@ public class JwtUtils {
     }
 
     public boolean validateToken(String token, String requiredRole) {
-        return !isTokenExpired(token) && hasRole(token, requiredRole);
+        return !isTokenExpired(token) && hasRole(token, requiredRole);  //con thoi han su dung va dung role
     }
 
 

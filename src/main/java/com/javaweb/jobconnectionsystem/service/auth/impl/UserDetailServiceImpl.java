@@ -1,4 +1,4 @@
-package com.javaweb.jobconnectionsystem.service.impl;
+package com.javaweb.jobconnectionsystem.service.auth.impl;
 
 import com.javaweb.jobconnectionsystem.entity.AccountEntity;
 import com.javaweb.jobconnectionsystem.repository.AccountRepository;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 
 @Service
-public class UserDetailserviceImpl implements UserDetailsService {
+public class UserDetailServiceImpl implements UserDetailsService {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
@@ -24,6 +24,7 @@ public class UserDetailserviceImpl implements UserDetailsService {
     private ApplicantRepository applicantRepository;
     @Autowired
     private AdminRepository adminRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AccountEntity account = accountRepository.findByUsername(username).get();

@@ -1,6 +1,7 @@
 package com.javaweb.jobconnectionsystem.config;
 
-import com.javaweb.jobconnectionsystem.service.impl.UserDetailserviceImpl;
+import com.javaweb.jobconnectionsystem.component.JWTAuthFilter;
+import com.javaweb.jobconnectionsystem.service.auth.impl.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class WebSecurityConfig {
     @Autowired
-    private UserDetailserviceImpl userDetailservice;
+    private UserDetailServiceImpl userDetailservice;
     @Autowired
     private JWTAuthFilter jwtAuthFilter;
     @Bean

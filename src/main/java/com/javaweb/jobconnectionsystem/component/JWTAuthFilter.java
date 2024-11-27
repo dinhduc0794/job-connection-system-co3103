@@ -1,7 +1,6 @@
-package com.javaweb.jobconnectionsystem.config;
+package com.javaweb.jobconnectionsystem.component;
 
-import com.javaweb.jobconnectionsystem.service.impl.JwtUtils;
-import com.javaweb.jobconnectionsystem.service.impl.UserDetailserviceImpl;
+import com.javaweb.jobconnectionsystem.service.auth.impl.UserDetailServiceImpl;
 import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -27,7 +26,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     @Autowired
     private  HandlerExceptionResolver handlerExceptionResolver;
     @Autowired
-    private UserDetailserviceImpl userDertailService;
+    private UserDetailServiceImpl userDertailService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

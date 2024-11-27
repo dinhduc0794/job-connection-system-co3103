@@ -4,10 +4,8 @@ import com.javaweb.jobconnectionsystem.model.dto.LoginDTO;
 import com.javaweb.jobconnectionsystem.model.response.LoginResponse;
 import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
 import com.javaweb.jobconnectionsystem.service.AccountService;
-import com.javaweb.jobconnectionsystem.service.AdminService;
-import com.javaweb.jobconnectionsystem.service.CompanyService;
-import com.javaweb.jobconnectionsystem.service.impl.AuthServiceImpl;
-import com.javaweb.jobconnectionsystem.service.impl.JwtUtils;
+import com.javaweb.jobconnectionsystem.service.auth.AuthService;
+import com.javaweb.jobconnectionsystem.component.JwtUtils;
 import jakarta.validation.Valid;
 import org.springframework.validation.FieldError;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +26,13 @@ import java.util.stream.Collectors;
 @RequestMapping("/login")
 public class LoginController {
     @Autowired
-    private AuthServiceImpl authService;
+    private AuthService authService;
     @Autowired
     private JwtUtils jwtUtils;
     @Autowired
     private AccountService accountService;
    @PostMapping()
-    public ResponseEntity<?> loginhere(@Valid @RequestBody LoginDTO loginDTO, BindingResult bindingResult) {
+    public ResponseEntity<?> loginHere(@Valid @RequestBody LoginDTO loginDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
             // Kiểm tra lỗi validate từ DTO
