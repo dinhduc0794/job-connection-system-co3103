@@ -18,51 +18,59 @@ import java.util.stream.Collectors;
 @Component
 public class JwtUtils {
     private final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    public String generateToken(UserDetails userDetails) {
-        try {
-            String roles = userDetails.getAuthorities().stream()
-                    .map(grantedAuthority -> grantedAuthority.getAuthority())
-                    .collect(Collectors.joining(","));
-            return Jwts.builder()
-                    .setSubject(userDetails.getUsername())
-                    .claim("role", roles)
-                    .setIssuedAt(new Date())
-                    .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 10)) // Token hết hạn sau 10 phút
-                    .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-                    .compact();
-        }
-        catch (Exception e) {
-            throw new RuntimeException("Error generating token", e);
-        }
+
+    private static final long ACCESS_TOKEN_EXPIRATION = 10 * 60 * 1000; // 10 phút
+    private static final long REFRESH_TOKEN_EXPIRATION = 30 * 60 * 1000; // 30 phút
+
+    public String generateToken(UserDetails userDetails, String userId) {
+        String roles = userDetails.getAuthorities().stream()
+                .map(grantedAuthority -> grantedAuthority.getAuthority())
+                .collect(Collectors.joining(","));
+        return Jwts.builder()
+                .setSubject(userDetails.getUsername())
+                .claim("id", userId) // Lưu id riêng
+                .claim("role", roles) // Lưu role riêng
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION))
+                .signWith(SECRET_KEY)
+                .compact();
     }
+
+    public Long extractUserId(String token) {
+        return extractAllClaims(token).get("id", Long.class);
+    }
+
+    public String generateRefreshToken(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION))
+                .signWith(SECRET_KEY)
+                .compact();
+    }
+
     private Claims extractAllClaims(String token) {
-        return Jwts.parser()
+        return Jwts.parserBuilder()
                 .setSigningKey(SECRET_KEY)
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
+
+    public String role(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims.get("role", String.class);
+    }
+
     public String extractUsername(String token) {
         return extractAllClaims(token).getSubject();
     }
 
     public boolean isTokenExpired(String token) {
-        Date expiration = extractAllClaims(token).getExpiration();
-        return expiration.before(new Date());
-    }
-    public boolean hasRole(String token, String requiredRole) {
-        // Trích xuất và tách các vai trò từ token
-        Claims claims = extractAllClaims(token);
-        String roles = claims.get("role", String.class);
-        List<String> rolesList = List.of(roles.split(","));
-        return rolesList.contains(requiredRole);
-    }
-    public String role (String token){
-        return extractAllClaims(token).get("role", String.class);
+        return extractAllClaims(token).getExpiration().before(new Date());
     }
 
-    public boolean validateToken(String token, String requiredRole) {
-        return !isTokenExpired(token) && hasRole(token, requiredRole);
+    public boolean validateToken(String token) {
+        return !isTokenExpired(token);
     }
-
-
 }

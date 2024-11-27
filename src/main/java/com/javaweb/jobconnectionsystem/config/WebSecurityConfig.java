@@ -17,7 +17,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
@@ -27,18 +30,31 @@ public class WebSecurityConfig {
     private JWTAuthFilter jwtAuthFilter;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request->request.requestMatchers("/public/**").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/login/**","register/**").permitAll()
-                        .requestMatchers("/admin/**").hasAnyAuthority("admin")
-                        .requestMatchers("/applicants/**").hasAnyAuthority("applicant")
-                        .requestMatchers("/companies/**").hasAnyAuthority("company")
-                        .anyRequest().authenticated())
-                .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider()).addFilterBefore(
-                        jwtAuthFilter, UsernamePasswordAuthenticationFilter.class
-                );
+        http
+                .csrf(csrf -> csrf.disable()) // Tắt CSRF
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Sử dụng cấu hình CORS mới
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless session
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/public/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/login/**", "/register/**").permitAll()
+                        .requestMatchers("/admin/**").hasAuthority("admin")
+                        .requestMatchers("/applicants/**").hasAuthority("applicant")
+                        .requestMatchers("/companies/**").hasAuthority("company")
+                        .anyRequest().authenticated()); // Yêu cầu xác thực cho các request khác
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // Địa chỉ front-end
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Các phương thức HTTP
+        configuration.setAllowCredentials(true); // Cho phép gửi cookie
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type")); // Các header được phép
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
     @Bean
     public AuthenticationProvider authenticationProvider() {

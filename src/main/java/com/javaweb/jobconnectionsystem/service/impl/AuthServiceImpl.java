@@ -36,12 +36,10 @@ public class AuthServiceImpl {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDTO.getUsername(),
-                        loginDTO.getPassword()
-                )
-        );
+                        loginDTO.getPassword()));
         if (authentication.isAuthenticated()) {
             UserDetails userDetails = userDetailservice.loadUserByUsername(loginDTO.getUsername());
-            return JwtUtils.generateToken(userDetails) ;
+            return JwtUtils.generateToken(userDetails, String.valueOf(account.getId()));
         } else {
             throw new BadCredentialsException("Username or password is incorrect");
         }

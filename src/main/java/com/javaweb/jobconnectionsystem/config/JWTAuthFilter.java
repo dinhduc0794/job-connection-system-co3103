@@ -25,50 +25,70 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtils jwtUtil;
     @Autowired
-    private  HandlerExceptionResolver handlerExceptionResolver;
+    private HandlerExceptionResolver handlerExceptionResolver;
     @Autowired
-    private UserDetailserviceImpl userDertailService;
+    private UserDetailserviceImpl userDetailService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         try {
             if (isBypassToken(request)) {
                 filterChain.doFilter(request, response);
-                return; // Bỏ qua việc xử lý JWT và tiếp tục với filter chain
+                return;
             }
-            String authHeader = request.getHeader("Authorization");
-            String jwtToken = null;
-            String username = null;
-            if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                jwtToken = authHeader.substring(7);
-            }
-            username = jwtUtil.extractUsername(jwtToken);
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = userDertailService.loadUserByUsername(username);
-                if (jwtUtil.validateToken(jwtToken, username)) {
-                    UsernamePasswordAuthenticationToken authenticationToken =
-                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+            String jwtToken = extractToken(request);
+            if (jwtToken != null) {
+                String username = jwtUtil.extractUsername(jwtToken);
+                String role = jwtUtil.role(jwtToken); // Lấy role riêng biệt
+                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    UserDetails userDetails = userDetailService.loadUserByUsername(username);
+
+                    if (jwtUtil.validateToken(jwtToken)) {
+                        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                                userDetails, null, userDetails.getAuthorities());
+
+                        // Gắn thêm thông tin role vào SecurityContext nếu cần sử dụng sau này
+                        authenticationToken.setDetails(role);
+                        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    }
                 }
             }
             filterChain.doFilter(request, response);
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             handlerExceptionResolver.resolveException(request, response, null, exception);
         }
     }
-    private boolean isBypassToken(@NonNull HttpServletRequest request) {
-        final List<Pair<String, String>> bypassTokens = Arrays.asList(
-                Pair.of("/login", "POST"), Pair.of("/register/applicant","POST"),
-                Pair.of("/register/company","POST") // Bỏ qua xác thực cho POST /public/login
-        );
-        for (Pair<String, String> bypassToken : bypassTokens) {
-            if (request.getServletPath().contains(bypassToken.getFirst()) &&
-                    request.getMethod().equals(bypassToken.getSecond())) {
-                return true; // Bỏ qua xác thực cho đường dẫn này
+
+    private String extractToken(HttpServletRequest request) {
+        if (request.getCookies() != null) {
+            for (var cookie : request.getCookies()) {
+                if ("accessToken".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
             }
         }
-        return false; // Không bỏ qua xác thực
+
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.substring(7);
+        }
+        return null;
+    }
+
+    private boolean isBypassToken(@NonNull HttpServletRequest request) {
+        final List<Pair<String, String>> bypassTokens = Arrays.asList(
+                Pair.of("/login", "POST"),
+                Pair.of("/register/applicant", "POST"),
+                Pair.of("/register/company", "POST"));
+        for (Pair<String, String> bypassToken : bypassTokens) {
+            if (request.getServletPath().equals(bypassToken.getFirst()) &&
+                    request.getMethod().equalsIgnoreCase(bypassToken.getSecond())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
