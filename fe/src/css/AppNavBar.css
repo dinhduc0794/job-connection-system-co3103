@@ -28,11 +28,8 @@
     background-color: var(--themeColor);   
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     position: relative; /* Thiết lập làm gốc cho các thành phần con */
-    z-index: 1; /* Đảm bảo thanh menu nằm trên các thành phần khác */
+    z-index: 10; /* Đảm bảo thanh menu nằm trên các thành phần khác */
     
-    top: 0;
-    left: 0;
-    right: 0;
   } 
   
   .nav .nav__logo {
@@ -237,7 +234,7 @@
 }
 
 .dropdown-menu li:hover {
-    background-color: var(--firstColor);  /* Màu nền khi hover (xám nhạt hơn) */
+    background-color: var(--secondColor);  /* Màu nền khi hover (xám nhạt hơn) */
     color: var(--themeColor);  /* Màu chữ xanh dương nhạt khi hover */
 }
 

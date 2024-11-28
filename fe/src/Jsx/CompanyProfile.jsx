@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom'; // Import useParams
 import '../css/CompanyProfile.css';
 import Navbar from './navbar';
+import AppNavbar from './AppNavbar';
+import CompanyNavbar from './CompanyNavbar';
 import Footer from './Footer';
 import CompanyInfo from './CompanyInfo';
 import CompanyJobManagement from './CompanyJobManager';
@@ -9,19 +12,22 @@ import CompanyPostJob from './CompanyPostJob';
 import ChangePassword from './ChangePassword';
 
 const CompanyProfile = () => {
-  const [activeTab, setActiveTab] = useState('Thông tin công ty');
+  const { tab } = useParams(); // Lấy tham số "tab" từ URL
+  const [activeTab, setActiveTab] = useState(tab || 'Thông tin công ty'); // Active tab mặc định
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
-
-  const handleLogout = () => {
-    // Xóa thông tin xác thực, token hoặc state
-    localStorage.removeItem('token'); // Xóa token lưu trong localStorage (nếu có)
-    alert('Bạn đã đăng xuất!');
-    // Điều hướng về trang đăng nhập
-    window.location.href = '/login'; // Điều hướng về trang đăng nhập
-  };
+  const role = localStorage.getItem('role');
+    const renderNavbar = () => {
+        if (role === 'applicant') {
+          return <AppNavbar />;
+        } else if (role === 'company') {
+          return <CompanyNavbar />;
+        } else {
+          return <Navbar />;
+        }
+      };
 
   const renderContent = () => {
     switch (activeTab) {
@@ -42,9 +48,8 @@ const CompanyProfile = () => {
 
   return (
     <div>
-      <Navbar />
+      {renderNavbar()}
       <div id="company-profile-container">
-        {/* Sidebar */}
         <div className="sidebar">
           <ul>
             {['Thông tin công ty', 'Quản lý việc làm', 'Thông báo', 'Đăng tuyển việc làm', 'Đổi mật khẩu'].map((item) => (
@@ -56,10 +61,9 @@ const CompanyProfile = () => {
                 {item}
               </li>
             ))}
-            <li onClick={handleLogout} className="logout">Đăng xuất</li>
+            <li onClick={() => alert('Đăng xuất')} className="logout">Đăng xuất</li>
           </ul>
         </div>
-        {/* Main Content */}
         <div className="content">{renderContent()}</div>
       </div>
       <Footer />

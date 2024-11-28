@@ -6,12 +6,24 @@ import TopJob from "./TopJob";
 import ListCompany from "./ListCompany";
 import Footer from "./Footer";
 import AppNavbar from "./AppNavbar";
+import CompanyNavbar from "./CompanyNavbar";
 import '../css/Home.css'
 
 function Home(){
+    const role = localStorage.getItem('role');
+    const renderNavbar = () => {
+        if (role === 'applicant') {
+          return <AppNavbar />;
+        } else if (role === 'company') {
+          return <CompanyNavbar />;
+        } else {
+          return <Navbar />;
+        }
+      };
     return(
         <div id="home-container">
-            <AppNavbar/>
+
+            {renderNavbar()}
             <TopCompany/>
             <Job_Home/>
             <TopJob/>

@@ -24,7 +24,7 @@
   #footer  .footer-column h3 {
     font-size: 18px;
     margin-bottom: 20px;
-    border-bottom: 2px solid #005599;
+    border-bottom: 2px solid white;
     padding-bottom: 10px;
     font-weight: bold;
     color: var(--themeColor);

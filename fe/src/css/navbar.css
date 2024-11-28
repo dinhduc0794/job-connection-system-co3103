@@ -5,11 +5,20 @@
   box-sizing: border-box;
   
 }
+body {
+  position: relative; /* Đặt gốc cho toàn bộ layout */
+  z-index: 0; /* Đảm bảo các phần tử khác không che menu */
+}
 
 #headernav {
   width: 100%;
   height: 80px;
   background-color: var(--themeColor);
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 .nav {
@@ -18,11 +27,7 @@
   background-color: var(--themeColor);   
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   position: relative; /* Thiết lập làm gốc cho các thành phần con */
-  z-index: 1; /* Đảm bảo thanh menu nằm trên các thành phần khác */
-  
-  top: 0;
-  left: 0;
-  right: 0;
+  z-index: 10; /* Đảm bảo thanh menu nằm trên các thành phần khác */
 }
 
 .nav .nav__logo {

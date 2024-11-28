@@ -4,7 +4,7 @@ import '../css/Loading.css';
 
 const Loading = () => {
     return (
-        <div className="loading-page">
+        <div id="loading-page">
             <div className="loading-container">
                 <img src={loadinggif} alt="Loading..." className="loading-gif" />
                 <p className="loading-text">Đang tải dữ liệu, vui lòng chờ...</p>

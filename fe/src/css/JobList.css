@@ -24,7 +24,7 @@
 
 }
 
-.loading-container {
+#jobhome-container .loading-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -149,7 +149,7 @@
   text-overflow: ellipsis; /* Thêm '...' khi có overflow */
   display: flex;
 }
-.icon-and-text {
+#jobhome-container .icon-and-text {
   display: flex;
   align-items: center; /* Căn giữa icon và text theo chiều dọc */
   gap: 5px; /* Khoảng cách giữa icon và text */

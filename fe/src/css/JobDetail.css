@@ -1,7 +1,7 @@
 #job-detail-container {
   width: 70%;
   margin: 0 auto;
-  margin-top: 20px;
+  margin-top: 100px;
   padding: 20px;
   background-color: #f9f9f9;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -12,32 +12,69 @@
   display: flex;
   gap: 20px;
 }
-
-#job-detail-container .job-overview {
+#job-detail-container .left-column {
+  display:flex;
+  flex-direction: column;
+}
+#job-detail-container .left-column .job-overview {
   display: flex;
   flex-direction: column;
   gap: 30px;
 }
-#job-detail-container .job-overview h2 {
+#job-detail-container .left-column .job-overview h2 {
   font-weight: bold;
   font-size: 25px;
 }
 
-#job-detail-container .job-info {
+#job-detail-container .left-column .job-info {
   display: flex;
-  gap: 50px;
+  gap: 20px;
+}
+
+#job-detail-container .left-column .info-item {
+  display: flex;
+  width: 100%;
+  gap: 20px; /* Khoảng cách giữa icon và thông tin */
+}
+
+#job-detail-container .info-item .icon-info {
+  width: 50px; 
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--firstColor);
+  border-radius: 50%;
+}
+
+#job-detail-container .info-item .info-text {
+  width: 70%; /* Chiếm 70% chiều rộng */
+}
+
+#job-detail-container .info-item .info-text .top,
+#job-detail-container .info-item .info-text .bottom {
+  width: 100%; /* Chia đều chiều rộng */
+}
+
+#job-detail-container .info-item .info-text .top {
+  font-weight: bold;
+}
+
+#job-detail-container .info-item .info-text .bottom {
+  font-size: 14px;
+  color: #555; /* Màu sắc nhẹ cho phần dưới */
 }
 
 #job-detail-container .button {
   display: flex;
-  gap: 50px;
+  justify-content: space-between;
 }
 
 #job-detail-container .apply-btn {
   background-color: rgb(66, 183, 206);
   color: white;
   border: none;
-  padding: 15px 200px; /* Tăng padding để nút lớn hơn */
+  padding: 15px 250px; /* Tăng padding để nút lớn hơn */
   font-size: 18px; /* Tăng kích thước phông chữ */
   font-weight: bold; /* Đậm hơn để thu hút sự chú ý */
   cursor: pointer;
@@ -50,10 +87,24 @@
   padding: 15px 200px; /* Tăng padding để nút lớn hơn */
   font-size: 18px; /* Tăng kích thước phông chữ */
   font-weight: bold; /* Đậm hơn để thu hút sự chú ý */
-  padding: 10px;
+  padding: 10px 30px;
   cursor: pointer;
   border-radius: 5px;
   border: 1px solid rgb(66, 183, 206); /* Thêm viền màu */
+  text-align: center; /* Center text on buttons */
+}
+@media (min-width: 768px) {
+  /* For larger screens, the buttons will stay side by side */
+  #job-detail-container .apply-btn{
+    width: 75%; /* Set buttons to take up 48% of the width, leaving space for both */
+    font-size: 18px;
+    padding: 15px 0; /* Adjust padding for larger screens */
+  }
+  #job-detail-container .save-btn {
+    width: 20%; /* Set buttons to take up 48% of the width, leaving space for both */
+    font-size: 18px;
+    padding: 15px 0; /* Adjust padding for larger screens */
+  }
 }
 
 #job-detail-container .left-column {
@@ -75,12 +126,127 @@
   background-color: white;
   border-radius: 8px;
 }
+
+#job-detail-container .right-wrap {
+  margin-left: 10px;
+}
+
+#job-detail-container .job-details h3 {
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+#job-detail-container .company-info-container {
+  display: flex;
+  gap: 20px; /* Khoảng cách giữa logo và tên công ty */
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+#job-detail-container .company-info-container .company-logo {
+  width: 40%; /* Logo chiếm 30% chiều rộng */
+  max-width: 100px; /* Giới hạn kích thước logo để không bị quá lớn */
+}
+
+#job-detail-container .company-info-container .company-logo img {
+  width: 100%;
+  height: auto; /* Đảm bảo hình ảnh giữ tỷ lệ */
+}
+
+#job-detail-container .company-info-container .company-name {
+  width: 60%; /* Tên công ty chiếm 60% chiều rộng */
+  font-size: 20px; /* Kích thước chữ */
+  font-weight: bold; /* Làm đậm tên công ty */
+  word-wrap: break-word; /* Cho phép xuống dòng khi tên công ty quá dài */
+  white-space: normal; /* Cho phép xuống dòng ở bất kỳ đâu */
+}
+
+
+#job-detail-container  .info-company-item {
+  display: flex;
+  margin-bottom: 20px; /* Khoảng cách giữa các dòng */
+}
+
+#job-detail-container .info-company-item .icon-text {
+  display: flex;
+  width: 40%; /* Chiếm 40% chiều rộng */
+  font-size: 14px; /* Giảm kích thước chữ */
+  color: #333; /* Màu chữ cho phần mô tả */
+  font-weight: bold;
+}
+
+#job-detail-container .info-company-item .icon-text svg {
+  margin-right: 8px; /* Khoảng cách giữa icon và text */
+  width: 20px; 
+  height: 20px; 
+  margin-top: 1px;
+}
+
+#job-detail-container .info-company-item .content {
+  width: 60%; /* Chiếm 60% chiều rộng */
+  font-size: 15px; /* Kích thước chữ nội dung */
+  color: #555; /* Màu sắc nhẹ cho phần nội dung */
+  word-wrap: break-word; /* Cho phép xuống dòng */
+}
+
+
+
+.general-info .info-item {
+  display: flex;
+  align-items: center; /* Canh giữa dọc */
+  margin-bottom: 15px; /* Khoảng cách giữa các dòng */
+}
+
+.general-info .info-item .icon-container {
+  width: 50px; 
+  height: 45px;
+  display: flex;
+  justify-content: center; /* Canh giữa icon theo chiều ngang */
+  align-items: center; /* Canh giữa icon theo chiều dọc */
+  margin-right: -10px;
+  border-radius: 50%;
+  background-color: var(--firstColor);
+}
+
+.general-info .info-item .icon-container svg {
+  width: 20px; /* Kích thước icon */
+  height: 20px;
+  color: #666; /* Màu sắc icon */
+}
+
+.general-info .info-item .info-content {
+  width: 90%; /* Chiếm 60% chiều rộng */
+  display: flex;
+  flex-direction: column; /* Chia làm trên - dưới */
+  gap: 5px; /* Khoảng cách giữa tiêu đề và giá trị */
+  margin-left: 30px;
+}
+
+.general-info .info-item .info-content .info-title {
+  font-weight: bold; /* In đậm tiêu đề */
+  font-size: 17px; /* Kích thước nhỏ hơn */
+  color: #333; /* Màu tiêu đề */
+}
+
+.general-info .info-item .info-content .info-value {
+  font-size: 14px; /* Kích thước chữ giá trị */
+  color: #555; /* Màu chữ giá trị */
+}
+
+
+
+
+
+
+
 #job-detail-container .company-info h3,
 #job-detail-container .general-info h3,
 #job-detail-container .specialty-tags h3 {
   font-weight: bold;
   font-size: 20px;
-  margin-bottom: 7px;
+  margin-bottom: 20px;
+  color: var(--thirdColor)
 }
 
 #job-detail-container .general-info, 

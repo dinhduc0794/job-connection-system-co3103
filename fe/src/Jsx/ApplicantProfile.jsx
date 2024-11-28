@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import '../css/ApplicantProfile.css'
 import Navbar from './navbar';
+import AppNavbar from './AppNavbar';
+import CompanyNavbar from './CompanyNavbar';
 import Footer from './Footer';
 
 const ApplicantProfile = () => {
@@ -16,15 +18,25 @@ const ApplicantProfile = () => {
     // Xử lý cập nhật thông tin hoặc hiển thị thông báo thành công
     alert("Thông tin đã được cập nhật!");
   };
+  const role = localStorage.getItem('role');
+  const renderNavbar = () => {
+    if (role === 'applicant') {
+      return <AppNavbar />;
+    } else if (role === 'company') {
+      return <CompanyNavbar />;
+    } else {
+      return <Navbar />;
+    }
+  };
 
   return (
     <div>
-      <Navbar/>
+      {renderNavbar()}
       <div id="applicant-profile-container">
         {/* Sidebar */}
         <div className="sidebar">
           <ul>
-            {['Thông tin', 'Quản lý việc làm', 'Thông báo', 'Hồ sơ', 'Đăng tuyển việc làm', 'Đổi mật khẩu', 'Xem thông tin', 'Đăng xuất'].map((item) => (
+            {['Thông tin', 'Thông báo', 'Đăng tuyển việc làm', 'Đổi mật khẩu', 'Đăng xuất'].map((item) => (
               <li
                 key={item}
                 className={activeTab === item ? 'active' : ''}

@@ -1,18 +1,24 @@
 #content-company-info {
-    flex: 1;
-    padding: 20px;
-    background-color: #fff;
+  background-color: #f9f9f9;
+  padding: 40px;
+  /* border-radius: 8px; */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  #content-company-info h2, #content-company-info h3 {
+    font-weight: bold;
   }
   
   #content-company-info  .content-info h2 {
     margin-bottom: 10px;
     font-size: 24px;
+    font-weight: bold;
   }
   
   #content-company-info  .content-info h3 {
     font-size: 18px;
     color: #333;
     margin-top: 20px;
+    font-weight: bold;
   }
 
   #content-company-info  .company-info {

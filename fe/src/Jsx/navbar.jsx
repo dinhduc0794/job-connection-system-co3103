@@ -6,6 +6,11 @@ import '../css/navbar.css';
 
 
 function Navbar() { 
+    
+    const navigate = useNavigate();
+    const handleLogin = () => {
+        navigate('/login');
+    }
 
     return (
         <div id="headernav">
@@ -64,8 +69,8 @@ function Navbar() {
             </div>
 
             <div className="navbar-auth-custom">
-              <p>Đăng nhập</p>
-              <p>Đăng xuất</p>
+              <button onClick={handleLogin}>Đăng nhập</button>
+              <button >Đăng ký</button>
             </div>
         </div>
     </div>

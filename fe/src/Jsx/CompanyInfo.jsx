@@ -2,7 +2,11 @@ import React from 'react';
 import '../css/CompanyInfo.css'
 
 const CompanyInfo = () => {
+
+  const userID = localStorage.getItem('id');
+  
   return (
+    
     <div id='content-company-info'>
       <h2>Welcome Decathlon VN</h2>
       <h3>Thông tin cơ bản</h3>

@@ -2,12 +2,13 @@
 .container-wrapper {
   width: 100%;
   max-height: none; 
-  background-image: linear-gradient(45deg, var(--themeColor), var(--thirdColor));
+  background-image: linear-gradient(45deg, var(--thirdColor), var(--themeColor));
   display: flex;
   flex-direction: column; /* Đảm bảo các phần tử con xếp theo chiều dọc */
   align-items: center; /* Canh giữa nội dung nếu cần */
   gap: 20px; /* Khoảng cách giữa các phần tử con */
   box-sizing: border-box; /* Đảm bảo padding không làm ảnh hưởng đến width */
+  margin-top: 80px;
 }
 
 #hometopcompany-container {
@@ -25,7 +26,7 @@
     font-weight: 800;
     margin-top: 20px;
     margin-bottom: 20px;
-    color: var(--thirdColor);
+    color: var(--themeColor);
   }
   
   /* Danh sách công ty */
@@ -105,6 +106,7 @@
     position: relative;
     z-index: 0;
     box-sizing: border-box;
+    border-radius: 20px;
   }
   /* Đảm bảo container của pagination dot nằm bên dưới và căn giữa */
   #hometopcompany-container  .pagination-dots {
@@ -144,9 +146,9 @@
   #hometopcompany-container  .news-card {
     width: 100%;
     padding: 200px;
-    background-color: rgb(171, 200, 211);
+    background-color: transparent;
     text-align: center;
-    border-radius: 8px;
+    border-radius: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -165,6 +167,7 @@
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5); /* Màu đen mờ, bạn có thể thay đổi opacity */
     z-index: 1;
+    border-radius: 20px;
 }
   
   #hometopcompany-container  .news-card:hover {

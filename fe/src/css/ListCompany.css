@@ -5,8 +5,8 @@
   margin-top: 20px;
   padding: 20px;
   background-color: white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 }
 
 /* Header với tiêu đề và nút xem tất cả */
@@ -44,7 +44,7 @@
   justify-content: space-between;
   align-items: center;
   position: relative;
-  background-color: #f7faff;
+  background-color: white;
   padding: 10px 15px;
   border-radius: 8px;
   box-sizing: border-box;
@@ -71,11 +71,11 @@
 }
 
 #list-company-container .carousel-control.left {
-  left: -20px;
+  left: -17px;
 }
 
 #list-company-container .carousel-control.right {
-  right: -20px;
+  right: -17px;
 }
 
 /* Ô công ty */
