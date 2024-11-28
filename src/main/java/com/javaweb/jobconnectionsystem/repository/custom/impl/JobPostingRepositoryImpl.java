@@ -27,6 +27,7 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
         handleJoinTable(params, sql);
         handleWhereCondition(params, sql);
 
+        sql.append(" ORDER BY jp.id DESC");
         sql.append(" GROUP BY jp.id");	//handle duplicate
 
         // phan trang dong

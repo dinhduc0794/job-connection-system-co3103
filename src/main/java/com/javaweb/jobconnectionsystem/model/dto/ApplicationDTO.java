@@ -2,6 +2,7 @@ package com.javaweb.jobconnectionsystem.model.dto;
 
 import com.javaweb.jobconnectionsystem.enums.StatusEnum;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,10 +15,14 @@ public class ApplicationDTO {
     private Long id;
     private StatusEnum status = StatusEnum.WAITING;
     private String description;
-    private String phoneNum;
+    @NotBlank(message="Email is required")
     private String email;
-    @NotBlank(message="resume is required")
+    @NotBlank(message="Phone number is required")
+    private String phoneNumber;
+    @NotBlank(message="Resume is required")
     private String resume;
+    @NotNull(message="ApplicantId is required")
     private Long applicantId;
+    @NotNull(message="JobPostingId is required")
     private Long jobPostingId;
 }

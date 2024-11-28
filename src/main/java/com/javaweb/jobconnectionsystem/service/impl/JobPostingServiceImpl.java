@@ -26,6 +26,17 @@ public class JobPostingServiceImpl implements JobPostingService {
     private JobPostingConverter jobPostingConverter;
 
     @Override
+    public List<JobPostingSearchResponse> getAllJobPostings() {
+        List<JobPostingEntity> jobPostingEntities = jobPostingRepository.findAll();
+
+        List<JobPostingSearchResponse> jobPostingResponses = new ArrayList<>();
+        for (JobPostingEntity ent : jobPostingEntities) {
+            jobPostingResponses.add(jobPostingConverter.toJobPostingSearchResponse(ent));
+        }
+        return jobPostingResponses;
+    }
+
+    @Override
     public List<JobPostingSearchResponse> getAllJobPostings(JobPostingSearchRequest params, Pageable pageable) {
         List<JobPostingEntity> jobPostingEntities = jobPostingRepository.findAll(params, pageable);
 

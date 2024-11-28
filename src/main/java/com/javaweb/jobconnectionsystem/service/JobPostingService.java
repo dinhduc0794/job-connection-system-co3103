@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface JobPostingService {
+    List<JobPostingSearchResponse> getAllJobPostings();
     // Lấy tất cả bài đăng công việc
     List<JobPostingSearchResponse> getAllJobPostings(JobPostingSearchRequest params, Pageable pageable);
 

@@ -22,6 +22,12 @@ public class ApplicationEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private StatusEnum status = StatusEnum.WAITING;
 
+    @Column(name = "created_at", nullable = false)
+    private String email;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
     @Column(name = "description")
     private String description;
 

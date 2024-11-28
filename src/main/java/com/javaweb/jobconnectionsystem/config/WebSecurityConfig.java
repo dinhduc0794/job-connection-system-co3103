@@ -29,7 +29,9 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request->request.requestMatchers(HttpMethod.GET, "/jobpostings/**").permitAll()
+                .authorizeHttpRequests(request->request
+                        .requestMatchers("/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/jobpostings/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/login/**","register/**").permitAll()
                         .requestMatchers("/admin/**").hasAnyAuthority("admin")
                         .requestMatchers("/applicants/**").hasAnyAuthority("applicant")

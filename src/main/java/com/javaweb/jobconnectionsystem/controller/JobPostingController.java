@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.service.annotation.GetExchange;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("**/jobpostings")
+@RequestMapping("/jobpostings")
 public class JobPostingController {
 
     @Autowired
@@ -37,6 +38,15 @@ public class JobPostingController {
     private InterestedPostService interestedPostService;
     @Autowired
     private ApplicationService applicationService;
+
+    @GetMapping("/all")
+    public ResponseEntity<List<JobPostingSearchResponse>> getAllJobPostings() {
+        List<JobPostingSearchResponse> jobPostings = jobPostingService.getAllJobPostings();
+        if (jobPostings.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(jobPostings);
+    }
 
     // Endpoint lấy tất cả bài đăng công việc theo nhiều tiêu chí
     @GetMapping
