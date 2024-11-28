@@ -22,7 +22,7 @@ public class ApplicationEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private StatusEnum status = StatusEnum.WAITING;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "email", nullable = false)
     private String email;
 
     @Column(name = "phone_number")
