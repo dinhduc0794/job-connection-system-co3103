@@ -79,33 +79,7 @@ public class JobPostingController {
     }
 
     // Endpoint thêm bài đăng công việc
-    @PostMapping("/jobpostings")
-    public ResponseEntity<?> saveJobPosting(@Valid @RequestBody JobPostingDTO jobPostingDTO, BindingResult bindingResult) {
-        ResponseDTO responseDTO = new ResponseDTO();
-        try{
-            if (bindingResult.hasErrors()) {
-                List<String> errorMessages = bindingResult.getFieldErrors()
-                        .stream()
-                        .map(FieldError::getDefaultMessage)
-                        .collect(Collectors.toList());
 
-                responseDTO.setMessage("Validation failed");
-                responseDTO.setDetail(errorMessages);
-                return ResponseEntity.badRequest().body(responseDTO);
-            }
-            // neu dung thi //xuong service -> xuong repo -> save vao db
-            JobPostingEntity jobPostingEntity = jobPostingService.saveJobPosting(jobPostingDTO);
-            if (jobPostingEntity == null) {
-                return ResponseEntity.badRequest().body(null); // Trả về lỗi nếu bài đăng công việc không hợp lệ
-            }
-            return ResponseEntity.ok(jobPostingEntity); // Trả về bài đăng công việc đã thêm
-        }
-        catch (Exception e){
-            responseDTO.setMessage("Internal server error");
-            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
-        }
-    }
 
     @PostMapping("/applications")
     public ResponseEntity<?> saveApplication(@Valid @RequestBody ApplicationDTO applicationDTO, BindingResult bindingResult) {

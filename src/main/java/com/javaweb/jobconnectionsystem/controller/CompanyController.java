@@ -3,6 +3,7 @@ package com.javaweb.jobconnectionsystem.controller;
 import com.javaweb.jobconnectionsystem.entity.ApplicationEntity;
 import com.javaweb.jobconnectionsystem.entity.CompanyEntity;
 import com.javaweb.jobconnectionsystem.entity.JobPostingEntity;
+import com.javaweb.jobconnectionsystem.model.dto.ApplicationDTO;
 import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
 import com.javaweb.jobconnectionsystem.model.dto.JobPostingDTO;
 import com.javaweb.jobconnectionsystem.model.request.CompanySearchRequest;
@@ -31,6 +32,8 @@ public class CompanyController {
 
     @Autowired
     private ApplicationService applicationService;
+    @Autowired
+    private JobPostingService jobPostingService;
 
     @GetMapping("/public/companies")
     public ResponseEntity<List<CompanySearchResponse>> getCompaniesByConditions(@ModelAttribute CompanySearchRequest params) {
@@ -125,4 +128,72 @@ public class CompanyController {
             return ResponseEntity.ok(responseDTO);
         }
     }
+    @PostMapping("/companies/jobpostings/{id}")
+    public ResponseEntity<?> saveJobPosting(@Valid @RequestBody JobPostingDTO jobPostingDTO, BindingResult bindingResult) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        try{
+            if (bindingResult.hasErrors()) {
+                List<String> errorMessages = bindingResult.getFieldErrors()
+                        .stream()
+                        .map(FieldError::getDefaultMessage)
+                        .collect(Collectors.toList());
+
+                responseDTO.setMessage("Validation failed");
+                responseDTO.setDetail(errorMessages);
+                return ResponseEntity.badRequest().body(responseDTO);
+            }
+            // neu dung thi //xuong service -> xuong repo -> save vao db
+            JobPostingEntity jobPostingEntity = jobPostingService.saveJobPosting(jobPostingDTO);
+            if (jobPostingEntity == null) {
+                return ResponseEntity.badRequest().body(null); // Trả về lỗi nếu bài đăng công việc không hợp lệ
+            }
+            return ResponseEntity.ok(jobPostingEntity); // Trả về bài đăng công việc đã thêm
+        }
+        catch (Exception e){
+            responseDTO.setMessage("Internal server error");
+            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
+        }
+    }
+    @PostMapping("/companies/jobpostings/application")
+    //sửa trạng thái
+    public ResponseEntity<?> saveApplication(@Valid @RequestBody ApplicationDTO applicationDTO, BindingResult bindingResult) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        try{
+            if (bindingResult.hasErrors()) {
+                List<String> errorMessages = bindingResult.getFieldErrors()
+                        .stream()
+                        .map(FieldError::getDefaultMessage)
+                        .collect(Collectors.toList());
+                responseDTO.setMessage("Validation failed");
+                responseDTO.setDetail(errorMessages);
+                return ResponseEntity.badRequest().body(responseDTO);
+            }
+            ApplicationEntity applicationEntity = applicationService.saveApplication(applicationDTO);
+            if (applicationEntity == null) {
+                return ResponseEntity.badRequest().body(null);
+            }
+            return ResponseEntity.ok(applicationEntity);
+        }
+        catch (Exception e) {
+            responseDTO.setMessage("Internal server error");
+            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
+        }
+    }
+    @DeleteMapping("/companies/jobpostings/applications/{id}")
+    public ResponseEntity<?> deleteApplication(@PathVariable Long id){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try{
+            applicationService.DeleteApplicationByJobposting(id);
+            responseDTO.setMessage("delete succesfully");
+            responseDTO.setDetail(Collections.singletonList("application has been deleted"));
+            return ResponseEntity.ok(responseDTO);
+        }catch(RuntimeException e ){
+            responseDTO.setMessage("canot delete this application");
+            responseDTO.setDetail(Collections.singletonList("this application is not in status Rejected"));
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
+
 }
