@@ -1,6 +1,5 @@
 package com.javaweb.jobconnectionsystem.model.response;
 
-import com.javaweb.jobconnectionsystem.model.dto.AbstractDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class CompanySearchResponse extends AbstractDTO {
+public class CompanySearchResponse {
     private Long id;
     private String name;
     private Double rating;

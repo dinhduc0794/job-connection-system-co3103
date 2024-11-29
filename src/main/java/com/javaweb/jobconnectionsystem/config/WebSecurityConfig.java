@@ -37,7 +37,7 @@ public class WebSecurityConfig {
 //                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(request -> request.requestMatchers(HttpMethod.GET, "/jobpostings/**").permitAll()
                         .requestMatchers("/public/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/login/**", "register/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/login/**", "/register/**").permitAll()
                         .requestMatchers("/admin/**").hasAnyAuthority("admin")
                         .requestMatchers("/applicants/**").hasAnyAuthority("applicant")
                         .requestMatchers("/companies/**").hasAnyAuthority("company")

@@ -35,17 +35,6 @@ public class CompanyServiceImpl implements CompanyService {
     private EmailRepository emailRepository;
 
     @Override
-    public List<CompanySearchResponse> getAllCompanies() {
-        List<CompanyEntity> companyEntities = companyRepository.findAll();
-
-        List<CompanySearchResponse> companyResponses = new ArrayList<>();
-        for (CompanyEntity ent : companyEntities) {
-            companyResponses.add(companyConverter.toCompanySearchResponse(ent));
-        }
-        return companyResponses;
-    }
-
-    @Override
     public List<CompanySearchResponse> getAllCompanies(CompanySearchRequest params) {
         List<CompanyEntity> companyEntities = companyRepository.findAll(params);
 

@@ -14,7 +14,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class JobPostingDTO extends AbstractDTO {
+public class JobPostingDTO extends PaginationDTO {
     private Long id;
 
     @NotBlank(message = "Job description is required")

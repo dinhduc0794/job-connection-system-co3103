@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class AbstractDTO<T> implements Serializable {
+public class PaginationDTO<T> implements Serializable {
     private static final long serialVersionUID = 7213600440729202783L;
 
     private Long id;
@@ -23,4 +23,5 @@ public class AbstractDTO<T> implements Serializable {
     private Integer limit;
     private Integer totalPage;  // tong so trang, co the tinh duoc tu totalItem va maxPageItems
     private Integer totalItem;  // tong so item
+
 }

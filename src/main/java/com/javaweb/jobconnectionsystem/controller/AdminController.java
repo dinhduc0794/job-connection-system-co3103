@@ -35,14 +35,6 @@ public class AdminController {
     public ResponseEntity<List<CompanySearchResponse>> getCompaniesByConditions(@ModelAttribute CompanySearchRequest params) {
         List<CompanySearchResponse> companyResponses = companyService.getAllCompanies(params);
 
-        int totalItems = companyService.countTotalItems(params);
-        int totalPage = (int) Math.ceil((double) totalItems / params.getMaxPageItems());
-
-        CompanySearchResponse response = new CompanySearchResponse();
-        response.setListResult(companyResponses);
-        response.setTotalItems(totalItems);
-        response.setTotalPage(totalPage);
-
         if (companyResponses.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

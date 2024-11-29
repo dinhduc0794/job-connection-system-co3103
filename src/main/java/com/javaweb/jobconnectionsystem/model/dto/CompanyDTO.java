@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class CompanyDTO extends AbstractDTO{
+public class CompanyDTO extends PaginationDTO {
     private Long id;
 
     @NotBlank(message ="Username is required")

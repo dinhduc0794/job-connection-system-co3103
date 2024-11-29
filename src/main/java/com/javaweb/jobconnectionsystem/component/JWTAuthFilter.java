@@ -66,7 +66,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
                 Pair.of("/register/company","POST")// Bỏ qua xác thực cho POST /public/login
         );
         String uri = request.getRequestURI();
-        if (uri.startsWith("/public/")) {
+        if (uri.startsWith("/public")) {
             return true; // Bỏ qua lọc đối với tất cả các đường dẫn bắt đầu bằng /public/
         }
         for (Pair<String, String> bypassToken : bypassTokens) {

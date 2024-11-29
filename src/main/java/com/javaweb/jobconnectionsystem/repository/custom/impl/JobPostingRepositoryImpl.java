@@ -22,21 +22,23 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
 
     @Override
     public List<JobPostingEntity> findAll(JobPostingSearchRequest params, Pageable pageable) {
-        StringBuilder sql = new StringBuilder("SELECT jp.* FROM jobposting jp ");
+        StringBuilder sql = new StringBuilder("SELECT DISTINCT jp.* FROM jobposting jp ");
 
-        handleJoinTable(params, sql);
-        handleWhereCondition(params, sql);
+        handleJoinTable(params, sql); // Handle dynamic joins
+        handleWhereCondition(params, sql); // Handle dynamic conditions
 
+        // Phai group by truoc order, sau thi bi loi
+        sql.append(" GROUP BY jp.id");
         sql.append(" ORDER BY jp.id DESC");
-        sql.append(" GROUP BY jp.id");	//handle duplicate
 
-        // phan trang dong
+        // Pagination
         String pagination = " LIMIT " + pageable.getPageSize() + " OFFSET " + pageable.getOffset();
         sql.append(pagination);
 
         Query query = entityManager.createNativeQuery(sql.toString(), JobPostingEntity.class);
         return query.getResultList();
     }
+
 
     public void handleJoinTable(JobPostingSearchRequest params, StringBuilder sql) {
         /* join to get job type */

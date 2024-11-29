@@ -26,30 +26,12 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/companies")
 public class CompanyController {
-
     @Autowired
     private CompanyService companyService;
-
-    @GetMapping("/all")
-    public ResponseEntity<List<CompanySearchResponse>> getAllComapnies() {
-        List<CompanySearchResponse> companySearchResponses = companyService.getAllCompanies();
-        if (companySearchResponses.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(companySearchResponses);
-    }
 
     @GetMapping
     public ResponseEntity<List<CompanySearchResponse>> getCompaniesByConditions(@ModelAttribute CompanySearchRequest params) {
         List<CompanySearchResponse> companyResponses = companyService.getAllCompanies(params);
-
-        int totalItems = companyService.countTotalItems(params);
-        int totalPage = (int) Math.ceil((double) totalItems / params.getMaxPageItems());
-
-        CompanySearchResponse response = new CompanySearchResponse();
-        response.setListResult(companyResponses);
-        response.setTotalItems(totalItems);
-        response.setTotalPage(totalPage);
 
         if (companyResponses.isEmpty()) {
             return ResponseEntity.noContent().build();

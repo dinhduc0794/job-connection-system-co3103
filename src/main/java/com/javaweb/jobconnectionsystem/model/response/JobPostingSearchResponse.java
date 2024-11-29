@@ -1,16 +1,14 @@
 package com.javaweb.jobconnectionsystem.model.response;
 
-import com.javaweb.jobconnectionsystem.model.dto.AbstractDTO;
+import com.javaweb.jobconnectionsystem.model.dto.PaginationDTO;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.List;
 
 @Getter
 @Setter
-public class JobPostingSearchResponse extends AbstractDTO {
+public class JobPostingSearchResponse extends PaginationDTO {
     private Long id;
     private String title;
     private String schedule;    //Enum
