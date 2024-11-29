@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CompanyService {
+    List<CompanySearchResponse> getAllCompanies();
+
     CompanyEntity saveCompany(CompanyDTO companyDTO);
 
     List<CompanySearchResponse> getAllCompanies(CompanySearchRequest params);

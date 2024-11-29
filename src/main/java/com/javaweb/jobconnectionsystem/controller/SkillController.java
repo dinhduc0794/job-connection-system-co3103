@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
+/// nhớ sửa public
 @RestController
-@RequestMapping("/skills")
+@RequestMapping("/public/skills")
 public class SkillController {
 
     @Autowired

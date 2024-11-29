@@ -50,4 +50,23 @@ public class UserDetailServiceImpl implements UserDetailsService {
                 Collections.singletonList(new SimpleGrantedAuthority(Role))
         );
     }
+    public String loadRoleByUsername(String username){
+        AccountEntity account = accountRepository.findByUsername(username).get();
+        String passwordFromDb = account.getPassword();
+        if (account == null) {
+            throw new UsernameNotFoundException(username);
+        }
+        String Role;
+        if(adminRepository.existsById(account.getId())){
+            return "admin";
+        }
+        else if(companyRepository.existsById(account.getId())){
+            return "company";
+        }
+        else if(applicantRepository.existsById(account.getId())){
+            return "applicant";
+        }else{
+            throw new UsernameNotFoundException("Invalid account type");
+        }
+    }
 }

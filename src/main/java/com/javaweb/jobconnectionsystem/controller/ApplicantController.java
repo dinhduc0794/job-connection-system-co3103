@@ -1,13 +1,11 @@
 package com.javaweb.jobconnectionsystem.controller;
 
-import com.javaweb.jobconnectionsystem.entity.ApplicantEntity;
-import com.javaweb.jobconnectionsystem.entity.ApplicationEntity;
-import com.javaweb.jobconnectionsystem.entity.CompanyEntity;
+import com.javaweb.jobconnectionsystem.entity.*;
 import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
+import com.javaweb.jobconnectionsystem.model.dto.RateCompanyDTO;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
-import com.javaweb.jobconnectionsystem.service.ApplicantService;
-import com.javaweb.jobconnectionsystem.service.ApplicationService;
+import com.javaweb.jobconnectionsystem.service.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +28,61 @@ public class ApplicantController {
     @Autowired
     private ApplicationService applicationService;
 
+    @Autowired
+    private CertificationService certificationService;
+    @Autowired
+    private RateCompanyService rateCompanyService;
+    @Autowired
+    private SkillService skillService;
+
+    @PostMapping("/rate-company")
+    public ResponseEntity<?> rateCompany(@Valid @RequestBody RateCompanyDTO rateCompanyDTO, BindingResult bindingResult) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        try{
+            if (bindingResult.hasErrors()) {
+                List<String> errorMessages = bindingResult.getFieldErrors()
+                        .stream()
+                        .map(FieldError::getDefaultMessage)
+                        .collect(Collectors.toList());
+
+                responseDTO.setMessage("Validation failed");
+                responseDTO.setDetail(errorMessages);
+                return ResponseEntity.badRequest().body(responseDTO);
+            }
+            // neu dung thi //xuong service -> xuong repo -> save vao db
+            responseDTO = rateCompanyService.saveRate(rateCompanyDTO);
+            return ResponseEntity.ok(responseDTO);
+        }
+        catch (Exception e){
+            responseDTO.setMessage("Internal server error");
+            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
+        }
+    }
+
+    @DeleteMapping("/rate-company/{id}")
+    public ResponseEntity<?> deleteRate(@PathVariable Long id) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            rateCompanyService.deleteRate(id);
+            responseDTO.setMessage("Delete rate successfully");
+            return ResponseEntity.ok(responseDTO);
+        } catch (Exception e) {
+            responseDTO.setMessage("Internal server error");
+            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
+        }
+    }
+
+    // Endpoint thêm chứng chỉ
+    @PostMapping("/certification")
+    public ResponseEntity<CertificationEntity> addCertification(@RequestBody CertificationEntity certification) {
+        CertificationEntity createdCertification = certificationService.addCertification(certification);
+        if (createdCertification == null) {
+            return ResponseEntity.badRequest().body(null); // Trả về lỗi nếu chứng chỉ không hợp lệ
+        }
+        return ResponseEntity.ok(createdCertification); // Trả về chứng chỉ đã thêm
+    }
     // Endpoint thêm ứng viên
     @PostMapping()
     public ResponseEntity<?> saveApplicant(@Valid @RequestBody ApplicantDTO applicantDTO, BindingResult bindingResult) {
@@ -149,5 +202,48 @@ public class ApplicantController {
             return ResponseEntity.badRequest().body(responseDTO);
         }
 
+    }
+    // Endpoint thêm kỹ năng
+    @PostMapping("/skills")
+    public ResponseEntity<SkillEntity> addSkill(@RequestBody SkillEntity skill) {
+        SkillEntity createdSkill = skillService.addSkill(skill);
+        if (createdSkill == null) {
+            return ResponseEntity.badRequest().body(null); // Trả về lỗi nếu kỹ năng không hợp lệ
+        }
+        return ResponseEntity.ok(createdSkill); // Trả về kỹ năng đã thêm
+    }
+
+    // Endpoint lấy tất cả kỹ năng
+    @GetMapping("/skills")
+    public ResponseEntity<List<SkillEntity>> getAllSkills() {
+        List<SkillEntity> skills = skillService.getAllSkills();
+        if (skills.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Nếu không có kỹ năng, trả về 204 No Content
+        }
+        return ResponseEntity.ok(skills); // Trả về danh sách kỹ năng
+    }
+
+    // Endpoint lấy kỹ năng theo ID
+    @GetMapping("/skills/{id}")
+    public ResponseEntity<SkillEntity> getSkillById(@PathVariable Long id) {
+        Optional<SkillEntity> skill = skillService.getSkillById(id);
+        return skill.map(ResponseEntity::ok) // Trả về kỹ năng nếu tìm thấy
+                .orElseGet(() -> ResponseEntity.notFound().build()); // Trả về 404 nếu không tìm thấy kỹ năng
+    }
+
+    // Endpoint xóa kỹ năng
+    @DeleteMapping("/skills/{id}")
+    public ResponseEntity<?> deleteSkill(@PathVariable Long id) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            skillService.deleteSkillById(id);
+            responseDTO.setMessage("Delete successfully");
+            responseDTO.setDetail(Collections.singletonList("Skill has been deleted"));
+            return ResponseEntity.ok().body(responseDTO);
+        } catch (RuntimeException e) {
+            responseDTO.setMessage("Internal server error");
+            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
+        }
     }
 }

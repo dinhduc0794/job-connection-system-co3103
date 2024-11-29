@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/fields")
+@RequestMapping("/public/fields")
 public class FieldController {
 
     @Autowired

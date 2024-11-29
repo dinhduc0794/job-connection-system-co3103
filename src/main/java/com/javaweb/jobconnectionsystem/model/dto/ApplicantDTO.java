@@ -39,6 +39,4 @@ public class ApplicantDTO {
     private List<String> emails;
     private List<Long> notificationIds;
     private List<Long> blockedUserIds;
-
-
 }

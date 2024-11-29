@@ -21,6 +21,7 @@ public class InterestedPostController {
     @Autowired
     private InterestedPostService interestedPostService;
 
+    // ham nay handle ca 2 viec insert va uninterested
     @PostMapping()
     public ResponseEntity<?> saveInterestedPost(@Valid @RequestBody InterestedPostDTO interestedPostDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
@@ -45,18 +46,4 @@ public class InterestedPostController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
         }
     }
-
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<?> deleteRate(@PathVariable Long id) {
-//        ResponseDTO responseDTO = new ResponseDTO();
-//        try {
-//            interestedPostService.deleteInterestedPost(id);
-//            responseDTO.setMessage("Delete interested post successfully");
-//            return ResponseEntity.ok(responseDTO);
-//        } catch (Exception e) {
-//            responseDTO.setMessage("Internal server error");
-//            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
-//        }
-//    }
 }

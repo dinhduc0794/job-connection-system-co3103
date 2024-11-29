@@ -43,8 +43,9 @@ public class JWTAuthFilter extends OncePerRequestFilter {
             }
             username = jwtUtil.extractUsername(jwtToken);
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = userDertailService.loadUserByUsername(username);
-                if (jwtUtil.validateToken(jwtToken, username)) {
+                String role = userDertailService.loadRoleByUsername(username);
+                UserDetails userDetails=userDertailService.loadUserByUsername(username);
+                if (jwtUtil.validateToken(jwtToken,role)){
                     UsernamePasswordAuthenticationToken authenticationToken =
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
@@ -60,9 +61,14 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     private boolean isBypassToken(@NonNull HttpServletRequest request) {
         final List<Pair<String, String>> bypassTokens = Arrays.asList(
                 Pair.of("/jobpostings", "GET"),
-                Pair.of("/login", "POST"), Pair.of("/register/applicant","POST"),
-                Pair.of("/register/company","POST") // Bỏ qua xác thực cho POST /public/login
+                Pair.of("/login", "POST"),
+                Pair.of("/register/applicant","POST"),
+                Pair.of("/register/company","POST")// Bỏ qua xác thực cho POST /public/login
         );
+        String uri = request.getRequestURI();
+        if (uri.startsWith("/public/")) {
+            return true; // Bỏ qua lọc đối với tất cả các đường dẫn bắt đầu bằng /public/
+        }
         for (Pair<String, String> bypassToken : bypassTokens) {
             if (request.getServletPath().contains(bypassToken.getFirst()) &&
                     request.getMethod().equals(bypassToken.getSecond())) {

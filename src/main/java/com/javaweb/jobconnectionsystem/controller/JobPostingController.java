@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/jobpostings")
+@RequestMapping("/public/jobpostings")
 public class JobPostingController {
 
     @Autowired

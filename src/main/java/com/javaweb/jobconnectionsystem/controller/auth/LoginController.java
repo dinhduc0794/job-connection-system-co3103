@@ -48,7 +48,7 @@ public class LoginController {
             }
             LoginResponse loginReponse = new LoginResponse();
             loginReponse.setToken(authService.login(loginDTO));
-            loginReponse.setRole(jwtUtils.role(loginReponse.getToken()));
+            loginReponse.setRole(jwtUtils.getRole(loginReponse.getToken()));
             loginReponse.setId(accountService.getIdAccountByUsername(loginDTO.getUsername()));
             return ResponseEntity.ok(loginReponse);
         }  catch (BadCredentialsException ex) {

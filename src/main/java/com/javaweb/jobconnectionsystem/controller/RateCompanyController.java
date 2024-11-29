@@ -21,45 +21,5 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/rate-company")
 public class RateCompanyController {
-    @Autowired
-    private RateCompanyService rateCompanyService;
 
-    @PostMapping
-    public ResponseEntity<?> rateApplicant(@Valid @RequestBody RateCompanyDTO rateCompanyDTO, BindingResult bindingResult) {
-        ResponseDTO responseDTO = new ResponseDTO();
-        try{
-            if (bindingResult.hasErrors()) {
-                List<String> errorMessages = bindingResult.getFieldErrors()
-                        .stream()
-                        .map(FieldError::getDefaultMessage)
-                        .collect(Collectors.toList());
-
-                responseDTO.setMessage("Validation failed");
-                responseDTO.setDetail(errorMessages);
-                return ResponseEntity.badRequest().body(responseDTO);
-            }
-            // neu dung thi //xuong service -> xuong repo -> save vao db
-            responseDTO = rateCompanyService.saveRate(rateCompanyDTO);
-            return ResponseEntity.ok(responseDTO);
-        }
-        catch (Exception e){
-            responseDTO.setMessage("Internal server error");
-            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteRate(@PathVariable Long id) {
-        ResponseDTO responseDTO = new ResponseDTO();
-        try {
-            rateCompanyService.deleteRate(id);
-            responseDTO.setMessage("Delete rate successfully");
-            return ResponseEntity.ok(responseDTO);
-        } catch (Exception e) {
-            responseDTO.setMessage("Internal server error");
-            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
-        }
-    }
 }

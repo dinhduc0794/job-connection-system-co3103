@@ -30,6 +30,15 @@ public class CompanyController {
     @Autowired
     private CompanyService companyService;
 
+    @GetMapping("/all")
+    public ResponseEntity<List<CompanySearchResponse>> getAllComapnies() {
+        List<CompanySearchResponse> companySearchResponses = companyService.getAllCompanies();
+        if (companySearchResponses.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(companySearchResponses);
+    }
+
     @GetMapping
     public ResponseEntity<List<CompanySearchResponse>> getCompaniesByConditions(@ModelAttribute CompanySearchRequest params) {
         List<CompanySearchResponse> companyResponses = companyService.getAllCompanies(params);
