@@ -7,7 +7,9 @@ import com.javaweb.jobconnectionsystem.model.dto.AddressDTO;
 import com.javaweb.jobconnectionsystem.model.response.CompanyDetailResponse;
 import com.javaweb.jobconnectionsystem.model.response.CompanySearchResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
+import com.javaweb.jobconnectionsystem.repository.FieldRepository;
 import com.javaweb.jobconnectionsystem.repository.WardRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,6 +27,8 @@ public class CompanyConverter {
     private JobPostingConverter jobPostingConverter;
     @Autowired
     private WardRepository wardRepository;
+    @Autowired
+    private FieldRepository fieldRepository;
 
     public CompanyEntity toCompanyEntity (CompanyDTO companyDTO) {
         CompanyEntity companyEntity = modelMapper.map(companyDTO, CompanyEntity.class);
@@ -39,6 +43,17 @@ public class CompanyConverter {
                 companyEntity.setAddress(address);
             }
         }
+        List<Long> fieldIds = companyDTO.getFieldIds();
+        if (fieldIds != null && !fieldIds.isEmpty()) {
+            for (Long fieldId : fieldIds) {
+                // Fetch the FieldEntity for each fieldId from the database
+                FieldEntity fieldEntity = fieldRepository.findById(fieldId).orElseThrow(() ->
+                        new EntityNotFoundException("FieldEntity with ID " + fieldId + " not found"));
+                // Add the FieldEntity to the company's field list
+                companyEntity.getFields().add(fieldEntity);  // Assuming CompanyEntity has a `fields` collection
+            }
+        }
+
         return  companyEntity;
     }
 

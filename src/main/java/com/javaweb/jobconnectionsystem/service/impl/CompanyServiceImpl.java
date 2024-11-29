@@ -100,12 +100,10 @@ public class CompanyServiceImpl implements CompanyService {
         if (companyEntity.getEmails() != null) {
             companyEntity.getEmails().clear(); // Làm sạch danh sách
         }
-
         for (String email : companyDTO.getEmails()) {
             if (emailRepository.existsByEmail(email)) {
                 throw new RuntimeException("email already exists: " + email);
             }
-
             EmailEntity emailEntity = new EmailEntity();
             emailEntity.setEmail(email);
             emailEntity.setUser(companyEntity);

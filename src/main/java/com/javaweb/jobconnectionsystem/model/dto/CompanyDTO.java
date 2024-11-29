@@ -23,7 +23,7 @@ public class CompanyDTO extends PaginationDTO {
 
     @NotBlank(message = "Company tax code is required")
     private String taxCode;
-
+    private List<Long> fieldIds;
     private Double rating;
     private Long remainingPost;
     private String image = "bg.jpg";
