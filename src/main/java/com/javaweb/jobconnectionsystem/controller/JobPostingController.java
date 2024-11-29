@@ -60,8 +60,8 @@ public class JobPostingController {
 
         JobPostingSearchResponse response = new JobPostingSearchResponse();
         response.setListResult(jobPostings);
-        response.setTotalItems(totalItems);
-        response.setTotalPage(totalPage);
+        response.setTotalItem(jobPostingService.countTotalItems(params));
+        response.setTotalPage();
 
         if (jobPostings.isEmpty()) {
             return ResponseEntity.noContent().build(); // Nếu không có bài đăng công việc, trả về 204 No Content

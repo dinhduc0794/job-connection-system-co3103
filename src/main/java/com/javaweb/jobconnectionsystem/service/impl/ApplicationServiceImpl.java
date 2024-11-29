@@ -71,6 +71,11 @@ public class ApplicationServiceImpl implements ApplicationService {
         List<ApplicationEntity> listApplication = applicationRepository.findByApplicant_Id(id);
         return listApplication;
     }
+    @Override
+    public ApplicationEntity getApplicationById(Long id) {
+        ApplicationEntity applicationEntity = applicationRepository.findById(id).get();
+        return applicationEntity;
+    }
 
     @Override
     public List<ApplicationEntity> getAllApplicationByJobpostingId(Long id) {

@@ -148,10 +148,6 @@ public class ApplicantController {
         }
     }
 
-
-
-
-
     // Endpoint cập nhật thông tin ứng viên
     @PutMapping("/applicants/{id}")
     public ResponseEntity<ApplicantEntity> updateApplicant(@PathVariable Long id, @RequestBody ApplicantEntity applicantDetails) {
@@ -178,7 +174,7 @@ public class ApplicantController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
         }
     }
-    @GetMapping("/applicants/applications/{id}")
+    @GetMapping("/applicants/{id}/applications")
     public ResponseEntity<?> getAllApplication(@PathVariable Long id){
         ResponseDTO responseDTO = new ResponseDTO();
         List<ApplicationEntity> applicationByApplicanID = applicationService.getAllApplicationByApplicantId(id);
@@ -192,6 +188,22 @@ public class ApplicantController {
             return ResponseEntity.ok(responseDTO);
         }
     }
+//
+    @GetMapping("/applicants/applications/{id}")
+    public ResponseEntity<?> getApplicationById(@PathVariable Long id){
+        ResponseDTO responseDTO = new ResponseDTO();
+        ApplicationEntity application = applicationService.getApplicationById(id);
+        if (application == null){
+            responseDTO.setMessage("application not found");
+            return ResponseEntity.ok(responseDTO);
+        }
+        else {
+            responseDTO.setMessage("application with jobposting");
+            responseDTO.setData(application);
+            return ResponseEntity.ok(responseDTO);
+        }
+    }
+
     @DeleteMapping("/applicants/application/{id}")
     public ResponseEntity<?> deleteApplication(@PathVariable Long id){
         ResponseDTO responseDTO = new ResponseDTO();

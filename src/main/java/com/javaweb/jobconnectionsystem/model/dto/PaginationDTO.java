@@ -19,9 +19,11 @@ public class PaginationDTO<T> implements Serializable {
     private int maxPageItems = 9;   // so luong item tren 1 trang
     private int page = 1;            //current page, mac dinh nhay vao khi vao lan dau tien
     private List<T> listResult = new ArrayList<>();
-    private int totalItems = 0;
     private Integer limit;
     private Integer totalPage;  // tong so trang, co the tinh duoc tu totalItem va maxPageItems
     private Integer totalItem;  // tong so item
 
+    public void setTotalPage() {
+        this.totalPage = (int) Math.ceil((double) this.totalItem / this.maxPageItems);
+    }
 }

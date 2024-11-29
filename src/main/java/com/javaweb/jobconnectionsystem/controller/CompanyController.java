@@ -8,6 +8,7 @@ import com.javaweb.jobconnectionsystem.model.dto.JobPostingDTO;
 import com.javaweb.jobconnectionsystem.model.request.CompanySearchRequest;
 import com.javaweb.jobconnectionsystem.model.request.JobPostingSearchRequest;
 import com.javaweb.jobconnectionsystem.model.response.*;
+import com.javaweb.jobconnectionsystem.service.ApplicationService;
 import com.javaweb.jobconnectionsystem.service.CompanyService;
 import com.javaweb.jobconnectionsystem.service.JobPostingService;
 import jakarta.validation.Valid;
@@ -27,6 +28,9 @@ import java.util.stream.Collectors;
 public class CompanyController {
     @Autowired
     private CompanyService companyService;
+
+    @Autowired
+    private ApplicationService applicationService;
 
     @GetMapping("/public/companies")
     public ResponseEntity<List<CompanySearchResponse>> getCompaniesByConditions(@ModelAttribute CompanySearchRequest params) {
@@ -104,6 +108,21 @@ public class CompanyController {
             responseDTO.setMessage("Internal server error");
             responseDTO.setDetail(Collections.singletonList(e.getMessage()));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
+        }
+    }
+
+    @GetMapping("/companies/applications/{id}")
+    public ResponseEntity<?> getApplicationById(@PathVariable Long id){
+        ResponseDTO responseDTO = new ResponseDTO();
+        ApplicationEntity application = applicationService.getApplicationById(id);
+        if (application == null){
+            responseDTO.setMessage("application not found");
+            return ResponseEntity.ok(responseDTO);
+        }
+        else {
+            responseDTO.setMessage("application with jobposting");
+            responseDTO.setData(application);
+            return ResponseEntity.ok(responseDTO);
         }
     }
 }
