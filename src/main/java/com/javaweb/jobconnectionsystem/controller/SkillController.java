@@ -39,7 +39,7 @@ public class SkillController {
                         .collect(Collectors.toList());
 
                 responseDTO.setMessage("Validation failed");
-                responseDTO.setDetail(errorMessages);   
+                responseDTO.setDetail(errorMessages);
                 return ResponseEntity.badRequest().body(responseDTO);
             }
             // neu dung thi //xuong service -> xuong repo -> save vao db

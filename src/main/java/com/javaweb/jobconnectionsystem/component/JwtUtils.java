@@ -47,7 +47,7 @@ public class JwtUtils {
                     .setSubject(userDetails.getUsername())
                     .claim("role", roles)  // Lưu roles vào claim "role"
                     .setIssuedAt(new Date())
-                    .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 10)) // Token hết hạn sau 10 phút
+                    .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 120)) // Token hết hạn sau 20 phút
                     .signWith(SECRET_KEY)
                     .compact();
         }
