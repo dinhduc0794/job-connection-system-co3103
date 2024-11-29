@@ -9,7 +9,6 @@ import com.javaweb.jobconnectionsystem.model.response.JobPostingDetailResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
 import com.javaweb.jobconnectionsystem.service.ApplicationService;
-import com.javaweb.jobconnectionsystem.service.InterestedPostService;
 import com.javaweb.jobconnectionsystem.service.JobPostingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.service.annotation.GetExchange;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -34,8 +30,6 @@ public class JobPostingController {
     @Autowired
     private JobPostingService jobPostingService;
 
-    @Autowired
-    private InterestedPostService interestedPostService;
     @Autowired
     private ApplicationService applicationService;
 

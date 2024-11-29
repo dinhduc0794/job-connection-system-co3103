@@ -1,9 +1,8 @@
 package com.javaweb.jobconnectionsystem.service;
 
-import com.javaweb.jobconnectionsystem.entity.InterestedPostEntity;
 import com.javaweb.jobconnectionsystem.model.dto.InterestedPostDTO;
+import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
 
 public interface InterestedPostService {
-    public InterestedPostEntity saveInterestedPost(InterestedPostDTO interestedPostDTO);
-    public void deleteInterestedPost(Long id);
+    ResponseDTO saveInterestedPost(InterestedPostDTO interestedPostDTO);
 }

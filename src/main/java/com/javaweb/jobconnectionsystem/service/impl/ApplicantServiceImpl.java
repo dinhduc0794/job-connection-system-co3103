@@ -1,8 +1,10 @@
 package com.javaweb.jobconnectionsystem.service.impl;
 
 import com.javaweb.jobconnectionsystem.converter.ApplicantConverter;
+import com.javaweb.jobconnectionsystem.converter.JobPostingConverter;
 import com.javaweb.jobconnectionsystem.entity.*;
 import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
+import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.repository.*;
 import com.javaweb.jobconnectionsystem.service.ApplicantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,8 @@ public class ApplicantServiceImpl implements ApplicantService {
     private EmailRepository emailRepository;
     @Autowired
     private JobTypeRepository jobTypeRepository;
+    @Autowired
+    private JobPostingConverter jobPostingConverter;
     @Override
     public List<ApplicantEntity> getAllApplicants() {
         return applicantRepository.findAll();
@@ -75,6 +79,16 @@ public class ApplicantServiceImpl implements ApplicantService {
             return null;
         }
         return applicant;
+    }
+
+    @Override
+    public List<JobPostingSearchResponse> getInterestedPostsByApplicantId(Long id) {
+        List<JobPostingEntity> jobPostings = applicantRepository.findById(id).get().getInterestedPosts();
+        List<JobPostingSearchResponse> jobPostingSearchResponses = new ArrayList<>();
+        for (JobPostingEntity jobPosting : jobPostings) {
+            jobPostingSearchResponses.add(jobPostingConverter.toJobPostingSearchResponse(jobPosting));
+        }
+        return jobPostingSearchResponses;
     }
 
     @Override

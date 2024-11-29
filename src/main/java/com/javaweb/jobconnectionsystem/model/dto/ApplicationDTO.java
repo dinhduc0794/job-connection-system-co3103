@@ -19,7 +19,7 @@ public class ApplicationDTO {
     private String email;
     @NotBlank(message="Phone number is required")
     private String phoneNumber;
-    @NotBlank(message="Resume is required")
+    @NotBlank(message="Resume is reqxuired")
     private String resume;
     @NotNull(message="ApplicantId is required")
     private Long applicantId;

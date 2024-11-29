@@ -1,53 +1,48 @@
 package com.javaweb.jobconnectionsystem.service.impl;
 
 import com.javaweb.jobconnectionsystem.entity.ApplicantEntity;
-import com.javaweb.jobconnectionsystem.entity.InterestedPostEntity;
 import com.javaweb.jobconnectionsystem.entity.JobPostingEntity;
 import com.javaweb.jobconnectionsystem.model.dto.InterestedPostDTO;
+import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
 import com.javaweb.jobconnectionsystem.repository.ApplicantRepository;
-import com.javaweb.jobconnectionsystem.repository.InterestedPostRepository;
 import com.javaweb.jobconnectionsystem.repository.JobPostingRepository;
 import com.javaweb.jobconnectionsystem.service.InterestedPostService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class InterestedPostServiceImpl implements InterestedPostService {
     @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private InterestedPostRepository interestedPostRepository;
-    @Autowired
     private ApplicantRepository applicantRepository;
     @Autowired
     private JobPostingRepository jobPostingRepository;
 
     @Override
-    public InterestedPostEntity saveInterestedPost(InterestedPostDTO interestedPostDTO){
-        InterestedPostEntity interestedPostEntity = modelMapper.map(interestedPostDTO, InterestedPostEntity.class);
+    public ResponseDTO saveInterestedPost(InterestedPostDTO interestedPostDTO) {
+        ResponseDTO responseDTO = new ResponseDTO();
 
-        ApplicantEntity applicantEntity = applicantRepository.findById(interestedPostDTO.getApplicantId()).get();
-        JobPostingEntity jobPostingEntity = jobPostingRepository.findById(interestedPostDTO.getJobPostingId()).get();
+        // Lấy thực thể applicant
+        ApplicantEntity applicantEntity = applicantRepository.findById(interestedPostDTO.getApplicantId())
+                .orElseThrow(() -> new IllegalArgumentException("Applicant not found"));
 
-        if(interestedPostDTO.getId() != null || interestedPostRepository.existsByApplicantAndJobPosting(applicantEntity, jobPostingEntity)) {
-            interestedPostRepository.delete(interestedPostRepository.findByApplicantAndJobPosting(applicantEntity, jobPostingEntity));
-        }
-        if(interestedPostDTO.getApplicantId() != null) {
-            interestedPostEntity.setApplicant(applicantEntity);
-        }
-        if(interestedPostDTO.getJobPostingId() != null) {
-            interestedPostEntity.setJobPosting(jobPostingEntity);
+        // Lấy thực thể jobPosting
+        JobPostingEntity jobPostingEntity = jobPostingRepository.findById(interestedPostDTO.getJobPostingId())
+                .orElseThrow(() -> new IllegalArgumentException("Job posting not found"));
+
+        // Kiểm tra xem jobPosting đã tồn tại trong danh sách interestedPosts chưa
+        if (applicantEntity.getInterestedPosts().contains(jobPostingEntity)) {
+            // Nếu tồn tại, xóa mối quan hệ
+            applicantEntity.getInterestedPosts().remove(jobPostingEntity);
+            responseDTO.setMessage("Uninterested post successfully");
+        } else {
+            // Nếu chưa tồn tại, thêm mối quan hệ
+            applicantEntity.getInterestedPosts().add(jobPostingEntity);
+            responseDTO.setMessage("Save interested post successfully");
         }
 
-        return interestedPostRepository.save(interestedPostEntity);
-    }
+        // Lưu lại applicantEntity
+        applicantRepository.save(applicantEntity);
 
-    @Override
-    public void deleteInterestedPost(Long id){
-        if (!interestedPostRepository.existsById(id)) {
-            throw new RuntimeException("Interested post not found");
-        }
-        interestedPostRepository.deleteById(id);
+        return responseDTO;
     }
 }

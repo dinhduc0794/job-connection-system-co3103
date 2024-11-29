@@ -4,6 +4,7 @@ import com.javaweb.jobconnectionsystem.entity.ApplicantEntity;
 import com.javaweb.jobconnectionsystem.entity.ApplicationEntity;
 import com.javaweb.jobconnectionsystem.entity.CompanyEntity;
 import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
+import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
 import com.javaweb.jobconnectionsystem.service.ApplicantService;
 import com.javaweb.jobconnectionsystem.service.ApplicationService;
@@ -77,6 +78,21 @@ public class ApplicantController {
         Optional<ApplicantEntity> applicant = applicantService.getApplicantById(id);
         return applicant.map(ResponseEntity::ok) // Trả về ứng viên nếu tìm thấy
                 .orElseGet(() -> ResponseEntity.notFound().build()); // Trả về 404 nếu không tìm thấy ứng viên
+    }
+
+    @GetMapping("/{id}/interested-posts")
+    public ResponseEntity<?> getInterestedPosts(@PathVariable Long id){
+        ResponseDTO responseDTO = new ResponseDTO();
+        List<JobPostingSearchResponse> interestedPosts = applicantService.getInterestedPostsByApplicantId(id);
+        if (interestedPosts.isEmpty()){
+            responseDTO.setMessage("you have no interested post");
+            return ResponseEntity.ok(responseDTO);
+        }
+        else {
+            responseDTO.setMessage("interested post");
+            responseDTO.setData(interestedPosts);
+            return ResponseEntity.ok(responseDTO);
+        }
     }
 
     // Endpoint cập nhật thông tin ứng viên

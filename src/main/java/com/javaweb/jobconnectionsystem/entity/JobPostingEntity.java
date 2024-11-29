@@ -82,7 +82,7 @@ public class JobPostingEntity extends BaseEntity {
     @JsonManagedReference
     private List<ApplicationEntity> applications;
 
-    @OneToMany(mappedBy = "jobPosting", orphanRemoval = true, cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<InterestedPostEntity> interestedPostEntities = new ArrayList<>();
+    @ManyToMany(mappedBy="interestedPosts")
+    @JsonBackReference
+    private List<ApplicantEntity> applicants = new ArrayList<>();
 }

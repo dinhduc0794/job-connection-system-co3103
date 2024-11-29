@@ -1,12 +1,8 @@
 package com.javaweb.jobconnectionsystem.controller;
 
-import com.javaweb.jobconnectionsystem.entity.InterestedPostEntity;
-import com.javaweb.jobconnectionsystem.entity.RateCompanyEntity;
 import com.javaweb.jobconnectionsystem.model.dto.InterestedPostDTO;
-import com.javaweb.jobconnectionsystem.model.dto.RateCompanyDTO;
 import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
 import com.javaweb.jobconnectionsystem.service.InterestedPostService;
-import com.javaweb.jobconnectionsystem.service.RateCompanyService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,13 +16,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/interested-post")
+@RequestMapping("/interested-posts")
 public class InterestedPostController {
     @Autowired
     private InterestedPostService interestedPostService;
 
     @PostMapping()
-    public ResponseEntity<?> rateApplicant(@Valid @RequestBody InterestedPostDTO interestedPostDTO, BindingResult bindingResult) {
+    public ResponseEntity<?> saveInterestedPost(@Valid @RequestBody InterestedPostDTO interestedPostDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
         try{
             if (bindingResult.hasErrors()) {
@@ -40,11 +36,8 @@ public class InterestedPostController {
                 return ResponseEntity.badRequest().body(responseDTO);
             }
             // neu dung thi //xuong service -> xuong repo -> save vao db
-            InterestedPostEntity interestedPostEntity = interestedPostService.saveInterestedPost(interestedPostDTO);
-            if (interestedPostEntity == null) {
-                return ResponseEntity.badRequest().body(null);
-            }
-            return ResponseEntity.ok(interestedPostEntity);
+            responseDTO = interestedPostService.saveInterestedPost(interestedPostDTO);
+            return ResponseEntity.ok(responseDTO);
         }
         catch (Exception e){
             responseDTO.setMessage("Internal server error");

@@ -35,7 +35,9 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .authorizeHttpRequests(request -> request.requestMatchers(HttpMethod.GET, "/jobpostings/**").permitAll()
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers("/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/jobpostings/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login/**", "register/**").permitAll()
                         .requestMatchers("/admin/**").hasAnyAuthority("admin")
                         .requestMatchers("/applicants/**").hasAnyAuthority("applicant")
