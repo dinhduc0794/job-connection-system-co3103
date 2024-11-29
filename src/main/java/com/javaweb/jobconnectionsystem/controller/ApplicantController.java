@@ -5,6 +5,7 @@ import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
 import com.javaweb.jobconnectionsystem.model.dto.CertificationDTO;
 import com.javaweb.jobconnectionsystem.model.dto.RateCompanyDTO;
 import com.javaweb.jobconnectionsystem.model.dto.SkillDTO;
+import com.javaweb.jobconnectionsystem.model.response.ApplicanApplicationReponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
 import com.javaweb.jobconnectionsystem.service.*;
@@ -183,8 +184,26 @@ public class ApplicantController {
             return ResponseEntity.ok(responseDTO);
         }
         else {
+            List<ApplicanApplicationReponse> applicationResponseDTOs = applicationByApplicanID.stream()
+                    .map(entity -> {
+                        // Ensure JobPosting is not null before accessing its properties
+                        JobPostingEntity jobPosting = entity.getJobPosting();
+
+                        // Create a new ApplicanApplicationReponse with the appropriate fields
+                        return new ApplicanApplicationReponse(
+                                entity.getId(),
+                                entity.getStatus(),
+                                entity.getEmail(),
+                                entity.getPhoneNumber(),
+                                entity.getDescription(),
+                                entity.getResume(),
+                                jobPosting != null ? jobPosting.getId() : null,  // Use JobPosting ID if not null
+                                jobPosting != null ? jobPosting.getTitle() : " "  // Use Title if JobPosting is not null, else default to " "
+                        );
+                    })
+                    .collect(Collectors.toList());
             responseDTO.setMessage("application with jobposting");
-            responseDTO.setData(applicationByApplicanID);
+            responseDTO.setData(applicationResponseDTOs);
             return ResponseEntity.ok(responseDTO);
         }
     }

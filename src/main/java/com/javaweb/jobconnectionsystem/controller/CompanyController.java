@@ -117,7 +117,7 @@ public class CompanyController {
     @GetMapping("/companies/applications/{id}")
     public ResponseEntity<?> getApplicationById(@PathVariable Long id){
         ResponseDTO responseDTO = new ResponseDTO();
-        ApplicationEntity application = applicationService.getApplicationById(id);
+        List<ApplicationEntity> application = applicationService.getAllApplicationByJobpostingId(id);
         if (application == null){
             responseDTO.setMessage("application not found");
             return ResponseEntity.ok(responseDTO);

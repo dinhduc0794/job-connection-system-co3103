@@ -3,6 +3,7 @@ package com.javaweb.jobconnectionsystem.converter;
 import com.javaweb.jobconnectionsystem.entity.*;
 
 import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
+import com.javaweb.jobconnectionsystem.model.response.ApplicanApplicationReponse;
 import com.javaweb.jobconnectionsystem.model.response.LoginResponse;
 import com.javaweb.jobconnectionsystem.repository.*;
 import org.modelmapper.ModelMapper;
@@ -25,9 +26,9 @@ public class ApplicantConverter {
     @Autowired
     private SkillRepository skillRepository;
     @Autowired
-    private CertificationRepository certificationRepository;
+    private ApplicantRepository applicantRepository;
     @Autowired
-    private PhoneNumberRepository phoneNumberRepository;
+    private JobPostingRepository postingRepository;
     @Autowired
     private EmailRepository emailRepository;
 
@@ -102,4 +103,24 @@ public class ApplicantConverter {
 
         return applicantEntity;
     }
+    public  ApplicanApplicationReponse convertToEntity(ApplicationEntity  applicationDTO) {
+            if (applicationDTO == null) {
+                return null;
+            }
+
+            ApplicanApplicationReponse dto = new ApplicanApplicationReponse();
+            dto.setId(applicationDTO.getId());
+            dto.setStatus(applicationDTO.getStatus());
+            dto.setEmail(applicationDTO.getEmail());
+            dto.setPhoneNumber(applicationDTO.getPhoneNumber());
+            dto.setDescription(applicationDTO.getDescription());
+            dto.setResume(applicationDTO.getResume());
+            dto.setTitle(applicationDTO.getJobPosting().getTitle());
+            // Set the jobPostingId
+            dto.setJobPostingId(applicationDTO.getJobPosting() != null ? applicationDTO.getJobPosting().getId() : null);
+
+            return dto;
+        }
+
+
 }
