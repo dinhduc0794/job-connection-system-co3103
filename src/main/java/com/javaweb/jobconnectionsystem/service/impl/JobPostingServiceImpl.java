@@ -9,6 +9,7 @@ import com.javaweb.jobconnectionsystem.model.response.JobPostingDetailResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.repository.JobPostingRepository;
 import com.javaweb.jobconnectionsystem.service.JobPostingService;
+import jakarta.persistence.OneToOne;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,17 @@ public class JobPostingServiceImpl implements JobPostingService {
     @Override
     public List<JobPostingSearchResponse> getAllJobPostings() {
         List<JobPostingEntity> jobPostingEntities = jobPostingRepository.findAll();
+
+        List<JobPostingSearchResponse> jobPostingResponses = new ArrayList<>();
+        for (JobPostingEntity ent : jobPostingEntities) {
+            jobPostingResponses.add(jobPostingConverter.toJobPostingSearchResponse(ent));
+        }
+        return jobPostingResponses;
+    }
+
+    @Override
+    public List<JobPostingSearchResponse> getAllActiveJobPostings() {
+        List<JobPostingEntity> jobPostingEntities = jobPostingRepository.findAllByStatus(true);
 
         List<JobPostingSearchResponse> jobPostingResponses = new ArrayList<>();
         for (JobPostingEntity ent : jobPostingEntities) {

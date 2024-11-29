@@ -1,6 +1,9 @@
 package com.javaweb.jobconnectionsystem.service.impl;
 
+import com.javaweb.jobconnectionsystem.converter.SkillConverter;
 import com.javaweb.jobconnectionsystem.entity.SkillEntity;
+import com.javaweb.jobconnectionsystem.model.dto.SkillDTO;
+import com.javaweb.jobconnectionsystem.repository.ApplicantRepository;
 import com.javaweb.jobconnectionsystem.repository.SkillRepository;
 import com.javaweb.jobconnectionsystem.service.SkillService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +17,14 @@ public class SkillServiceImpl implements SkillService {
 
     @Autowired
     private SkillRepository skillRepository;
-
+    @Autowired
+    private SkillConverter skillConverter;
+    @Autowired
+    private ApplicantRepository applicantRepository;
     @Override
-    public SkillEntity addSkill(SkillEntity skill) {
-        if (skill == null) {
-            return null;
-        }
-        return skillRepository.save(skill);
+    public SkillEntity saveSkill(SkillDTO skill) {
+            SkillEntity skillEntity =skillConverter.toSkillEntity(skill);
+            return skillRepository.save(skillEntity);
     }
 
     @Override

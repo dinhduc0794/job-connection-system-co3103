@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/public/follow-company")
+@RequestMapping("/follow-company")
 public class FollowCompanyController {
     @Autowired
     FollowCompanyService followCompanyService;

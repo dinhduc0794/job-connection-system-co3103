@@ -74,7 +74,7 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
     }
 
     public void handleWhereCondition(JobPostingSearchRequest params, StringBuilder sql) {
-        sql.append(" WHERE 1=1");
+        sql.append(" WHERE 1=1 AND jp.status = 1");
 
         List<String> skills = params.getSkills();
         if (skills != null && !skills.isEmpty()) {

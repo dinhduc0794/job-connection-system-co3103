@@ -13,24 +13,14 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/public/jobtypes")
 public class JobTypeController {
 
     @Autowired
     private JobTypeService jobTypeService;
 
-    // Endpoint thêm loại công việc
-    @PostMapping
-    public ResponseEntity<JobTypeEntity> addJobType(@RequestBody JobTypeEntity jobType) {
-        JobTypeEntity createdJobType = jobTypeService.addJobType(jobType);
-        if (createdJobType == null) {
-            return ResponseEntity.badRequest().body(null); // Trả về lỗi nếu loại công việc không hợp lệ
-        }
-        return ResponseEntity.ok(createdJobType); // Trả về loại công việc đã thêm
-    }
 
     // Endpoint lấy tất cả loại công việc
-    @GetMapping
+    @GetMapping("/public/jobtypes")
     public ResponseEntity<List<JobTypeEntity>> getAllJobTypes() {
         List<JobTypeEntity> jobTypes = jobTypeService.getAllJobTypes();
         if (jobTypes.isEmpty()) {
@@ -40,15 +30,25 @@ public class JobTypeController {
     }
 
     // Endpoint lấy loại công việc theo ID
-    @GetMapping("/{id}")
+    @GetMapping("/public/jobtypes/{id}")
     public ResponseEntity<JobTypeEntity> getJobTypeById(@PathVariable Long id) {
         Optional<JobTypeEntity> jobType = jobTypeService.getJobTypeById(id);
         return jobType.map(ResponseEntity::ok) // Trả về loại công việc nếu tìm thấy
                 .orElseGet(() -> ResponseEntity.notFound().build()); // Trả về 404 nếu không tìm thấy loại công việc
     }
 
+    // Endpoint thêm loại công việc
+    @PostMapping("/jobtypes")
+    public ResponseEntity<JobTypeEntity> addJobType(@RequestBody JobTypeEntity jobType) {
+        JobTypeEntity createdJobType = jobTypeService.addJobType(jobType);
+        if (createdJobType == null) {
+            return ResponseEntity.badRequest().body(null); // Trả về lỗi nếu loại công việc không hợp lệ
+        }
+        return ResponseEntity.ok(createdJobType); // Trả về loại công việc đã thêm
+    }
+
     // Endpoint cập nhật loại công việc
-    @PutMapping("/{id}")
+    @PutMapping("/jobtypes/{id}")
     public ResponseEntity<JobTypeEntity> updateJobType(@PathVariable Long id, @RequestBody JobTypeEntity jobTypeDetails) {
         try {
             JobTypeEntity updatedJobType = jobTypeService.updateJobType(id, jobTypeDetails);
@@ -59,7 +59,7 @@ public class JobTypeController {
     }
 
     // Endpoint xóa loại công việc
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/jobtypes/{id}")
     public ResponseEntity<?> deleteJobType(@PathVariable Long id) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {

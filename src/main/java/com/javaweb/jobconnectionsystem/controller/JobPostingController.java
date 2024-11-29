@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/public/jobpostings")
 public class JobPostingController {
 
     @Autowired
@@ -33,7 +32,7 @@ public class JobPostingController {
     @Autowired
     private ApplicationService applicationService;
 
-    @GetMapping("/all")
+    @GetMapping("/public/jobpostings/all")
     public ResponseEntity<List<JobPostingSearchResponse>> getAllJobPostings() {
         List<JobPostingSearchResponse> jobPostings = jobPostingService.getAllJobPostings();
         if (jobPostings.isEmpty()) {
@@ -42,8 +41,17 @@ public class JobPostingController {
         return ResponseEntity.ok(jobPostings);
     }
 
+    @GetMapping("/public/jobpostings/all/active")
+    public ResponseEntity<List<JobPostingSearchResponse>> getAllActiveJobPostings() {
+        List<JobPostingSearchResponse> jobPostings = jobPostingService.getAllActiveJobPostings();
+        if (jobPostings.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(jobPostings);
+    }
+
     // Endpoint lấy tất cả bài đăng công việc theo nhiều tiêu chí
-    @GetMapping
+    @GetMapping("/public/jobpostings")
     public ResponseEntity<List<JobPostingSearchResponse>> getJobPostingsByConditions(@ModelAttribute JobPostingSearchRequest params) {
         List<JobPostingSearchResponse> jobPostings = jobPostingService.getAllJobPostings(params, PageRequest.of(params.getPage() - 1, params.getMaxPageItems()));
 
@@ -55,14 +63,13 @@ public class JobPostingController {
         response.setTotalItems(totalItems);
         response.setTotalPage(totalPage);
 
-
         if (jobPostings.isEmpty()) {
             return ResponseEntity.noContent().build(); // Nếu không có bài đăng công việc, trả về 204 No Content
         }
             return ResponseEntity.ok(jobPostings); // Trả về danh sách bài đăng công việc
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/public/jobpostings/{id}")
     public ResponseEntity<JobPostingDetailResponse> getJobPostingById(@PathVariable Long id) {
         JobPostingDetailResponse jobPosting = jobPostingService.getJobPostingById(id);
         if (jobPosting == null) {
@@ -72,7 +79,7 @@ public class JobPostingController {
     }
 
     // Endpoint thêm bài đăng công việc
-    @PostMapping
+    @PostMapping("/jobpostings")
     public ResponseEntity<?> saveJobPosting(@Valid @RequestBody JobPostingDTO jobPostingDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
         try{
@@ -100,7 +107,7 @@ public class JobPostingController {
         }
     }
 
-    @PostMapping("/application")
+    @PostMapping("/applications")
     public ResponseEntity<?> saveApplication(@Valid @RequestBody ApplicationDTO applicationDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
         try{
@@ -141,7 +148,7 @@ public class JobPostingController {
         }
     }
 
-    @DeleteMapping("/application/{id}")
+    @DeleteMapping("/applications/{id}")
     public ResponseEntity<?> deleteApplication(@PathVariable Long id){
         ResponseDTO responseDTO = new ResponseDTO();
         try{
@@ -156,7 +163,7 @@ public class JobPostingController {
         }
     }
     // Endpoint cập nhật bài đăng công việc
-    @PutMapping("/{id}")
+    @PutMapping("/jobpostings/{id}")
     public ResponseEntity<JobPostingEntity> updateJobPosting(@PathVariable Long id, @RequestBody JobPostingEntity jobPostingDetails) {
         try {
             JobPostingEntity updatedJobPosting = jobPostingService.updateJobPosting(id, jobPostingDetails);
@@ -167,7 +174,7 @@ public class JobPostingController {
     }
 
     // Endpoint xóa bài đăng công việc
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/jobpostings/{id}")
     public ResponseEntity<?> deleteJobPosting(@PathVariable Long id) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {

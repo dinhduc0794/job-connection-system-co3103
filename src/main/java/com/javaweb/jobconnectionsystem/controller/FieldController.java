@@ -13,24 +13,12 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/public/fields")
 public class FieldController {
 
     @Autowired
     private FieldService fieldService;
-
-    // Endpoint thêm lĩnh vực
-    @PostMapping
-    public ResponseEntity<FieldEntity> addField(@RequestBody FieldEntity field) {
-        FieldEntity createdField = fieldService.addField(field);
-        if (createdField == null) {
-            return ResponseEntity.badRequest().body(null); // Trả về lỗi nếu lĩnh vực không hợp lệ
-        }
-        return ResponseEntity.ok(createdField); // Trả về lĩnh vực đã thêm
-    }
-
     // Endpoint lấy tất cả lĩnh vực
-    @GetMapping
+    @GetMapping("/public/fields")
     public ResponseEntity<List<FieldEntity>> getAllFields() {
         List<FieldEntity> fields = fieldService.getAllFields();
         if (fields.isEmpty()) {
@@ -40,15 +28,26 @@ public class FieldController {
     }
 
     // Endpoint lấy lĩnh vực theo ID
-    @GetMapping("/{id}")
+    @GetMapping("/public/fields/{id}")
     public ResponseEntity<FieldEntity> getFieldById(@PathVariable Long id) {
         Optional<FieldEntity> field = fieldService.getFieldById(id);
         return field.map(ResponseEntity::ok) // Trả về lĩnh vực nếu tìm thấy
                 .orElseGet(() -> ResponseEntity.notFound().build()); // Trả về 404 nếu không tìm thấy lĩnh vực
     }
 
+    // Endpoint thêm lĩnh vực
+    @PostMapping("/fields")
+    public ResponseEntity<FieldEntity> addField(@RequestBody FieldEntity field) {
+        FieldEntity createdField = fieldService.addField(field);
+        if (createdField == null) {
+            return ResponseEntity.badRequest().body(null); // Trả về lỗi nếu lĩnh vực không hợp lệ
+        }
+        return ResponseEntity.ok(createdField); // Trả về lĩnh vực đã thêm
+    }
+
+
     // Endpoint cập nhật lĩnh vực
-    @PutMapping("/{id}")
+    @PutMapping("/fields/{id}")
     public ResponseEntity<FieldEntity> updateField(@PathVariable Long id, @RequestBody FieldEntity fieldDetails) {
         try {
             FieldEntity updatedField = fieldService.updateField(id, fieldDetails);
@@ -59,7 +58,7 @@ public class FieldController {
     }
 
     // Endpoint xóa lĩnh vực
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/fields/{id}")
     public ResponseEntity<?> deleteField(@PathVariable Long id) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {

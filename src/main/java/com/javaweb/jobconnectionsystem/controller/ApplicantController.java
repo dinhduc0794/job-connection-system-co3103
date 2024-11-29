@@ -20,7 +20,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/applicants")
 public class ApplicantController {
 
     @Autowired
@@ -35,7 +34,40 @@ public class ApplicantController {
     @Autowired
     private SkillService skillService;
 
-    @PostMapping("/rate-company")
+    // Endpoint lấy ứng viên theo ID
+    @GetMapping("/public/applicants/{id}")
+    public ResponseEntity<ApplicantEntity> getApplicantById(@PathVariable Long id) {
+        Optional<ApplicantEntity> applicant = applicantService.getApplicantById(id);
+        return applicant.map(ResponseEntity::ok) // Trả về ứng viên nếu tìm thấy
+                .orElseGet(() -> ResponseEntity.notFound().build()); // Trả về 404 nếu không tìm thấy ứng viên
+    }
+
+    @GetMapping("/applicants/{id}/interested-posts")
+    public ResponseEntity<?> getInterestedPosts(@PathVariable Long id){
+        ResponseDTO responseDTO = new ResponseDTO();
+        List<JobPostingSearchResponse> interestedPosts = applicantService.getInterestedPostsByApplicantId(id);
+        if (interestedPosts.isEmpty()){
+            responseDTO.setMessage("you have no interested post");
+            return ResponseEntity.ok(responseDTO);
+        }
+        else {
+            responseDTO.setMessage("interested post");
+            responseDTO.setData(interestedPosts);
+            return ResponseEntity.ok(responseDTO);
+        }
+    }
+
+    // Endpoint lấy tất cả ứng viên
+    @GetMapping("/public/applicants")
+    public ResponseEntity<List<ApplicantEntity>> getAllApplicants() {
+        List<ApplicantEntity> applicants = applicantService.getAllApplicants();
+        if (applicants.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Nếu không có ứng viên, trả về 204 No Content
+        }
+        return ResponseEntity.ok(applicants); // Trả về danh sách ứng viên
+    }
+
+    @PostMapping("/applicants/rate-company")
     public ResponseEntity<?> rateCompany(@Valid @RequestBody RateCompanyDTO rateCompanyDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
         try{
@@ -60,7 +92,7 @@ public class ApplicantController {
         }
     }
 
-    @DeleteMapping("/rate-company/{id}")
+    @DeleteMapping("/applicants/rate-company/{id}")
     public ResponseEntity<?> deleteRate(@PathVariable Long id) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
@@ -75,7 +107,7 @@ public class ApplicantController {
     }
 
     // Endpoint thêm chứng chỉ
-    @PostMapping("/certification")
+    @PostMapping("/applicants/certification")
     public ResponseEntity<CertificationEntity> addCertification(@RequestBody CertificationEntity certification) {
         CertificationEntity createdCertification = certificationService.addCertification(certification);
         if (createdCertification == null) {
@@ -84,7 +116,7 @@ public class ApplicantController {
         return ResponseEntity.ok(createdCertification); // Trả về chứng chỉ đã thêm
     }
     // Endpoint thêm ứng viên
-    @PostMapping()
+    @PostMapping("/applicants")
     public ResponseEntity<?> saveApplicant(@Valid @RequestBody ApplicantDTO applicantDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
         if(applicantDTO.getId()==null){
@@ -115,41 +147,11 @@ public class ApplicantController {
     }
 
 
-    // Endpoint lấy tất cả ứng viên
-    @GetMapping
-    public ResponseEntity<List<ApplicantEntity>> getAllApplicants() {
-        List<ApplicantEntity> applicants = applicantService.getAllApplicants();
-        if (applicants.isEmpty()) {
-            return ResponseEntity.noContent().build(); // Nếu không có ứng viên, trả về 204 No Content
-        }
-        return ResponseEntity.ok(applicants); // Trả về danh sách ứng viên
-    }
 
-    // Endpoint lấy ứng viên theo ID
-    @GetMapping("/{id}")
-    public ResponseEntity<ApplicantEntity> getApplicantById(@PathVariable Long id) {
-        Optional<ApplicantEntity> applicant = applicantService.getApplicantById(id);
-        return applicant.map(ResponseEntity::ok) // Trả về ứng viên nếu tìm thấy
-                .orElseGet(() -> ResponseEntity.notFound().build()); // Trả về 404 nếu không tìm thấy ứng viên
-    }
 
-    @GetMapping("/{id}/interested-posts")
-    public ResponseEntity<?> getInterestedPosts(@PathVariable Long id){
-        ResponseDTO responseDTO = new ResponseDTO();
-        List<JobPostingSearchResponse> interestedPosts = applicantService.getInterestedPostsByApplicantId(id);
-        if (interestedPosts.isEmpty()){
-            responseDTO.setMessage("you have no interested post");
-            return ResponseEntity.ok(responseDTO);
-        }
-        else {
-            responseDTO.setMessage("interested post");
-            responseDTO.setData(interestedPosts);
-            return ResponseEntity.ok(responseDTO);
-        }
-    }
 
     // Endpoint cập nhật thông tin ứng viên
-    @PutMapping("/{id}")
+    @PutMapping("/applicants/{id}")
     public ResponseEntity<ApplicantEntity> updateApplicant(@PathVariable Long id, @RequestBody ApplicantEntity applicantDetails) {
         try {
             ApplicantEntity updatedApplicant = applicantService.updateApplicant(id, applicantDetails);
@@ -160,7 +162,7 @@ public class ApplicantController {
     }
 
     // Endpoint xóa ứng viên
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/applicants/{id}")
     public ResponseEntity<?> deleteApplicant(@PathVariable Long id) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
@@ -174,7 +176,7 @@ public class ApplicantController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
         }
     }
-    @GetMapping("/applications/{id}")
+    @GetMapping("/applicants/applications/{id}")
     public ResponseEntity<?> getAllApplication(@PathVariable Long id){
         ResponseDTO responseDTO = new ResponseDTO();
         List<ApplicationEntity> applicationByApplicanID = applicationService.getAllApplicationByApplicantId(id);
@@ -188,7 +190,7 @@ public class ApplicantController {
             return ResponseEntity.ok(responseDTO);
         }
     }
-    @DeleteMapping("/application/{id}")
+    @DeleteMapping("/applicants/application/{id}")
     public ResponseEntity<?> deleteApplication(@PathVariable Long id){
         ResponseDTO responseDTO = new ResponseDTO();
         try{
@@ -204,7 +206,7 @@ public class ApplicantController {
 
     }
     // Endpoint thêm kỹ năng
-    @PostMapping("/skills")
+    @PostMapping("/applicants/skills")
     public ResponseEntity<SkillEntity> addSkill(@RequestBody SkillEntity skill) {
         SkillEntity createdSkill = skillService.addSkill(skill);
         if (createdSkill == null) {
@@ -214,7 +216,7 @@ public class ApplicantController {
     }
 
     // Endpoint lấy tất cả kỹ năng
-    @GetMapping("/skills")
+    @GetMapping("/applicants/skills")
     public ResponseEntity<List<SkillEntity>> getAllSkills() {
         List<SkillEntity> skills = skillService.getAllSkills();
         if (skills.isEmpty()) {
@@ -224,7 +226,7 @@ public class ApplicantController {
     }
 
     // Endpoint lấy kỹ năng theo ID
-    @GetMapping("/skills/{id}")
+    @GetMapping("/applicants/skills/{id}")
     public ResponseEntity<SkillEntity> getSkillById(@PathVariable Long id) {
         Optional<SkillEntity> skill = skillService.getSkillById(id);
         return skill.map(ResponseEntity::ok) // Trả về kỹ năng nếu tìm thấy
@@ -232,7 +234,7 @@ public class ApplicantController {
     }
 
     // Endpoint xóa kỹ năng
-    @DeleteMapping("/skills/{id}")
+    @DeleteMapping("/applicants/skills/{id}")
     public ResponseEntity<?> deleteSkill(@PathVariable Long id) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {

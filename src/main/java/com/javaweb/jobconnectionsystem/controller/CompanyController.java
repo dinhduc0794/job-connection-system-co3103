@@ -24,12 +24,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/companies")
 public class CompanyController {
     @Autowired
     private CompanyService companyService;
 
-    @GetMapping
+    @GetMapping("/public/companies")
     public ResponseEntity<List<CompanySearchResponse>> getCompaniesByConditions(@ModelAttribute CompanySearchRequest params) {
         List<CompanySearchResponse> companyResponses = companyService.getAllCompanies(params);
 
@@ -39,7 +38,7 @@ public class CompanyController {
         return ResponseEntity.ok(companyResponses);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/public/companies/{id}")
     public ResponseEntity<?> getCompanyById(@PathVariable Long id) {
         CompanyDetailResponse companyDetail = companyService.getCompanyById(id);
         if (companyDetail == null) {
@@ -49,7 +48,7 @@ public class CompanyController {
     }
 
     // Endpoint thêm công ty
-    @PostMapping
+    @PostMapping("/companies")
     public ResponseEntity<?> saveCompany(@Valid @RequestBody CompanyDTO companyDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
         if(companyDTO.getId()==null){
@@ -82,7 +81,7 @@ public class CompanyController {
 
 
     // Endpoint cập nhật công ty
-    @PutMapping("/{id}")
+    @PutMapping("/companies/{id}")
     public ResponseEntity<CompanyEntity> updateCompany(@PathVariable Long id, @RequestBody CompanyEntity companyDetails) {
         try {
             CompanyEntity updatedCompany = companyService.updateCompany(id, companyDetails);
@@ -93,7 +92,7 @@ public class CompanyController {
     }
 
     // Endpoint xóa công ty
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/companies/{id}")
     public ResponseEntity<?> deleteCompany(@PathVariable Long id) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {

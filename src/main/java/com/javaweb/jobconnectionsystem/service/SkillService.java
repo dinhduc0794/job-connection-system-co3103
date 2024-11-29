@@ -1,13 +1,14 @@
 package com.javaweb.jobconnectionsystem.service;
 
 import com.javaweb.jobconnectionsystem.entity.SkillEntity;
+import com.javaweb.jobconnectionsystem.model.dto.SkillDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface SkillService {
     // Thêm kỹ năng
-    SkillEntity addSkill(SkillEntity skill);
+    SkillEntity saveSkill(SkillDTO skillDTO);
 
     // Lấy tất cả kỹ năng
     List<SkillEntity> getAllSkills();

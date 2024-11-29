@@ -1,16 +1,24 @@
 package com.javaweb.jobconnectionsystem.controller;
 
+import com.javaweb.jobconnectionsystem.entity.JobPostingEntity;
 import com.javaweb.jobconnectionsystem.entity.SkillEntity;
+import com.javaweb.jobconnectionsystem.model.dto.JobPostingDTO;
+import com.javaweb.jobconnectionsystem.model.dto.SkillDTO;
 import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
 import com.javaweb.jobconnectionsystem.service.SkillService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 /// nhớ sửa public
 @RestController
 @RequestMapping("/public/skills")
@@ -21,12 +29,31 @@ public class SkillController {
 
     // Endpoint thêm kỹ năng
     @PostMapping
-    public ResponseEntity<SkillEntity> addSkill(@RequestBody SkillEntity skill) {
-        SkillEntity createdSkill = skillService.addSkill(skill);
-        if (createdSkill == null) {
-            return ResponseEntity.badRequest().body(null); // Trả về lỗi nếu kỹ năng không hợp lệ
+    public ResponseEntity<?> saveSkill(@Valid @RequestBody SkillDTO skillDTO, BindingResult bindingResult) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        try{
+            if (bindingResult.hasErrors()) {
+                List<String> errorMessages = bindingResult.getFieldErrors()
+                        .stream()
+                        .map(FieldError::getDefaultMessage)
+                        .collect(Collectors.toList());
+
+                responseDTO.setMessage("Validation failed");
+                responseDTO.setDetail(errorMessages);   
+                return ResponseEntity.badRequest().body(responseDTO);
+            }
+            // neu dung thi //xuong service -> xuong repo -> save vao db
+            SkillEntity skillEntity = skillService.saveSkill(skillDTO);
+            if (skillEntity == null) {
+                return ResponseEntity.badRequest().body(null); // Trả về lỗi nếu bài đăng công việc không hợp lệ
+            }
+            return ResponseEntity.ok(skillEntity); // Trả về bài đăng công việc đã thêm
         }
-        return ResponseEntity.ok(createdSkill); // Trả về kỹ năng đã thêm
+        catch (Exception e){
+            responseDTO.setMessage("Internal server error");
+            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
+        }
     }
 
     // Endpoint lấy tất cả kỹ năng
