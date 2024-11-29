@@ -23,9 +23,12 @@ public class ApplicantConverter {
     @Autowired
     private BlockUserRepository blockUserRepository;
     @Autowired
+    private SkillRepository skillRepository;
+    @Autowired
     private PhoneNumberRepository phoneNumberRepository;
     @Autowired
     private EmailRepository emailRepository;
+
     public ApplicantEntity toApplicantEntity(ApplicantDTO applicantDTO) {
         ApplicantEntity applicantEntity = modelMapper.map(applicantDTO, ApplicantEntity.class);
         List<Long> wardIds = applicantDTO.getWardIds();
@@ -84,12 +87,16 @@ public class ApplicantConverter {
                 }
             }
         }
+
+        List<Long> skillIds = applicantDTO.getSkillIds();
+        if (skillIds != null && !skillIds.isEmpty()) {
+            for (Long id : skillIds) {
+                SkillEntity skillEntity = skillRepository.findById(id).get();
+                if (skillEntity != null) {
+                    applicantEntity.getSkills().add(skillEntity);
+                }
+            }
+        }
         return applicantEntity;
-    }
-    public LoginResponse toLoginApplicantResponse(ApplicantEntity applicantEntity, String role, String Token){
-        LoginResponse loginApplicantResponse = modelMapper.map(applicantEntity, LoginResponse.class);
-        loginApplicantResponse.setRole(role);
-        loginApplicantResponse.setToken(Token);
-        return loginApplicantResponse;
     }
 }
