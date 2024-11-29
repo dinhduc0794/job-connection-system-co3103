@@ -4,11 +4,14 @@ import com.javaweb.jobconnectionsystem.converter.ApplicantConverter;
 import com.javaweb.jobconnectionsystem.converter.JobPostingConverter;
 import com.javaweb.jobconnectionsystem.entity.*;
 import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
+import com.javaweb.jobconnectionsystem.model.dto.CertificationDTO;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.repository.*;
 import com.javaweb.jobconnectionsystem.service.ApplicantService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,7 +20,8 @@ import java.util.Optional;
 
 @Service
 public class ApplicantServiceImpl implements ApplicantService {
-
+    @Autowired
+    private ModelMapper modelMapper;
     @Autowired
     private ApplicantRepository applicantRepository;
     @Autowired
@@ -57,21 +61,33 @@ public class ApplicantServiceImpl implements ApplicantService {
             }
         }
         if(!applicantDTO.getEmails().isEmpty()){
-            List<String> email = applicantDTO.getEmails();
-            for(String a : email){
-                if(emailRepository.existsByEmail(a)){
-                    if(emailRepository.findByEmail(a).getUser().getId()==applicantDTO.getId()) {
-                        emailRepository.deleteByEmail(a);
+            List<String> emailList = applicantDTO.getEmails();
+            for(String email : emailList){
+                if(emailRepository.existsByEmail(email)){
+                    if(emailRepository.findByEmail(email).getUser().getId()==applicantDTO.getId()) {
+                        emailRepository.deleteByEmail(email);
                     }
                     else{
-                        throw new RuntimeException("Email "+a+" already exists");
+                        throw new RuntimeException("Email "+email+" already exists");
                     }
                 }
             }
         }
         ApplicantEntity applicantEntity = applicantConverter.toApplicantEntity(applicantDTO);
+        List<CertificationEntity> certificationEntities = new ArrayList<>();
+        List<CertificationDTO> certificationDTOs = applicantDTO.getCertifications();
+        for (CertificationDTO certificationDTO : certificationDTOs) {
+            CertificationEntity certificationEntity = modelMapper.map(certificationDTO, CertificationEntity.class);
+            ApplicantEntity applicant = applicantRepository.findById(applicantDTO.getId()).get();
+            certificationEntity.setApplicant(applicant);
+            certificationEntities.add(certificationEntity);
+        }
+        applicantEntity.setCertifications(certificationEntities);
+
         return applicantRepository.save(applicantEntity);
     }
+
+
     @Override
     public Optional<ApplicantEntity> getApplicantById(Long id) {
         Optional<ApplicantEntity> applicant = applicantRepository.findById(id);

@@ -3,6 +3,7 @@ package com.javaweb.jobconnectionsystem.controller.auth;
 import com.javaweb.jobconnectionsystem.entity.ApplicantEntity;
 import com.javaweb.jobconnectionsystem.entity.CompanyEntity;
 import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
+import com.javaweb.jobconnectionsystem.model.dto.CertificationDTO;
 import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
 import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
 import com.javaweb.jobconnectionsystem.service.ApplicantService;

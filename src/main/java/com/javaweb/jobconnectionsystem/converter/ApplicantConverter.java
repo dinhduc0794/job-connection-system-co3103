@@ -25,6 +25,8 @@ public class ApplicantConverter {
     @Autowired
     private SkillRepository skillRepository;
     @Autowired
+    private CertificationRepository certificationRepository;
+    @Autowired
     private PhoneNumberRepository phoneNumberRepository;
     @Autowired
     private EmailRepository emailRepository;
@@ -97,6 +99,7 @@ public class ApplicantConverter {
                 }
             }
         }
+
         return applicantEntity;
     }
 }

@@ -16,16 +16,14 @@ public class ApplicantDTO {
     private String username;
     @NotBlank(message ="User password is required")
     private String password;
-    private Boolean isActive;
     @NotBlank(message = "Person firt name is required ")
     private String firstName;
     @NotBlank(message ="Person last name is required")
     private String lastName;
-    private Boolean isAvailable;
+    private Boolean isAvailable = true;
 
     private String description;
-    private Boolean isPublic;
-    private Boolean isBanned;
+    private Boolean isPublic = true;
     private String address;
 
     private String image;
@@ -40,4 +38,5 @@ public class ApplicantDTO {
     private List<Long> notificationIds;
     private List<Long> blockedUserIds;
     private List<Long> skillIds;
+    private List<CertificationDTO> certifications;
 }

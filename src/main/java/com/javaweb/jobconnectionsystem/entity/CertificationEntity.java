@@ -14,6 +14,7 @@ import java.util.Date;
 @Entity
 public class CertificationEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 

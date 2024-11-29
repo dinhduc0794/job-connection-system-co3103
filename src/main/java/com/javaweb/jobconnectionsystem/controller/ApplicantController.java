@@ -2,6 +2,7 @@ package com.javaweb.jobconnectionsystem.controller;
 
 import com.javaweb.jobconnectionsystem.entity.*;
 import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
+import com.javaweb.jobconnectionsystem.model.dto.CertificationDTO;
 import com.javaweb.jobconnectionsystem.model.dto.RateCompanyDTO;
 import com.javaweb.jobconnectionsystem.model.dto.SkillDTO;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
