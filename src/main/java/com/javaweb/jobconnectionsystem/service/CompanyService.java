@@ -18,7 +18,10 @@ public interface CompanyService {
 
     int countTotalItems(CompanySearchRequest params);
     // Lấy user theo ID
-    CompanyDetailResponse getCompanyById(Long id);
+    CompanyDetailResponse getCompanyDetailResponseById(Long id);
+
+    Optional<CompanyEntity> getCompanyEntityById(Long id);
+
     // Sửa use
     CompanyEntity updateCompany(Long id, CompanyEntity companyDetails);
     // Xoa user

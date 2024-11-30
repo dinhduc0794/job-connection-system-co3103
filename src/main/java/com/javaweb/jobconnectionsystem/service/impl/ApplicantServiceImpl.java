@@ -5,6 +5,7 @@ import com.javaweb.jobconnectionsystem.converter.JobPostingConverter;
 import com.javaweb.jobconnectionsystem.entity.*;
 import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
 import com.javaweb.jobconnectionsystem.model.dto.CertificationDTO;
+import com.javaweb.jobconnectionsystem.model.response.ApplicantResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.repository.*;
 import com.javaweb.jobconnectionsystem.service.ApplicantService;
@@ -89,12 +90,18 @@ public class ApplicantServiceImpl implements ApplicantService {
 
 
     @Override
-    public Optional<ApplicantEntity> getApplicantById(Long id) {
+    public Optional<ApplicantEntity> getApplicantEntityById(Long id) {
         Optional<ApplicantEntity> applicant = applicantRepository.findById(id);
         if (applicant.isEmpty()) {
             return null;
         }
         return applicant;
+    }
+
+    @Override
+    public ApplicantResponse getApplicantResponseById(Long id) {
+        ApplicantEntity applicantEntity = applicantRepository.findById(id).get();
+        return applicantConverter.toApplicantResponse(applicantEntity);
     }
 
     @Override

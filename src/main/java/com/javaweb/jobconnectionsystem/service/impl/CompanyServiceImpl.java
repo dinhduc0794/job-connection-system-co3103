@@ -1,10 +1,7 @@
 package com.javaweb.jobconnectionsystem.service.impl;
 
 import com.javaweb.jobconnectionsystem.converter.CompanyConverter;
-import com.javaweb.jobconnectionsystem.entity.CompanyEntity;
-import com.javaweb.jobconnectionsystem.entity.EmailEntity;
-import com.javaweb.jobconnectionsystem.entity.JobPostingEntity;
-import com.javaweb.jobconnectionsystem.entity.PhoneNumberEntity;
+import com.javaweb.jobconnectionsystem.entity.*;
 import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
 import com.javaweb.jobconnectionsystem.model.request.CompanySearchRequest;
 import com.javaweb.jobconnectionsystem.model.request.JobPostingSearchRequest;
@@ -51,7 +48,16 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CompanyDetailResponse getCompanyById(Long id) {
+    public Optional<CompanyEntity> getCompanyEntityById(Long id) {
+        Optional<CompanyEntity> company = companyRepository.findById(id);
+        if (company.isEmpty()) {
+            return null;
+        }
+        return company;
+    }
+
+    @Override
+    public CompanyDetailResponse getCompanyDetailResponseById(Long id) {
         CompanyEntity companyEntity = companyRepository.findById(id).get();
         CompanyDetailResponse companyDetailResponse = companyConverter.toCompanyDetailResponse(companyEntity);
         return companyDetailResponse;

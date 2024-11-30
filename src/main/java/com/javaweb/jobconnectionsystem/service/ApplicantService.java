@@ -4,6 +4,7 @@ import com.javaweb.jobconnectionsystem.entity.ApplicantEntity;
 import com.javaweb.jobconnectionsystem.entity.JobPostingEntity;
 import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
 import com.javaweb.jobconnectionsystem.model.dto.CertificationDTO;
+import com.javaweb.jobconnectionsystem.model.response.ApplicantResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 
 import java.util.List;
@@ -16,7 +17,9 @@ public interface ApplicantService {
     List<ApplicantEntity> getAllApplicants();
 
     // Lấy ứng viên theo ID
-    Optional<ApplicantEntity> getApplicantById(Long id);
+    Optional<ApplicantEntity> getApplicantEntityById(Long id);
+
+    ApplicantResponse getApplicantResponseById(Long id);
 
     List<JobPostingSearchResponse> getInterestedPostsByApplicantId(Long id);
 

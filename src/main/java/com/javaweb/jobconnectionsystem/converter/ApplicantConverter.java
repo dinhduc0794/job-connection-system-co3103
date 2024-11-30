@@ -4,6 +4,7 @@ import com.javaweb.jobconnectionsystem.entity.*;
 
 import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
 import com.javaweb.jobconnectionsystem.model.response.ApplicanApplicationReponse;
+import com.javaweb.jobconnectionsystem.model.response.ApplicantResponse;
 import com.javaweb.jobconnectionsystem.model.response.LoginResponse;
 import com.javaweb.jobconnectionsystem.repository.*;
 import org.modelmapper.ModelMapper;
@@ -103,6 +104,61 @@ public class ApplicantConverter {
 
         return applicantEntity;
     }
+
+    public ApplicantResponse toApplicantResponse(ApplicantEntity applicantEntity) {
+        ApplicantResponse applicantResponse = modelMapper.map(applicantEntity, ApplicantResponse.class);
+        if (applicantEntity.getWards() != null && !applicantEntity.getWards().isEmpty()) {
+            List<Long> wardIds = applicantEntity.getWards().stream()
+                    .map(WardEntity::getId)
+                    .collect(Collectors.toList());
+            applicantResponse.setWardIds(wardIds);
+        }
+
+        if (applicantEntity.getPhoneNumbers() != null && !applicantEntity.getPhoneNumbers().isEmpty()) {
+            List<String> phoneNumbers = applicantEntity.getPhoneNumbers().stream()
+                    .map(PhoneNumberEntity::getPhoneNumber)
+                    .collect(Collectors.toList());
+            applicantResponse.setPhoneNumbers(phoneNumbers);
+        }
+
+        if (applicantEntity.getEmails() != null && !applicantEntity.getEmails().isEmpty()) {
+            List<String> emails = applicantEntity.getEmails().stream()
+                    .map(EmailEntity::getEmail)
+                    .collect(Collectors.toList());
+            applicantResponse.setEmails(emails);
+        }
+
+        if (applicantEntity.getNotifications() != null && !applicantEntity.getNotifications().isEmpty()) {
+            List<Long> notificationIds = applicantEntity.getNotifications().stream()
+                    .map(NotificationEntity::getId)
+                    .collect(Collectors.toList());
+            applicantResponse.setNotificationIds(notificationIds);
+        }
+
+        if (applicantEntity.getBlockedUsers() != null && !applicantEntity.getBlockedUsers().isEmpty()) {
+            List<Long> blockedUserIds = applicantEntity.getBlockedUsers().stream()
+                    .map(BlockUserEntity::getId)
+                    .collect(Collectors.toList());
+            applicantResponse.setBlockedUserIds(blockedUserIds);
+        }
+
+        if (applicantEntity.getSkills() != null && !applicantEntity.getSkills().isEmpty()) {
+            List<Long> skillIds = applicantEntity.getSkills().stream()
+                    .map(SkillEntity::getId)
+                    .collect(Collectors.toList());
+            applicantResponse.setSkillIds(skillIds);
+        }
+
+        if (applicantEntity.getCertifications() != null && !applicantEntity.getCertifications().isEmpty()) {
+            List<Long> certificationIds = applicantEntity.getCertifications().stream()
+                    .map(CertificationEntity::getId)
+                    .collect(Collectors.toList());
+            applicantResponse.setCertificationIds(certificationIds);
+        }
+
+        return applicantResponse;
+    }
+
     public  ApplicanApplicationReponse convertToEntity(ApplicationEntity  applicationDTO) {
             if (applicationDTO == null) {
                 return null;

@@ -1,5 +1,6 @@
 package com.javaweb.jobconnectionsystem.controller;
 
+import com.javaweb.jobconnectionsystem.entity.ApplicantEntity;
 import com.javaweb.jobconnectionsystem.entity.ApplicationEntity;
 import com.javaweb.jobconnectionsystem.entity.CompanyEntity;
 import com.javaweb.jobconnectionsystem.entity.JobPostingEntity;
@@ -45,9 +46,17 @@ public class CompanyController {
         return ResponseEntity.ok(companyResponses);
     }
 
+    @GetMapping("/companies/{id}")
+    public ResponseEntity<CompanyEntity> getCompanyById(@PathVariable Long id) {
+        Optional<CompanyEntity> company = companyService.getCompanyEntityById(id);
+        return company.map(ResponseEntity::ok) // Trả về ứng viên nếu tìm thấy
+                .orElseGet(() -> ResponseEntity.notFound().build()); // Trả về 404 nếu không tìm thấy ứng viên
+    }
+
+
     @GetMapping("/public/companies/{id}")
-    public ResponseEntity<?> getCompanyById(@PathVariable Long id) {
-        CompanyDetailResponse companyDetail = companyService.getCompanyById(id);
+    public ResponseEntity<?> getPublicCompanyById(@PathVariable Long id) {
+        CompanyDetailResponse companyDetail = companyService.getCompanyDetailResponseById(id);
         if (companyDetail == null) {
             return ResponseEntity.noContent().build();
         }

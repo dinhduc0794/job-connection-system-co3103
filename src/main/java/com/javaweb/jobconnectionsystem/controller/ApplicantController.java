@@ -6,6 +6,7 @@ import com.javaweb.jobconnectionsystem.model.dto.CertificationDTO;
 import com.javaweb.jobconnectionsystem.model.dto.RateCompanyDTO;
 import com.javaweb.jobconnectionsystem.model.dto.SkillDTO;
 import com.javaweb.jobconnectionsystem.model.response.ApplicanApplicationReponse;
+import com.javaweb.jobconnectionsystem.model.response.ApplicantResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
 import com.javaweb.jobconnectionsystem.service.*;
@@ -39,8 +40,17 @@ public class ApplicantController {
 
     // Endpoint lấy ứng viên theo ID
     @GetMapping("/public/applicants/{id}")
+    public ResponseEntity<ApplicantResponse> getPublicApplicantById(@PathVariable Long id) {
+        ApplicantResponse applicant = applicantService.getApplicantResponseById(id);
+        if (applicant == null) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(applicant);
+    }
+
+    @GetMapping("/applicants/{id}")
     public ResponseEntity<ApplicantEntity> getApplicantById(@PathVariable Long id) {
-        Optional<ApplicantEntity> applicant = applicantService.getApplicantById(id);
+        Optional<ApplicantEntity> applicant = applicantService.getApplicantEntityById(id);
         return applicant.map(ResponseEntity::ok) // Trả về ứng viên nếu tìm thấy
                 .orElseGet(() -> ResponseEntity.notFound().build()); // Trả về 404 nếu không tìm thấy ứng viên
     }
