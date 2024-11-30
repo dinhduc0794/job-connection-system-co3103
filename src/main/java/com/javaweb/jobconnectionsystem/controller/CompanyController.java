@@ -128,7 +128,7 @@ public class CompanyController {
             return ResponseEntity.ok(responseDTO);
         }
     }
-    @PostMapping("/companies/jobpostings/{id}")
+    @PostMapping("/companies/jobpostings")
     public ResponseEntity<?> saveJobPosting(@Valid @RequestBody JobPostingDTO jobPostingDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
         try{
