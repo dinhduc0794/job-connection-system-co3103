@@ -114,8 +114,8 @@ public class CompanyController {
         }
     }
 
-    @GetMapping("/companies/applications/{id}")
-    public ResponseEntity<?> getApplicationById(@PathVariable Long id){
+    @GetMapping("/companies/jobpostings/{id}/applications")
+    public ResponseEntity<?> getApplicationByJobpostingId(@PathVariable Long id){
         ResponseDTO responseDTO = new ResponseDTO();
         List<ApplicationEntity> application = applicationService.getAllApplicationByJobpostingId(id);
         if (application == null){
@@ -155,7 +155,7 @@ public class CompanyController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
         }
     }
-    @PostMapping("/companies/jobpostings/application")
+    @PostMapping("/companies/jobpostings/applications")
     //sửa trạng thái
     public ResponseEntity<?> saveApplication(@Valid @RequestBody ApplicationDTO applicationDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
@@ -181,11 +181,11 @@ public class CompanyController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
         }
     }
-    @DeleteMapping("/companies/jobpostings/applications/{id}")
+    @DeleteMapping("/companies/jobpostings/{id}/applications")
     public ResponseEntity<?> deleteApplication(@PathVariable Long id){
         ResponseDTO responseDTO = new ResponseDTO();
         try{
-            applicationService.DeleteApplicationByJobposting(id);
+            applicationService.deleteApplicationByJobpostingId(id);
             responseDTO.setMessage("delete succesfully");
             responseDTO.setDetail(Collections.singletonList("application has been deleted"));
             return ResponseEntity.ok(responseDTO);

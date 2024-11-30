@@ -85,7 +85,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 
     @Override
-    public void DeleteApplicationByJobposting(Long applicationId) {
+    public void deleteApplicationByJobpostingId(Long applicationId) {
         ApplicationEntity newApplication = applicationRepository.findById(applicationId).get();
         if(newApplication.getStatus()!= StatusEnum.REJECTED){
             throw new RuntimeException("Can not delete this application");
@@ -93,7 +93,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         else applicationRepository.deleteById(applicationId);
     }
     @Override
-    public void DeleteApplicationByApplicant(Long applicantId) {
+    public void deleteApplicationByApplicantId(Long applicantId) {
          applicationRepository.deleteById(applicantId);
     }
 }

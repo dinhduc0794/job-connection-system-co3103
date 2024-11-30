@@ -10,8 +10,8 @@ public interface ApplicationService {
     List<ApplicationEntity> getAllApplicationByApplicantId(Long id);
     ApplicationEntity getApplicationById(Long id);
     List<ApplicationEntity> getAllApplicationByJobpostingId(Long id);
-    void DeleteApplicationByJobposting (Long jobpostingId);
-    void DeleteApplicationByApplicant (Long applicantId);
+    void deleteApplicationByJobpostingId (Long jobpostingId);
+    void deleteApplicationByApplicantId (Long applicantId);
     // lam gi day em
 
 }
