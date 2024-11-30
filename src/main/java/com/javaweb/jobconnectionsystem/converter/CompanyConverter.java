@@ -108,6 +108,19 @@ public class CompanyConverter {
             companySearchResponse.setRecruitQuantity(recruitQuantity);
         }
 
+        if (companyEntity.getRateCompanyEntities() != null && !companyEntity.getRateCompanyEntities().isEmpty()) {
+            double totalRating = companyEntity.getRateCompanyEntities().stream()
+                    .filter(it -> it != null && it.getRate() != null) // check null
+                    .map(it -> it.getRate().getValue().doubleValue())  // RateEnum -> Double
+                    .reduce(0.0, Double::sum); // Tính tổng
+            int count = (int) companyEntity.getRateCompanyEntities().stream()
+                    .filter(it -> it != null && it.getRate() != null)
+                    .count(); // dem so luong
+            companySearchResponse.setRating(count > 0 ? totalRating / count : 0.0);
+        } else {
+            companySearchResponse.setRating(0.0); // mac dinh 0.0
+        }
+
         return companySearchResponse;
     }
 
