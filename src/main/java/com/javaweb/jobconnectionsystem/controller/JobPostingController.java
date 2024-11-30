@@ -52,7 +52,7 @@ public class JobPostingController {
 
     // Endpoint lấy tất cả bài đăng công việc theo nhiều tiêu chí
     @GetMapping("/public/jobpostings")
-    public ResponseEntity<List<JobPostingSearchResponse>> getJobPostingsByConditions(@ModelAttribute JobPostingSearchRequest params) {
+    public ResponseEntity<?> getJobPostingsByConditions(@ModelAttribute JobPostingSearchRequest params) {
         List<JobPostingSearchResponse> jobPostings = jobPostingService.getAllJobPostings(params, PageRequest.of(params.getPage() - 1, params.getMaxPageItems()));
 
         int totalItems = jobPostingService.countTotalItems(params);
@@ -66,7 +66,7 @@ public class JobPostingController {
         if (jobPostings.isEmpty()) {
             return ResponseEntity.noContent().build(); // Nếu không có bài đăng công việc, trả về 204 No Content
         }
-            return ResponseEntity.ok(jobPostings); // Trả về danh sách bài đăng công việc
+            return ResponseEntity.ok(response); // Trả về danh sách bài đăng công việc
     }
 
     @GetMapping("/public/jobpostings/{id}")
