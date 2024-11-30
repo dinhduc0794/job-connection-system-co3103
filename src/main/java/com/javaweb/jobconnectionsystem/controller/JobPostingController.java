@@ -126,7 +126,7 @@ public class JobPostingController {
     public ResponseEntity<?> deleteApplication(@PathVariable Long id){
         ResponseDTO responseDTO = new ResponseDTO();
         try{
-            applicationService.DeleteApplicationByJobposting(id);
+            applicationService.deleteApplicationByApplicantId(id);
             responseDTO.setMessage("delete succesfully");
             responseDTO.setDetail(Collections.singletonList("application has been deleted"));
             return ResponseEntity.ok(responseDTO);
