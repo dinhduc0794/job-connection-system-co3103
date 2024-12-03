@@ -32,6 +32,7 @@ public class JobPostingDTO extends PaginationDTO {
     @Min(value = 0, message = "Salary must not be negative")
     private Long minSalary;
 
+    private Long yoe;
     private Boolean status = true;
 
     @Size(min = 1, message = "Skill is required")
