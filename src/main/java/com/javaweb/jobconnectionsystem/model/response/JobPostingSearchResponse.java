@@ -16,6 +16,7 @@ public class JobPostingSearchResponse extends PaginationDTO {
     private Long minSalary;
     private Long maxSalary;
     private Boolean status;
+    private Long allowance;
     private String province;
     private String city;
     private String ward;

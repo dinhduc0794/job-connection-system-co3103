@@ -31,12 +31,18 @@ public class ApplicantConverter {
     @Autowired
     private ApplicantRepository applicantRepository;
     @Autowired
+    private ApplicationRepository applicationRepository;
+    @Autowired
     private JobPostingRepository postingRepository;
     @Autowired
     private EmailRepository emailRepository;
 
     public ApplicantEntity toApplicantEntity(ApplicantDTO applicantDTO) {
-        ApplicantEntity applicantEntity = modelMapper.map(applicantDTO, ApplicantEntity.class);
+        ApplicantEntity applicantEntity = new ApplicantEntity();
+//        ApplicationEntity applicationEntity = applicationRepository.findById(applicantDTO.getApplicationId()).get();
+//        applicantEntity.setApplications();
+
+        applicantEntity = modelMapper.map(applicantDTO, ApplicantEntity.class);
         List<AddressDTO> addressWardIds = applicantDTO.getAddressWardIds();
         if (addressWardIds != null && !addressWardIds.isEmpty()) {
             for (AddressDTO addressWardId : addressWardIds) {
