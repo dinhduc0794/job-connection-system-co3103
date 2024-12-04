@@ -12,10 +12,13 @@ import java.util.List;
 
 @Repository
 public interface PhoneNumberRepository extends JpaRepository<PhoneNumberEntity,Long> {
-    public boolean existsByPhoneNumber(String phone);
-    public List<PhoneNumberEntity> findByUser_Id(Long comanyId);
+     boolean existsByPhoneNumber(String phone);
+     List<PhoneNumberEntity> findByUser_Id(Long comanyId);
     @Query("SELECT p FROM PhoneNumberEntity p WHERE p.phoneNumber = :phone")
     PhoneNumberEntity findByPhoneNumber(@Param("phone") String phone);
+
+    void deleteAllByUser_Id(Long userId);
+
     @Modifying
     @Transactional
     @Query("DELETE FROM PhoneNumberEntity p WHERE p.phoneNumber = :phoneNumber")

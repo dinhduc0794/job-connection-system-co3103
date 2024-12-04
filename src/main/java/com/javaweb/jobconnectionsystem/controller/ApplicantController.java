@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 
 @RestController
 public class ApplicantController {
-
     @Autowired
     private ApplicantService applicantService;
     @Autowired
@@ -55,6 +54,47 @@ public class ApplicantController {
                 .orElseGet(() -> ResponseEntity.notFound().build()); // Trả về 404 nếu không tìm thấy ứng viên
     }
 
+    // Endpoint lấy tất cả ứng viên
+    @GetMapping("/public/applicants")
+    public ResponseEntity<List<ApplicantEntity>> getAllApplicants() {
+        List<ApplicantEntity> applicants = applicantService.getAllApplicants();
+        if (applicants.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Nếu không có ứng viên, trả về 204 No Content
+        }
+        return ResponseEntity.ok(applicants); // Trả về danh sách ứng viên
+    }
+
+    // Endpoint thêm ứng viên
+    @PostMapping("/applicants")
+    public ResponseEntity<?> saveApplicant(@Valid @RequestBody ApplicantDTO applicantDTO, BindingResult bindingResult) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        if(applicantDTO.getId()==null){
+            return ResponseEntity.badRequest().body("sửa thì id của tao đâu ");
+        }
+        try{
+            if (bindingResult.hasErrors()) {
+                List<String> errorMessages = bindingResult.getFieldErrors()
+                        .stream()
+                        .map(FieldError::getDefaultMessage)
+                        .collect(Collectors.toList());
+
+                responseDTO.setMessage("Validation failed");
+                responseDTO.setDetail(errorMessages);
+                return ResponseEntity.badRequest().body(responseDTO);
+            }
+            ApplicantEntity applicantEntity = applicantService.saveApplicant(applicantDTO);
+            if (applicantEntity == null) {
+                return ResponseEntity.badRequest().body(null);
+            }
+            return ResponseEntity.ok(applicantEntity);
+        }
+        catch (Exception e) {
+            responseDTO.setMessage("Internal server error");
+            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
+        }
+    }
+
     @GetMapping("/applicants/{id}/interested-posts")
     public ResponseEntity<?> getInterestedPosts(@PathVariable Long id){
         ResponseDTO responseDTO = new ResponseDTO();
@@ -70,15 +110,6 @@ public class ApplicantController {
         }
     }
 
-    // Endpoint lấy tất cả ứng viên
-    @GetMapping("/public/applicants")
-    public ResponseEntity<List<ApplicantEntity>> getAllApplicants() {
-        List<ApplicantEntity> applicants = applicantService.getAllApplicants();
-        if (applicants.isEmpty()) {
-            return ResponseEntity.noContent().build(); // Nếu không có ứng viên, trả về 204 No Content
-        }
-        return ResponseEntity.ok(applicants); // Trả về danh sách ứng viên
-    }
 
     @PostMapping("/applicants/rate-company")
     public ResponseEntity<?> rateCompany(@Valid @RequestBody RateCompanyDTO rateCompanyDTO, BindingResult bindingResult) {
@@ -128,36 +159,7 @@ public class ApplicantController {
         }
         return ResponseEntity.ok(createdCertification); // Trả về chứng chỉ đã thêm
     }
-    // Endpoint thêm ứng viên
-    @PostMapping("/applicants")
-    public ResponseEntity<?> saveApplicant(@Valid @RequestBody ApplicantDTO applicantDTO, BindingResult bindingResult) {
-        ResponseDTO responseDTO = new ResponseDTO();
-        if(applicantDTO.getId()==null){
-            return ResponseEntity.badRequest().body("sửa thì id của tao đâu ");
-        }
-        try{
-            if (bindingResult.hasErrors()) {
-                List<String> errorMessages = bindingResult.getFieldErrors()
-                        .stream()
-                        .map(FieldError::getDefaultMessage)
-                        .collect(Collectors.toList());
 
-                responseDTO.setMessage("Validation failed");
-                responseDTO.setDetail(errorMessages);
-                return ResponseEntity.badRequest().body(responseDTO);
-            }
-            ApplicantEntity applicantEntity = applicantService.saveApplicant(applicantDTO);
-            if (applicantEntity == null) {
-                return ResponseEntity.badRequest().body(null);
-            }
-            return ResponseEntity.ok(applicantEntity);
-        }
-        catch (Exception e) {
-            responseDTO.setMessage("Internal server error");
-            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
-        }
-    }
 
     // Endpoint cập nhật thông tin ứng viên
     @PutMapping("/applicants/{id}")

@@ -12,6 +12,7 @@ import com.javaweb.jobconnectionsystem.service.ApplicantService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class ApplicantServiceImpl implements ApplicantService {
     @Autowired
     private ModelMapper modelMapper;
@@ -48,42 +50,14 @@ public class ApplicantServiceImpl implements ApplicantService {
 
     @Override
     public ApplicantEntity saveApplicant(ApplicantDTO applicantDTO) {
-        if(!applicantDTO.getPhoneNumbers().isEmpty()) {
-            List<String> phoneNum= applicantDTO.getPhoneNumbers();
-            for(String a : phoneNum) {
-                if(phoneRepository.existsByPhoneNumber(a)){
-                    if(phoneRepository.findByPhoneNumber(a).getUser().getId()==applicantDTO.getId()) {
-                        phoneRepository.deleteByPhoneNumber(a);
-                    }
-                    else {
-                        throw new RuntimeException("Phone number "+a+" already exists");
-                    }
-                }
-            }
-        }
-        if(!applicantDTO.getEmails().isEmpty()){
-            List<String> emailList = applicantDTO.getEmails();
-            for(String email : emailList){
-                if(emailRepository.existsByEmail(email)){
-                    if(emailRepository.findByEmail(email).getUser().getId()==applicantDTO.getId()) {
-                        emailRepository.deleteByEmail(email);
-                    }
-                    else{
-                        throw new RuntimeException("Email "+email+" already exists");
-                    }
-                }
-            }
-        }
+
         ApplicantEntity applicantEntity = applicantConverter.toApplicantEntity(applicantDTO);
-        List<CertificationEntity> certificationEntities = new ArrayList<>();
-        List<CertificationDTO> certificationDTOs = applicantDTO.getCertifications();
-        for (CertificationDTO certificationDTO : certificationDTOs) {
-            CertificationEntity certificationEntity = modelMapper.map(certificationDTO, CertificationEntity.class);
-            ApplicantEntity applicant = applicantRepository.findById(applicantDTO.getId()).get();
-            certificationEntity.setApplicant(applicant);
-            certificationEntities.add(certificationEntity);
-        }
-        applicantEntity.setCertifications(certificationEntities);
+
+        List<CertificationEntity> certificationEntities = applicantRepository.findById(applicantDTO.getId()).get().getCertifications();
+        applicantEntity.setApplications();
+
+        List<ApplicationEntity> applicationEntities = applicantRepository.findById(applicantDTO.getId()).get().getApplications();
+        applicantEntity.setApplications(applicationEntities);
 
         return applicantRepository.save(applicantEntity);
     }

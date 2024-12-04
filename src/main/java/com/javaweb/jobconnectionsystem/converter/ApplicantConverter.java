@@ -4,6 +4,7 @@ import com.javaweb.jobconnectionsystem.entity.*;
 
 import com.javaweb.jobconnectionsystem.model.dto.AddressDTO;
 import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
+import com.javaweb.jobconnectionsystem.model.dto.CertificationDTO;
 import com.javaweb.jobconnectionsystem.model.response.ApplicanApplicationReponse;
 import com.javaweb.jobconnectionsystem.model.response.ApplicantResponse;
 import com.javaweb.jobconnectionsystem.model.response.LoginResponse;
@@ -29,20 +30,45 @@ public class ApplicantConverter {
     @Autowired
     private SkillRepository skillRepository;
     @Autowired
-    private ApplicantRepository applicantRepository;
-    @Autowired
-    private ApplicationRepository applicationRepository;
-    @Autowired
-    private JobPostingRepository postingRepository;
-    @Autowired
     private EmailRepository emailRepository;
+    @Autowired
+    private PhoneNumberRepository phoneRepository;
+    @Autowired
+    private ApplicantRepository applicantRepository;
 
     public ApplicantEntity toApplicantEntity(ApplicantDTO applicantDTO) {
-        ApplicantEntity applicantEntity = new ApplicantEntity();
-//        ApplicationEntity applicationEntity = applicationRepository.findById(applicantDTO.getApplicationId()).get();
-//        applicantEntity.setApplications();
+        // Map phone numbers
+        List<String> phoneNumList = applicantDTO.getPhoneNumbers();
+        if(phoneNumList != null && !phoneNumList.isEmpty()) {
+            for(String a : phoneNumList) {
+                if(phoneRepository.existsByPhoneNumber(a)){
+                    if(phoneRepository.findByPhoneNumber(a).getUser().getId() == applicantDTO.getId()) {
+                        phoneRepository.deleteByPhoneNumber(a);
+                    }
+                    else {
+                        throw new RuntimeException("Phone number "+a+" already exists");
+                    }
+                }
+            }
+        }
 
-        applicantEntity = modelMapper.map(applicantDTO, ApplicantEntity.class);
+        // Map emails
+        List<String> emailList = applicantDTO.getEmails();
+        if(emailList != null && !applicantDTO.getEmails().isEmpty()){
+            for(String email : emailList){
+                if(emailRepository.existsByEmail(email)){
+                    if(emailRepository.findByEmail(email).getUser().getId()==applicantDTO.getId()) {
+                        emailRepository.deleteByEmail(email);
+                    }
+                    else{
+                        throw new RuntimeException("Email "+email+" already exists");
+                    }
+                }
+            }
+        }
+
+        ApplicantEntity applicantEntity = modelMapper.map(applicantDTO, ApplicantEntity.class);
+
         List<AddressDTO> addressWardIds = applicantDTO.getAddressWardIds();
         if (addressWardIds != null && !addressWardIds.isEmpty()) {
             for (AddressDTO addressWardId : addressWardIds) {
@@ -78,6 +104,7 @@ public class ApplicantConverter {
                             .filter(e -> e.getEmail() != null)
                             .collect(Collectors.toList())
             );
+            applicantEntity.getEmails().clear(); // Xóa hết các email hiện tại
             for (String email : emails) {
                 EmailEntity newEmail = new EmailEntity();
                 newEmail.setEmail(email);
@@ -85,6 +112,19 @@ public class ApplicantConverter {
                 applicantEntity.getEmails().add(newEmail);
             }
         }
+
+
+
+        List<CertificationDTO> certificationDTOs = applicantDTO.getCertifications();
+        if (certificationDTOs != null && !certificationDTOs.isEmpty()){
+            for (CertificationDTO certificationDTO : certificationDTOs) {
+                CertificationEntity certificationEntity = modelMapper.map(certificationDTO, CertificationEntity.class);
+                ApplicantEntity applicant = applicantRepository.findById(applicantDTO.getId()).get();
+                certificationEntity.setApplicant(applicant);
+                applicantEntity.getCertifications().add(certificationEntity);
+            }
+        }
+
         List<Long> notificationIds = applicantDTO.getNotificationIds();
         if (notificationIds != null && !notificationIds.isEmpty()) {
             for (Long id : notificationIds) {

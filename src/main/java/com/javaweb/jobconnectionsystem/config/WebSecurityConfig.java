@@ -39,8 +39,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/public/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login/**", "/register/**").permitAll()
                         .requestMatchers("/admin/**").hasAnyAuthority("admin")
-                        .requestMatchers("/applicants/**").hasAnyAuthority("applicant")
-                        .requestMatchers("/companies/**").hasAnyAuthority("company")
+                        .requestMatchers("/applicants**").hasAnyAuthority("applicant")
+                        .requestMatchers("/companies**").hasAnyAuthority("company")
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(

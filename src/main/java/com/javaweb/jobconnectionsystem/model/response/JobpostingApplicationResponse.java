@@ -16,6 +16,7 @@ public class JobpostingApplicationResponse {
     private String resume;
     private Long applicantId;
     private String name;
+    private String title;
     public JobpostingApplicationResponse(ApplicationEntity entity) {
         this.applicationId = entity.getId();
         this.status = entity.getStatus().name(); // Lấy tên từ Enum
@@ -25,5 +26,6 @@ public class JobpostingApplicationResponse {
         this.resume = entity.getResume();
         this.applicantId = entity.getApplicant().getId(); // Lấy applicantId từ quan hệ ManyToOne
         this.name = entity.getApplicant().getLastName() + " " +entity.getApplicant().getFirstName();
+        this.title = entity.getJobPosting().getTitle();
     }
 }
