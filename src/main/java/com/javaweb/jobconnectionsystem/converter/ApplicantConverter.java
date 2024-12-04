@@ -2,6 +2,7 @@ package com.javaweb.jobconnectionsystem.converter;
 
 import com.javaweb.jobconnectionsystem.entity.*;
 
+import com.javaweb.jobconnectionsystem.model.dto.AddressDTO;
 import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
 import com.javaweb.jobconnectionsystem.model.response.ApplicanApplicationReponse;
 import com.javaweb.jobconnectionsystem.model.response.ApplicantResponse;
@@ -11,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,12 +37,16 @@ public class ApplicantConverter {
 
     public ApplicantEntity toApplicantEntity(ApplicantDTO applicantDTO) {
         ApplicantEntity applicantEntity = modelMapper.map(applicantDTO, ApplicantEntity.class);
-        List<Long> wardIds = applicantDTO.getWardIds();
-        if (wardIds != null && !wardIds.isEmpty()) {
-            for (Long id : wardIds) {
-                WardEntity wardEntity = wardRepository.findById(id).get();
+        List<AddressDTO> addressWardIds = applicantDTO.getAddressWardIds();
+        if (addressWardIds != null && !addressWardIds.isEmpty()) {
+            for (AddressDTO addressWardId : addressWardIds) {
+                WardEntity wardEntity = wardRepository.findById(addressWardId.getWardId()).get();
                 // Ví dụ thêm WardEntity vào ApplicantEntity (giả sử applicantEntity đã được khởi tạo)
-                applicantEntity.getWards().add(wardEntity); // Cần phương thức `addWard` trong `ApplicantEntity`
+                UserWardEntity userWardEntity = new UserWardEntity();
+                userWardEntity.setWard(wardEntity);
+                userWardEntity.setUser(applicantEntity);
+                userWardEntity.setAddress(addressWardId.getAddress());
+                applicantEntity.getUserWards().add(userWardEntity);
             }
         }
         List<String> phoneNumbers = applicantDTO.getPhoneNumbers();
@@ -107,11 +113,20 @@ public class ApplicantConverter {
 
     public ApplicantResponse toApplicantResponse(ApplicantEntity applicantEntity) {
         ApplicantResponse applicantResponse = modelMapper.map(applicantEntity, ApplicantResponse.class);
-        if (applicantEntity.getWards() != null && !applicantEntity.getWards().isEmpty()) {
-            List<Long> wardIds = applicantEntity.getWards().stream()
-                    .map(WardEntity::getId)
-                    .collect(Collectors.toList());
-            applicantResponse.setWardIds(wardIds);
+        if (applicantEntity.getUserWards() != null && !applicantEntity.getUserWards().isEmpty()) {
+            List<String> addressList = new ArrayList<>();
+            for (UserWardEntity userWard : applicantEntity.getUserWards()) {
+                WardEntity wardEntity = userWard.getWard();
+                String wardName = wardEntity.getName();
+
+                String cityName = wardEntity.getCity().getName();
+
+                String provinceName = wardEntity.getCity().getProvince().getName();
+
+                String address = userWard.getAddress() + ", " + wardName + ", " + cityName + ", " + provinceName;
+                addressList.add(address);
+            }
+            applicantResponse.setAddresses(addressList);
         }
 
         if (applicantEntity.getPhoneNumbers() != null && !applicantEntity.getPhoneNumbers().isEmpty()) {

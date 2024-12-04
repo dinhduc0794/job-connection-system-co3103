@@ -33,12 +33,9 @@ public class UserEntity extends AccountEntity {
     @Column(name = "image")
     private String image = "bg.jpg";
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_ward",
-            joinColumns = @JoinColumn(name = "user_id", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "ward_id", nullable = false))
-    @JsonBackReference
-    private List<WardEntity> wards = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<UserWardEntity> userWards = new ArrayList<>();
 
     // 1 user can have many phone numbers
 

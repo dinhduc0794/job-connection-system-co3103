@@ -56,12 +56,12 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
 
         // join to get company
         String companyName = (String) params.getCompanyName();
-        Double companyRating = params.getComanyRating();
+        Integer minRating = params.getMinRating();
         String province = (String) params.getProvince();
         String city = (String) params.getCity();
         String ward = (String) params.getWard();
 
-        if (StringUtils.notEmptyData(companyName) || companyRating != null) {
+        if (StringUtils.notEmptyData(companyName) || minRating != null) {
             sql.append(" JOIN company co ON jp.company_id = co.id");
         }
 
@@ -99,6 +99,9 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
                             break;
                         case "companyName":
                             sql.append(" AND co.name " + " LIKE '%" + value.toString() + "%'");
+                            break;
+                        case "minRating":
+                            sql.append(" AND co.rating >= " + value);
                             break;
                         case "jobType":
                             sql.append(" AND jt.name " + " LIKE '%" + value.toString() + "%'");

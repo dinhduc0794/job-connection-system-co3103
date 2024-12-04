@@ -1,7 +1,6 @@
 package com.javaweb.jobconnectionsystem.repository.custom.impl;
 
 import com.javaweb.jobconnectionsystem.entity.CompanyEntity;
-import com.javaweb.jobconnectionsystem.enums.RateEnum;
 import com.javaweb.jobconnectionsystem.model.request.CompanySearchRequest;
 import com.javaweb.jobconnectionsystem.repository.custom.CompanyRepositoryCustom;
 import com.javaweb.jobconnectionsystem.utils.StringUtils;
@@ -53,7 +52,8 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
         String ward = (String) params.getWard();
 
         if (StringUtils.notEmptyData(province) || StringUtils.notEmptyData(city) || StringUtils.notEmptyData(ward)) {
-            jpql.append(" JOIN co.wards wa")
+            jpql.append(" JOIN co.userWards uw")
+                    .append(" JOIN uw.ward wa")
                     .append(" JOIN wa.city ci")
                     .append(" JOIN ci.province pr");
         }
@@ -91,7 +91,7 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
                             jpql.append(" AND pr.name LIKE '%" + value.toString() + "%'");
                             break;
                         case "minRating":
-                            jpql.append(" AND co.rating >= " + ((RateEnum) value).getValue().doubleValue());
+                            jpql.append(" AND co.rating >= " + value);
                             break;
                         default:
                             if (value instanceof Number) {

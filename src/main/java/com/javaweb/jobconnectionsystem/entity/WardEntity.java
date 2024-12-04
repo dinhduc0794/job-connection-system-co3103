@@ -27,10 +27,9 @@ public class WardEntity {
     @JsonBackReference
     private CityEntity city;
 
-    // Quan hệ với UserEntity: Một phường/xã có thể có nhiều người dùng sinh sống
-    @ManyToMany(mappedBy = "wards", fetch = FetchType.LAZY)
-    @JsonBackReference
-    private List<UserEntity> users;
+    @OneToMany(mappedBy = "ward", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<UserWardEntity> userWards;
 
     // Quan hệ với JobPostingEntity: Một phường/xã có thể có nhiều bài đăng tuyển dụng
     @OneToMany(mappedBy = "ward", fetch = FetchType.LAZY)

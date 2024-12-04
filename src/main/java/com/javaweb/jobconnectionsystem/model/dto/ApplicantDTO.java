@@ -24,11 +24,12 @@ public class ApplicantDTO {
 
     private String description;
     private Boolean isPublic = true;
-    private String address;
+
+    @Size(min = 1, message = "Address is required")
+    List<AddressDTO> addressWardIds;
 
     private String image;
-    @Size(min = 1, message = "Address is required")
-    private List<Long> wardIds;
+
     @Size(min = 1, message = "Applicant phone number is required")
     private List<String> phoneNumbers;
     @NotNull(message = "Day of birth is required")

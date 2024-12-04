@@ -21,7 +21,7 @@ public class ApplicantResponse {
     private Boolean isPublic = true;
     private String address;
     private String image;
-    private List<Long> wardIds;
+    private List<String> addresses;
     private List<String> phoneNumbers;
     private LocalDate dob;
     private List<String> emails;

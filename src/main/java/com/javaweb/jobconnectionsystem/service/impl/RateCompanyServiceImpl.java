@@ -48,12 +48,12 @@ public class RateCompanyServiceImpl implements RateCompanyService {
             rateCompanyEntity.setCompany(companyEntity);
         }
 
-        // Tính toán lại rating của công ty sau khi có đánh giá mới
-        Integer newRating = rateCompanyDTO.getRate().getValue();
-        Double oldRating = companyEntity.getRating();
-        int numberOfRatings = companyEntity.getRateCompanyEntities().size(); // Số lượng đánh giá hiện tại từ danh sách "applicantRateCompanyEntities"
-        Double totalRating = oldRating * numberOfRatings + newRating;
-        companyEntity.setRating(totalRating / (numberOfRatings + 1)); // Tính trung bình cộng mới
+//        // Tính toán lại rating của công ty sau khi có đánh giá mới
+//        Integer newRating = rateCompanyDTO.getRate().getValue();
+//        Double oldRating = companyEntity.getRating();
+//        int numberOfRatings = companyEntity.getRateCompanyEntities().size(); // Số lượng đánh giá hiện tại từ danh sách "applicantRateCompanyEntities"
+//        Double totalRating = oldRating * numberOfRatings + newRating;
+//        companyEntity.setRating(totalRating / (numberOfRatings + 1)); // Tính trung bình cộng mới
 
         companyRepository.save(companyEntity);
 
@@ -79,15 +79,15 @@ public class RateCompanyServiceImpl implements RateCompanyService {
         Double oldRating = companyEntity.getRating();
         int numberOfRatings = companyEntity.getRateCompanyEntities().size();
 
-        // Nếu có đánh giá (trừ 1 vì đánh giá này sẽ bị xóa)
-        if (numberOfRatings > 1) {
-            // Tính lại rating của công ty
-            Double totalRating = oldRating * numberOfRatings - rateCompanyEntity.getRate().getValue();
-            companyEntity.setRating(totalRating / (numberOfRatings - 1)); // Tính lại trung bình
-        } else {
-            // Nếu chỉ còn 1 đánh giá, thì rating sẽ là 0
-            companyEntity.setRating(0.0);
-        }
+//        // Nếu có đánh giá (trừ 1 vì đánh giá này sẽ bị xóa)
+//        if (numberOfRatings > 1) {
+//            // Tính lại rating của công ty
+//            Double totalRating = oldRating * numberOfRatings - rateCompanyEntity.getRate().getValue();
+//            companyEntity.setRating(totalRating / (numberOfRatings - 1)); // Tính lại trung bình
+//        } else {
+//            // Nếu chỉ còn 1 đánh giá, thì rating sẽ là 0
+//            companyEntity.setRating(0.0);
+//        }
 
         // Cập nhật lại thông tin rating trong database
         companyRepository.save(companyEntity);

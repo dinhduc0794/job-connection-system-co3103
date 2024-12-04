@@ -123,17 +123,21 @@ public class CompanyController {
         }
     }
 
-    @GetMapping("/companies/jobpostings/{id}/applications")
+    @GetMapping("/companies/jobposting/{id}/applications")
     public ResponseEntity<?> getApplicationByJobpostingId(@PathVariable Long id){
         ResponseDTO responseDTO = new ResponseDTO();
-        List<ApplicationEntity> application = applicationService.getAllApplicationByJobpostingId(id);
-        if (application == null){
+        List<ApplicationEntity> applications = applicationService.getAllApplicationByJobpostingId(id);
+
+        if (applications == null || applications.isEmpty()) {
             responseDTO.setMessage("application not found");
             return ResponseEntity.ok(responseDTO);
-        }
-        else {
+        } else {
+            List<JobpostingApplicationResponse> applicationResponses = applications.stream()
+                    .map(JobpostingApplicationResponse::new)
+                    .collect(Collectors.toList());
+
             responseDTO.setMessage("application with jobposting");
-            responseDTO.setData(application);
+            responseDTO.setData(applicationResponses);
             return ResponseEntity.ok(responseDTO);
         }
     }

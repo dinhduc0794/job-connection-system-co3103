@@ -1,7 +1,7 @@
 package com.javaweb.jobconnectionsystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.javaweb.jobconnectionsystem.enums.RateEnum;
+import com.javaweb.jobconnectionsystem.listener.RateCompanyEntityListener;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,13 +10,14 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@EntityListeners(RateCompanyEntityListener.class)
 public class RateCompanyEntity extends BaseEntity {
     @Id
     @GeneratedValue
     private Long id;
 
     @Column(name = "rate", nullable = false)
-    private RateEnum rate;
+    private Integer rate;
 
     @Column(name = "feedback")
     private String feedback;

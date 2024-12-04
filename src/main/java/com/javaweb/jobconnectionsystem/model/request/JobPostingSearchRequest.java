@@ -22,7 +22,7 @@ public class JobPostingSearchRequest extends PaginationDTO {
     private String province;
     private String city;
     private String ward;
-    private Double comanyRating;
+    private Integer minRating;
     private Long minOfApplicants;
     private Long allowance;
     List<String> skills;

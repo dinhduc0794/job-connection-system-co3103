@@ -1,6 +1,7 @@
 package com.javaweb.jobconnectionsystem.model.dto;
 
-import com.javaweb.jobconnectionsystem.enums.RateEnum;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +15,8 @@ public class RateCompanyDTO {
     @NotNull(message = "Company ID is required")
     private Long companyId;
     @NotNull(message = "Rating is required")
-    private RateEnum rate;
+    @Min(value = 1, message = "Rating must be at least 1")
+    @Max(value = 5, message = "Rating must be at most 5")
+    private Integer rate;
     private String feedback;
 }
