@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface JobTypeRepository extends JpaRepository<JobTypeEntity,Long> {
+    JobTypeEntity findById(long id);
 }

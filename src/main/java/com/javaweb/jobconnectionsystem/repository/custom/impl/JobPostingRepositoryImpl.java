@@ -101,7 +101,7 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
                             sql.append(" AND co.name " + " LIKE '%" + value.toString() + "%'");
                             break;
                         case "minRating":
-                            sql.append(" AND co.rating >= " + value);
+                                sql.append(" AND co.rating >= " + value);
                             break;
                         case "jobType":
                             sql.append(" AND jt.name " + " LIKE '%" + value.toString() + "%'");
@@ -117,6 +117,12 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
                             break;
                         case "minOfApplicants":
                             sql.append(" AND jp.number_of_applicants >= " + value);
+                            break;
+                        case "level":
+                            sql.append(" AND jp.level = '" + value + "'");
+                            break;
+                        case "schedule":
+                            sql.append(" AND jp.schedule = '" + value + "'");
                             break;
                         default:
                             if (value instanceof Number) {

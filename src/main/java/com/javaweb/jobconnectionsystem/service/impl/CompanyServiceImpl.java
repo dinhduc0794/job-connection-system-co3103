@@ -66,60 +66,9 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CompanyEntity saveCompany(CompanyDTO companyDTO) {
         CompanyEntity companyEntity = companyConverter.toCompanyEntity(companyDTO);
-        if (companyDTO.getId() == null) { // Trường hợp tạo mới company
-            CompanyEntity companyFromTaxCode = companyRepository.findByTaxCode(companyDTO.getTaxCode());
-            if (companyFromTaxCode != null) throw new RuntimeException("Company tax code already exists");
-            CompanyEntity companyFromName = companyRepository.findByName(companyDTO.getName());
-            if (companyFromName != null) throw new RuntimeException("Company name already exists");
-
-            companyRepository.save(companyEntity);
-        } else { // trường hợp chỉnh sửa thông tin
-            CompanyEntity existingCompany = companyRepository.findById(companyDTO.getId())
-                    .orElseThrow(() -> new RuntimeException("Company not found"));
-            companyEntity.setJobPostings(existingCompany.getJobPostings());
-            companyRepository.save(companyEntity);
-        }
-//        List<PhoneNumberEntity> oldPhoneNumberEntitys = phoneNumberRepository.findByUser_Id(companyEntity.getId());
-//        if (oldPhoneNumberEntitys != null && !oldPhoneNumberEntitys.isEmpty()) {
-//            phoneNumberRepository.deleteAll(oldPhoneNumberEntitys);
-//        }
-        if (companyEntity.getPhoneNumbers() != null) {
-            companyEntity.getPhoneNumbers().clear();
-        }
-
-        for (String phoneNumber : companyDTO.getPhoneNumbers()) {
-            if (phoneNumberRepository.existsByPhoneNumber(phoneNumber)) {
-                throw new RuntimeException("Phone number already exists: " + phoneNumber);
-            }
-
-            PhoneNumberEntity phoneNumberEntity = new PhoneNumberEntity();
-            phoneNumberEntity.setPhoneNumber(phoneNumber + "a");
-            phoneNumberEntity.setUser(companyEntity);
-            phoneNumberRepository.save(phoneNumberEntity);
-            companyEntity.getPhoneNumbers().add(phoneNumberEntity);
-        }
-
-//        List<EmailEntity> oldEmailrEntitys = emailRepository.findByUser_Id(companyEntity.getId());
-//        if (oldEmailrEntitys != null && !oldEmailrEntitys.isEmpty()) {
-//            emailRepository.deleteAll(oldEmailrEntitys);
-//        }
-        if (companyEntity.getEmails() != null) {
-            companyEntity.getEmails().clear(); // Làm sạch danh sách
-        }
-        for (String email : companyDTO.getEmails()) {
-            if (emailRepository.existsByEmail(email)) {
-                throw new RuntimeException("email already exists: " + email);
-            }
-            EmailEntity emailEntity = new EmailEntity();
-            emailEntity.setEmail(email);
-            emailEntity.setUser(companyEntity);
-            emailRepository.save(emailEntity);
-            companyEntity.getEmails().add(emailEntity);
-        }
+        companyEntity = companyRepository.save(companyEntity);
         return companyEntity;
     }
-
-
 
     @Override
     public CompanyEntity updateCompany(Long id, CompanyEntity companyDetails) {

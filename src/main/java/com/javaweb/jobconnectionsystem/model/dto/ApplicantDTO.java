@@ -24,23 +24,20 @@ public class ApplicantDTO {
 
     private String description;
     private Boolean isPublic = true;
-
-    @Size(min = 1, message = "Address is required")
-    @NotNull
-    List<AddressDTO> addressWardIds;
+    private String address;
 
     private String image;
-
+    @Size(min = 1, message = "Address is required")
+    private List<AddressDTO> addressWardIds;
     @Size(min = 1, message = "Applicant phone number is required")
-    @NotNull
     private List<String> phoneNumbers;
     @NotNull(message = "Day of birth is required")
     private LocalDate dob;
     @Size(min = 1, message = "Applicant email is required")
-    @NotNull
     private List<String> emails;
     private List<Long> notificationIds;
     private List<Long> blockedUserIds;
+    private List<JobTypeDTO> levelJobTypeIds;
     private List<Long> skillIds;
     private List<CertificationDTO> certifications;
 }

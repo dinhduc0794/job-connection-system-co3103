@@ -14,4 +14,5 @@ public interface CompanyRepository extends JpaRepository<CompanyEntity,Long>, Co
     CompanyEntity findByName(String companyName);
     @Query("SELECT AVG(rc.rate) FROM RateCompanyEntity rc WHERE rc.company.id = :companyId")
     Double calculateAverageRating(@Param("companyId") Long companyId);
+    CompanyEntity findByUsername(String username);
 }

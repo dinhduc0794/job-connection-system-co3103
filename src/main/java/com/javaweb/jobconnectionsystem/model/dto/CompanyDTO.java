@@ -1,6 +1,7 @@
 package com.javaweb.jobconnectionsystem.model.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,9 +38,11 @@ public class CompanyDTO extends PaginationDTO {
     private Boolean isActive;
 
     @Size(min = 1, message = "Company email is required")
+    @NotNull
     private List<String> emails;
 
     @Size(min = 1, message = "Company phone number is required")
+    @NotNull
     private List<String> phoneNumbers;
     private List<Long> notificationIds;
     private List<Long> blockedUserIds;

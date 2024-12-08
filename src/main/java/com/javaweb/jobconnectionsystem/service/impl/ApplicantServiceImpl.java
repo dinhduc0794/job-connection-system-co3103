@@ -50,16 +50,9 @@ public class ApplicantServiceImpl implements ApplicantService {
 
     @Override
     public ApplicantEntity saveApplicant(ApplicantDTO applicantDTO) {
-
         ApplicantEntity applicantEntity = applicantConverter.toApplicantEntity(applicantDTO);
-
-        List<CertificationEntity> certificationEntities = applicantRepository.findById(applicantDTO.getId()).get().getCertifications();
-        applicantEntity.setApplications();
-
-        List<ApplicationEntity> applicationEntities = applicantRepository.findById(applicantDTO.getId()).get().getApplications();
-        applicantEntity.setApplications(applicationEntities);
-
-        return applicantRepository.save(applicantEntity);
+        applicantEntity = applicantRepository.save(applicantEntity);
+        return applicantEntity;
     }
 
 

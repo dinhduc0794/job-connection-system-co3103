@@ -7,8 +7,7 @@ import com.javaweb.jobconnectionsystem.model.dto.AddressDTO;
 import com.javaweb.jobconnectionsystem.model.response.CompanyDetailResponse;
 import com.javaweb.jobconnectionsystem.model.response.CompanySearchResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
-import com.javaweb.jobconnectionsystem.repository.FieldRepository;
-import com.javaweb.jobconnectionsystem.repository.WardRepository;
+import com.javaweb.jobconnectionsystem.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,32 +28,145 @@ public class CompanyConverter {
     private WardRepository wardRepository;
     @Autowired
     private FieldRepository fieldRepository;
+    @Autowired
+    private PhoneNumberRepository phoneNumberRepository;
+    @Autowired
+    private EmailRepository emailRepository;
+    @Autowired
+    private CompanyRepository companyRepository;
 
     public CompanyEntity toCompanyEntity (CompanyDTO companyDTO) {
+        // Bước kiểm tra tính hợp lệ của dữ liệu
+        if(companyDTO.getPhoneNumbers() != null && !companyDTO.getPhoneNumbers().isEmpty()) {
+            for(String phoneNumber : companyDTO.getPhoneNumbers()) {
+                if(phoneNumberRepository.existsByPhoneNumber(phoneNumber)) {
+                    if(!phoneNumberRepository.findByPhoneNumber(phoneNumber).getUser().getId().equals(companyDTO.getId())) {
+                        throw new RuntimeException("Phonenumber " + phoneNumber + " already exists");
+                    }
+                }
+            }
+        }
+        if(companyDTO.getEmails() != null && !companyDTO.getEmails().isEmpty()) {
+            for(String email : companyDTO.getEmails()) {
+                if(emailRepository.existsByEmail(email)) {
+                    if(emailRepository.findByEmail(email).getUser().getId() != companyDTO.getId()) {
+                        throw new RuntimeException("Email " + email + " already exists");
+                    }
+                }
+            }
+        }
+        if(companyDTO.getTaxCode() != null) {
+            CompanyEntity companyFromTaxCode = companyRepository.findByTaxCode(companyDTO.getTaxCode());
+            if (companyFromTaxCode != null) {
+                if(companyFromTaxCode.getId() != companyDTO.getId()) {
+                    throw new RuntimeException("Company tax code already exists");
+                }
+            }
+        }
+        if(companyDTO.getName() != null) {
+            CompanyEntity companyFromName = companyRepository.findByName(companyDTO.getName());
+            if (companyFromName != null) {
+                if(companyFromName.getId() != companyDTO.getId()) {
+                    throw new RuntimeException("Company name already exists");
+                }
+            }
+        }
+        if(companyDTO.getUsername() != null) {
+            CompanyEntity companyFromUserName = companyRepository.findByUsername(companyDTO.getUsername());
+            if (companyFromUserName != null) {
+                if(companyFromUserName.getId() != companyDTO.getId()) {
+                    throw new RuntimeException("Username already exists");
+                }
+            }
+        }
+
+        // Sau khi kiểm tra tính hợp lệ của dữ liệu, thực hiện việc chỉnh sửa hoặc tạp mới
         CompanyEntity companyEntity = modelMapper.map(companyDTO, CompanyEntity.class);
+
+        if (companyDTO.getId() != null) {
+            // trường hợp chỉnh sửa thông tin
+            CompanyEntity existingCompany = companyRepository.findById(companyDTO.getId())
+                    .orElseThrow(() -> new RuntimeException("Company not found"));
+            // thêm lại các thuộc tính không thuộc trường thay đổi thông tin
+            // các thuộc tính là thực thể và liên quan
+            companyEntity.setJobPostings(existingCompany.getJobPostings());
+            companyEntity.setRating(existingCompany.getRating());
+            companyEntity.setRateCompanyEntities(existingCompany.getRateCompanyEntities());
+            companyEntity.setFollowCompanyEntities(existingCompany.getFollowCompanyEntities());
+            companyEntity.setFields(existingCompany.getFields());
+            companyEntity.setUsedToWorkEntities(existingCompany.getUsedToWorkEntities());
+            companyEntity.setBlockedUsers(existingCompany.getBlockedUsers());
+            companyEntity.setBlockingUsers(existingCompany.getBlockingUsers());
+            companyEntity.setNotifications(existingCompany.getNotifications());
+            companyEntity.setRateApplicantEntities(existingCompany.getRateApplicantEntities());
+            // các thuộc tính không phải thực thể
+            companyEntity.setRemainingPost(existingCompany.getRemainingPost());
+            companyEntity.setCreatedAt(existingCompany.getCreatedAt());
+            companyEntity.setIsActive(existingCompany.getIsActive());
+            companyEntity.setIsPublic(existingCompany.getIsPublic());
+            companyEntity.setIsBanned(existingCompany.getIsBanned());
+            // xóa hết thuộc tính cũ
+            existingCompany.getPhoneNumbers().clear();
+//            phoneNumberRepository.deleteAll(existingCompany.getPhoneNumbers());
+            existingCompany.getEmails().clear();
+//            emailRepository.deleteAll(existingCompany.getEmails());
+//            existingCompany.getWards().removeAll(existingCompany.getWards());
+            existingCompany.getFields().removeAll(existingCompany.getFields());
+        } else {
+            companyEntity.setRemainingPost(5L);
+            companyEntity.setIsBanned(false);
+            companyEntity.setIsActive(true);
+            companyEntity.setIsPublic(true);
+        }
+        // các thộc tính nằm ở bảng khác
+//        companyRepository.save(companyEntity);
+        // PhoneNumber
+        if(companyEntity.getPhoneNumbers() != null && !companyEntity.getPhoneNumbers().isEmpty()) {
+            companyEntity.getPhoneNumbers().clear();
+        }
+        List<String> phoneNumbers = companyDTO.getPhoneNumbers();
+        if(phoneNumbers != null && !phoneNumbers.isEmpty()) {
+            for(String phoneNumber : phoneNumbers) {
+                PhoneNumberEntity phoneNumberEntity = new PhoneNumberEntity();
+                phoneNumberEntity.setPhoneNumber(phoneNumber);
+                phoneNumberEntity.setUser(companyEntity);
+//                phoneNumberRepository.save(phoneNumberEntity);
+                companyEntity.getPhoneNumbers().add(phoneNumberEntity);
+            }
+        }
+        // Email
+        if(companyEntity.getEmails() != null && !companyEntity.getEmails().isEmpty()) {
+            companyEntity.getEmails().clear();
+        }
+        List<String> emails = companyDTO.getEmails();
+        if(emails != null && !emails.isEmpty()) {
+            for(String email : emails) {
+                EmailEntity emailEntity = new EmailEntity();
+                emailEntity.setEmail(email);
+                emailEntity.setUser(companyEntity);
+//                emailRepository.save(emailEntity);
+                companyEntity.getEmails().add(emailEntity);
+            }
+        }
+        // Ward
         List<AddressDTO> addressWardIds = companyDTO.getAddressWardIds();
         if (addressWardIds != null && !addressWardIds.isEmpty()) {
             for (AddressDTO addressWardId : addressWardIds) {
-                WardEntity wardEntity = wardRepository.findById(addressWardId.getWardId()).get();
-                // Ví dụ thêm WardEntity vào CompanyEntity (giả sử companyEntity đã được khởi tạo)
-                UserWardEntity userWardEntity = new UserWardEntity();
-                userWardEntity.setWard(wardEntity);
-                userWardEntity.setUser(companyEntity);
-                userWardEntity.setAddress(addressWardId.getAddress());
-                companyEntity.getUserWards().add(userWardEntity);
+                String address = addressWardId.getAddress();
+                Long wardId = addressWardId.getWardId();
+                WardEntity wardEntity = wardRepository.findById(wardId).get();
+//                companyEntity.getWards().add(wardEntity);
+                companyEntity.setAddress(address);
             }
         }
+        // Field
         List<Long> fieldIds = companyDTO.getFieldIds();
         if (fieldIds != null && !fieldIds.isEmpty()) {
             for (Long fieldId : fieldIds) {
-                // Fetch the FieldEntity for each fieldId from the database
-                FieldEntity fieldEntity = fieldRepository.findById(fieldId).orElseThrow(() ->
-                        new EntityNotFoundException("FieldEntity with ID " + fieldId + " not found"));
-                // Add the FieldEntity to the company's field list
-                companyEntity.getFields().add(fieldEntity);  // Assuming CompanyEntity has a `fields` collection
+                FieldEntity fieldEntity = fieldRepository.findById(fieldId).get();
+                companyEntity.getFields().add(fieldEntity);
             }
         }
-
         return  companyEntity;
     }
 
