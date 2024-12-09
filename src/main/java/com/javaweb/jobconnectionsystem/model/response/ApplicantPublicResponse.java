@@ -30,3 +30,4 @@ public class ApplicantResponse {
     private List<Long> skillIds;
     private List<Long> certificationIds;
 }
+
