@@ -14,4 +14,8 @@ public class WardDTO {
         this.id = ward.getId();
         this.name = ward.getName();
     }
+    public WardDTO(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

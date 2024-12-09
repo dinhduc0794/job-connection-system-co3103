@@ -10,6 +10,7 @@ import com.javaweb.jobconnectionsystem.repository.*;
 import com.javaweb.jobconnectionsystem.service.ApplicantService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +35,8 @@ public class ApplicantServiceImpl implements ApplicantService {
     private SkillRepository skillRepository;
     @Autowired
     private JobPostingConverter jobPostingConverter;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Override
     public List<ApplicantPublicResponse> getAllApplicants() {
         List<ApplicantEntity> applicants = applicantRepository.findAll();
@@ -46,6 +49,8 @@ public class ApplicantServiceImpl implements ApplicantService {
 
     @Override
     public ApplicantEntity saveApplicant(ApplicantDTO applicantDTO) {
+        String encodedPassword = passwordEncoder.encode(applicantDTO.getPassword());
+        applicantDTO.setPassword(encodedPassword);
         ApplicantEntity applicantEntity = applicantConverter.toApplicantEntity(applicantDTO);
         applicantEntity = applicantRepository.save(applicantEntity);
         return applicantEntity;

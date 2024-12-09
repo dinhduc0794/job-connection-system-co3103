@@ -10,6 +10,7 @@ import com.javaweb.jobconnectionsystem.repository.EmailRepository;
 import com.javaweb.jobconnectionsystem.repository.PhoneNumberRepository;
 import com.javaweb.jobconnectionsystem.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ public class CompanyServiceImpl implements CompanyService {
     private PhoneNumberRepository phoneNumberRepository;
     @Autowired
     private EmailRepository emailRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<CompanyPublicResponse> getAllCompanies(CompanySearchRequest params) {
@@ -59,6 +62,8 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyEntity saveCompany(CompanyDTO companyDTO) {
+        String encodedPassword = passwordEncoder.encode(companyDTO.getPassword());
+        companyDTO.setPassword(encodedPassword);
         CompanyEntity companyEntity = companyConverter.toCompanyEntity(companyDTO);
         companyEntity = companyRepository.save(companyEntity);
         return companyEntity;
