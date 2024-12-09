@@ -2,11 +2,10 @@ package com.javaweb.jobconnectionsystem.controller;
 
 import com.javaweb.jobconnectionsystem.entity.*;
 import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
-import com.javaweb.jobconnectionsystem.model.dto.CertificationDTO;
 import com.javaweb.jobconnectionsystem.model.dto.RateCompanyDTO;
 import com.javaweb.jobconnectionsystem.model.dto.SkillDTO;
-import com.javaweb.jobconnectionsystem.model.response.ApplicanApplicationReponse;
-import com.javaweb.jobconnectionsystem.model.response.ApplicantResponse;
+import com.javaweb.jobconnectionsystem.model.response.ApplicantApplicationReponse;
+import com.javaweb.jobconnectionsystem.model.response.ApplicantPublicResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
 import com.javaweb.jobconnectionsystem.service.*;
@@ -36,33 +35,36 @@ public class ApplicantController {
     private RateCompanyService rateCompanyService;
     @Autowired
     private SkillService skillService;
+    // lay ra tat ca ung vien dang PublicResponse (ko co usn, psw), dung de hien thi tren trang web
+    @GetMapping("/public/applicants")
+    public ResponseEntity<List<ApplicantPublicResponse>> getAllApplicants() {
+        List<ApplicantPublicResponse> applicants = applicantService.getAllApplicants();
+        if (applicants.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Nếu không có ứng viên, trả về 204 No Content
+        }
+        return ResponseEntity.ok(applicants); // Trả về danh sách ứng viên
+    }
 
-    // Endpoint lấy ứng viên theo ID
+    // lay ra ung vien cu the theo id (dang PublicResponse, dung de hien thi khi bam vao ung vien do (ung vien khac xem hoac cong ty xem)
     @GetMapping("/public/applicants/{id}")
-    public ResponseEntity<ApplicantResponse> getPublicApplicantById(@PathVariable Long id) {
-        ApplicantResponse applicant = applicantService.getApplicantResponseById(id);
+    public ResponseEntity<ApplicantPublicResponse> getPublicApplicantById(@PathVariable Long id) {
+        ApplicantPublicResponse applicant = applicantService.getApplicantResponseById(id);
         if (applicant == null) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(applicant);
     }
 
+    // lay ra 1 cong ty cu the dang ApplicantDTO (co usn, psw) -> dung cho chinh cong ty do de xem, sua thong tin
     @GetMapping("/applicants/{id}")
-    public ResponseEntity<ApplicantEntity> getApplicantById(@PathVariable Long id) {
-        Optional<ApplicantEntity> applicant = applicantService.getApplicantEntityById(id);
-        return applicant.map(ResponseEntity::ok) // Trả về ứng viên nếu tìm thấy
-                .orElseGet(() -> ResponseEntity.notFound().build()); // Trả về 404 nếu không tìm thấy ứng viên
+    public ResponseEntity<ApplicantDTO> getApplicantById(@PathVariable Long id) {
+        ApplicantDTO applicant = applicantService.getApplicantEntityById(id);
+        if (applicant == null) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(applicant);
     }
 
-    // Endpoint lấy tất cả ứng viên
-    @GetMapping("/public/applicants")
-    public ResponseEntity<List<ApplicantEntity>> getAllApplicants() {
-        List<ApplicantEntity> applicants = applicantService.getAllApplicants();
-        if (applicants.isEmpty()) {
-            return ResponseEntity.noContent().build(); // Nếu không có ứng viên, trả về 204 No Content
-        }
-        return ResponseEntity.ok(applicants); // Trả về danh sách ứng viên
-    }
 
     // Endpoint thêm ứng viên
     @PostMapping("/applicants")
@@ -151,7 +153,7 @@ public class ApplicantController {
     }
 
     // Endpoint thêm chứng chỉ
-    @PostMapping("/applicants/certification")
+    @PostMapping("/applicants/certifications")
     public ResponseEntity<CertificationEntity> addCertification(@RequestBody CertificationEntity certification) {
         CertificationEntity createdCertification = certificationService.addCertification(certification);
         if (createdCertification == null) {
@@ -196,13 +198,13 @@ public class ApplicantController {
             return ResponseEntity.ok(responseDTO);
         }
         else {
-            List<ApplicanApplicationReponse> applicationResponseDTOs = applicationByApplicanID.stream()
+            List<ApplicantApplicationReponse> applicationResponseDTOs = applicationByApplicanID.stream()
                     .map(entity -> {
                         // Ensure JobPosting is not null before accessing its properties
                         JobPostingEntity jobPosting = entity.getJobPosting();
 
                         // Create a new ApplicanApplicationReponse with the appropriate fields
-                        return new ApplicanApplicationReponse(
+                        return new ApplicantApplicationReponse(
                                 entity.getId(),
                                 entity.getStatus(),
                                 entity.getEmail(),
@@ -247,69 +249,6 @@ public class ApplicantController {
             responseDTO.setMessage("canot delete this application");
             responseDTO.setDetail(Collections.singletonList("some thing wrong"));
             return ResponseEntity.badRequest().body(responseDTO);
-        }
-
-    }
-    // Endpoint thêm kỹ năng
-    @PostMapping("/applicants/skills")
-    public ResponseEntity<?> saveSkill(@Valid @RequestBody SkillDTO skillDTO, BindingResult bindingResult) {
-        ResponseDTO responseDTO = new ResponseDTO();
-        try{
-            if (bindingResult.hasErrors()) {
-                List<String> errorMessages = bindingResult.getFieldErrors()
-                        .stream()
-                        .map(FieldError::getDefaultMessage)
-                        .collect(Collectors.toList());
-
-                responseDTO.setMessage("Validation failed");
-                responseDTO.setDetail(errorMessages);
-                return ResponseEntity.badRequest().body(responseDTO);
-            }
-            // neu dung thi //xuong service -> xuong repo -> save vao db
-            SkillEntity skillEntity = skillService.saveSkill(skillDTO);
-            if (skillEntity == null) {
-                return ResponseEntity.badRequest().body(null); // Trả về lỗi nếu bài đăng công việc không hợp lệ
-            }
-            return ResponseEntity.ok(skillEntity); // Trả về bài đăng công việc đã thêm
-        }
-        catch (Exception e){
-            responseDTO.setMessage("Internal server error");
-            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
-        }
-    }
-
-    // Endpoint lấy tất cả kỹ năng
-    @GetMapping("/applicants/skills")
-    public ResponseEntity<List<SkillEntity>> getAllSkills() {
-        List<SkillEntity> skills = skillService.getAllSkills();
-        if (skills.isEmpty()) {
-            return ResponseEntity.noContent().build(); // Nếu không có kỹ năng, trả về 204 No Content
-        }
-        return ResponseEntity.ok(skills); // Trả về danh sách kỹ năng
-    }
-
-    // Endpoint lấy kỹ năng theo ID
-    @GetMapping("/applicants/skills/{id}")
-    public ResponseEntity<SkillEntity> getSkillById(@PathVariable Long id) {
-        Optional<SkillEntity> skill = skillService.getSkillById(id);
-        return skill.map(ResponseEntity::ok) // Trả về kỹ năng nếu tìm thấy
-                .orElseGet(() -> ResponseEntity.notFound().build()); // Trả về 404 nếu không tìm thấy kỹ năng
-    }
-
-    // Endpoint xóa kỹ năng
-    @DeleteMapping("/applicants/skills/{id}")
-    public ResponseEntity<?> deleteSkill(@PathVariable Long id) {
-        ResponseDTO responseDTO = new ResponseDTO();
-        try {
-            skillService.deleteSkillById(id);
-            responseDTO.setMessage("Delete successfully");
-            responseDTO.setDetail(Collections.singletonList("Skill has been deleted"));
-            return ResponseEntity.ok().body(responseDTO);
-        } catch (RuntimeException e) {
-            responseDTO.setMessage("Internal server error");
-            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
         }
     }
 }

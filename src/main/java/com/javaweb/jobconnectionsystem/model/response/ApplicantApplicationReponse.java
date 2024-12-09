@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ApplicanApplicationReponse {
+public class ApplicantApplicationReponse {
 
     private Long id;
     private StatusEnum status;
@@ -15,7 +15,7 @@ public class ApplicanApplicationReponse {
     private String resume;
     private Long jobPostingId;
     private String title;
-    public ApplicanApplicationReponse(Long id, StatusEnum status, String email, String phoneNumber, String description, String resume, Long jobPostingId,String title) {
+    public ApplicantApplicationReponse(Long id, StatusEnum status, String email, String phoneNumber, String description, String resume, Long jobPostingId, String title) {
         this.id = id;
         this.status = status;
         this.email = email;
@@ -25,7 +25,7 @@ public class ApplicanApplicationReponse {
         this.title=title;
         this.jobPostingId = jobPostingId;
     }
-    public ApplicanApplicationReponse(){};
+    public ApplicantApplicationReponse(){};
 
     // Getters and Setters
 }

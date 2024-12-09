@@ -5,6 +5,7 @@ import com.javaweb.jobconnectionsystem.model.dto.JobPostingDTO;
 import com.javaweb.jobconnectionsystem.model.request.JobPostingSearchRequest;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingDetailResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
+import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public interface JobPostingService {
     int countTotalItems(JobPostingSearchRequest params);
 
     // Thêm bài đăng công việc
-    JobPostingEntity saveJobPosting(JobPostingDTO jobPostingDTO);
+    ResponseDTO saveJobPosting(JobPostingDTO jobPostingDTO);
 
 
     // Lấy bài đăng công việc theo ID

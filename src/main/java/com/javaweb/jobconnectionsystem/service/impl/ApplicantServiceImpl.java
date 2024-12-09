@@ -4,8 +4,7 @@ import com.javaweb.jobconnectionsystem.converter.ApplicantConverter;
 import com.javaweb.jobconnectionsystem.converter.JobPostingConverter;
 import com.javaweb.jobconnectionsystem.entity.*;
 import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
-import com.javaweb.jobconnectionsystem.model.dto.CertificationDTO;
-import com.javaweb.jobconnectionsystem.model.response.ApplicantResponse;
+import com.javaweb.jobconnectionsystem.model.response.ApplicantPublicResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.repository.*;
 import com.javaweb.jobconnectionsystem.service.ApplicantService;
@@ -13,10 +12,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.ModelMap;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,16 +33,15 @@ public class ApplicantServiceImpl implements ApplicantService {
     @Autowired
     private SkillRepository skillRepository;
     @Autowired
-    private PhoneNumberRepository phoneRepository;
-    @Autowired
-    private EmailRepository emailRepository;
-    @Autowired
-    private JobTypeRepository jobTypeRepository;
-    @Autowired
     private JobPostingConverter jobPostingConverter;
     @Override
-    public List<ApplicantEntity> getAllApplicants() {
-        return applicantRepository.findAll();
+    public List<ApplicantPublicResponse> getAllApplicants() {
+        List<ApplicantEntity> applicants = applicantRepository.findAll();
+        List<ApplicantPublicResponse> applicantPublicResponses = new ArrayList<>();
+        for (ApplicantEntity applicant : applicants) {
+            applicantPublicResponses.add(applicantConverter.toApplicantPublicResponse(applicant));
+        }
+        return applicantPublicResponses;
     }
 
     @Override
@@ -57,18 +53,16 @@ public class ApplicantServiceImpl implements ApplicantService {
 
 
     @Override
-    public Optional<ApplicantEntity> getApplicantEntityById(Long id) {
-        Optional<ApplicantEntity> applicant = applicantRepository.findById(id);
-        if (applicant.isEmpty()) {
-            return null;
-        }
-        return applicant;
+    public ApplicantDTO getApplicantEntityById(Long id) {
+        ApplicantEntity applicantEntity = applicantRepository.findById(id).get();
+        ApplicantDTO applicantDTO = applicantConverter.toApplicantDTO(applicantEntity);
+        return applicantDTO;
     }
 
     @Override
-    public ApplicantResponse getApplicantResponseById(Long id) {
+    public ApplicantPublicResponse getApplicantResponseById(Long id) {
         ApplicantEntity applicantEntity = applicantRepository.findById(id).get();
-        return applicantConverter.toApplicantResponse(applicantEntity);
+        return applicantConverter.toApplicantPublicResponse(applicantEntity);
     }
 
     @Override

@@ -31,7 +31,6 @@ public class RegisterController {
     @Autowired
     private ApplicantService applicantService;
 
-
     @PostMapping("/applicant")
     public ResponseEntity<?> saveApplicant(@Valid @RequestBody ApplicantDTO applicantDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
@@ -65,7 +64,7 @@ public class RegisterController {
     public ResponseEntity<?> saveCompany(@Valid @RequestBody CompanyDTO companyDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
         if(companyDTO.getId()!=null){
-            return ResponseEntity.badRequest().body("thêm mới không có gửi id cho tao");
+            return ResponseEntity.badRequest().body("Thêm mới không có gửi id");
         }
         try {
             if (bindingResult.hasErrors()) {
@@ -83,7 +82,7 @@ public class RegisterController {
             if (companyEntity == null) {
                 return ResponseEntity.badRequest().body(null); // Trả về lỗi nếu bài đăng công việc không hợp lệ
             }
-            return ResponseEntity.ok("register company success"); // Trả về bài đăng công việc đã thêm
+            return ResponseEntity.ok("Register company success"); // Trả về bài đăng công việc đã thêm
         } catch (Exception e) {
             responseDTO.setMessage("Internal server error");
             responseDTO.setDetail(Collections.singletonList(e.getMessage()));

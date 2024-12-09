@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class JobTypeDTO {
+    private Long id;
+    private String name;
     private LevelEnum level;
-    private Long jobTypeId;
 }

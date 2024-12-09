@@ -1,21 +1,18 @@
 package com.javaweb.jobconnectionsystem.converter;
 
 import com.javaweb.jobconnectionsystem.entity.*;
-import com.javaweb.jobconnectionsystem.enums.StatusEnum;
 import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
 import com.javaweb.jobconnectionsystem.model.dto.AddressDTO;
-import com.javaweb.jobconnectionsystem.model.response.CompanyDetailResponse;
-import com.javaweb.jobconnectionsystem.model.response.CompanySearchResponse;
+import com.javaweb.jobconnectionsystem.model.dto.FieldDTO;
+import com.javaweb.jobconnectionsystem.model.response.CompanyPublicResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.repository.*;
-import jakarta.persistence.EntityNotFoundException;
+import com.javaweb.jobconnectionsystem.utils.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -101,22 +98,13 @@ public class CompanyConverter {
             companyEntity.setRateApplicantEntities(existingCompany.getRateApplicantEntities());
             // các thuộc tính không phải thực thể
             companyEntity.setRemainingPost(existingCompany.getRemainingPost());
-            companyEntity.setCreatedAt(existingCompany.getCreatedAt());
-            companyEntity.setIsActive(existingCompany.getIsActive());
-            companyEntity.setIsPublic(existingCompany.getIsPublic());
-            companyEntity.setIsBanned(existingCompany.getIsBanned());
             // xóa hết thuộc tính cũ
             existingCompany.getPhoneNumbers().clear();
-//            phoneNumberRepository.deleteAll(existingCompany.getPhoneNumbers());
+            phoneNumberRepository.deleteAll(existingCompany.getPhoneNumbers());
             existingCompany.getEmails().clear();
-//            emailRepository.deleteAll(existingCompany.getEmails());
+            emailRepository.deleteAll(existingCompany.getEmails());
 //            existingCompany.getWards().removeAll(existingCompany.getWards());
             existingCompany.getFields().removeAll(existingCompany.getFields());
-        } else {
-            companyEntity.setRemainingPost(5L);
-            companyEntity.setIsBanned(false);
-            companyEntity.setIsActive(true);
-            companyEntity.setIsPublic(true);
         }
         // các thộc tính nằm ở bảng khác
 //        companyRepository.save(companyEntity);
@@ -149,113 +137,91 @@ public class CompanyConverter {
             }
         }
         // Ward
-        List<AddressDTO> addressWardIds = companyDTO.getAddressWardIds();
-        if (addressWardIds != null && !addressWardIds.isEmpty()) {
-            for (AddressDTO addressWardId : addressWardIds) {
-                String address = addressWardId.getAddress();
-                Long wardId = addressWardId.getWardId();
-                WardEntity wardEntity = wardRepository.findById(wardId).get();
-//                companyEntity.getWards().add(wardEntity);
-                companyEntity.setAddress(address);
-            }
-        }
+        companyEntity.setSpecificAddress(companyDTO.getSpecificAddress());
+        WardEntity wardEntity = wardRepository.findById(companyDTO.getWard().getId()).get();
+        companyEntity.setWard(wardEntity);
+//        List<AddressDTO> addressWardIds = companyDTO.getAddressWardIds();
+//        if (addressWardIds != null && !addressWardIds.isEmpty()) {
+//            for (AddressDTO addressWardId : addressWardIds) {
+//                String address = addressWardId.getAddress();
+//                Long wardId = addressWardId.getWardId();
+//                WardEntity wardEntity = wardRepository.findById(wardId).get();
+////                companyEntity.getWards().add(wardEntity);
+//                companyEntity.setAddress(address);
+//            }
+//        }
+
         // Field
-        List<Long> fieldIds = companyDTO.getFieldIds();
-        if (fieldIds != null && !fieldIds.isEmpty()) {
-            for (Long fieldId : fieldIds) {
-                FieldEntity fieldEntity = fieldRepository.findById(fieldId).get();
+        List<FieldDTO> fieldDTOs = companyDTO.getFields();
+        if (fieldDTOs != null && !fieldDTOs.isEmpty()) {
+            for (FieldDTO fieldDTO : fieldDTOs) {
+                FieldEntity fieldEntity = fieldRepository.findById(fieldDTO.getId())
+                        .orElseThrow(() -> new RuntimeException("Field not found"));
                 companyEntity.getFields().add(fieldEntity);
             }
         }
         return  companyEntity;
     }
 
-    public CompanySearchResponse toCompanySearchResponse(CompanyEntity companyEntity) {
-        CompanySearchResponse companySearchResponse = modelMapper.map(companyEntity, CompanySearchResponse.class);
+    public  CompanyDTO toCompanyDTO(CompanyEntity companyEntity) {
+        CompanyDTO companyDTO = modelMapper.map(companyEntity, CompanyDTO.class);
 
-        if (companyEntity.getUserWards() != null && !companyEntity.getUserWards().isEmpty()) {
-            List<String> addressList = new ArrayList<>();
-            for (UserWardEntity userWard : companyEntity.getUserWards()) {
-                WardEntity wardEntity = userWard.getWard();
-                String wardName = wardEntity.getName();
-
-                String cityName = wardEntity.getCity().getName();
-
-                String provinceName = wardEntity.getCity().getProvince().getName();
-
-                String address = userWard.getAddress() + ", " + wardName + ", " + cityName + ", " + provinceName;
-                addressList.add(address);
+        // Set address
+        if(companyEntity.getWard() != null) {
+            WardEntity wardEntity = companyEntity.getWard();
+            String wardName = wardEntity.getName();
+            String cityName = wardEntity.getCity().getName();
+            String provinceName = wardEntity.getCity().getProvince().getName();
+            String fullAddress = wardName + ", " + cityName + ", " + provinceName;
+            if (StringUtils.notEmptyData(companyEntity.getSpecificAddress())) {
+                fullAddress = companyEntity.getSpecificAddress() + ", " + fullAddress;
             }
-            companySearchResponse.setAddresses(addressList);
+            companyDTO.setFullAddress(fullAddress);
+            companyDTO.getWard().setId(wardEntity.getId());
+            companyDTO.getWard().setName(wardEntity.getName());
         }
 
-        if (companyEntity.getPhoneNumbers() != null && !companyEntity.getPhoneNumbers().isEmpty()) {
-            List<String> phoneNumbers = companyEntity.getPhoneNumbers().stream()
-                    .map(it -> it.getPhoneNumber())
-                    .collect(Collectors.toList());
-            companySearchResponse.setPhoneNumbers(phoneNumbers);
-        }
-
-        if (companyEntity.getEmails() != null && !companyEntity.getEmails().isEmpty()) {
-            List<String> emails = companyEntity.getEmails().stream()
-                    .map(it -> it.getEmail())
-                    .collect(Collectors.toList());
-            companySearchResponse.setEmails(emails);
-        }
-
-        if (companyEntity.getFields() != null && !companyEntity.getFields().isEmpty()) {
-            String strField = companyEntity.getFields().stream()
-                    .map(it->it.getName())
-                    .collect(Collectors.joining(", "));
-            companySearchResponse.setFields(strField);
-        }
-
-        if (companyEntity.getJobPostings() != null && !companyEntity.getJobPostings().isEmpty()) {
-            List<JobPostingEntity> jobPostings = companyEntity.getJobPostings();
-            Long recruitQuantity = 0L;
-            for (JobPostingEntity jobPostingEntity : jobPostings) {
-                if (jobPostingEntity.getStatus() == true) {
-                    recruitQuantity += jobPostingEntity.getNumberOfApplicants();
-                }
-
+        List<FieldEntity> fieldEntities = companyEntity.getFields();
+        if(fieldEntities != null && !fieldEntities.isEmpty()) {
+            for(FieldEntity fieldEntity : fieldEntities) {
+                FieldDTO fieldDTO = new FieldDTO();
+                fieldDTO.setId(fieldEntity.getId());
+                fieldDTO.setName(fieldEntity.getName());
+                companyDTO.getFields().add(fieldDTO);
             }
-            companySearchResponse.setRecruitQuantity(recruitQuantity);
         }
 
-//        if (companyEntity.getRateCompanyEntities() != null && !companyEntity.getRateCompanyEntities().isEmpty()) {
-//            double totalRating = companyEntity.getRateCompanyEntities().stream()
-//                    .filter(it -> it != null && it.getRate() != null) // check null
-//                    .map(it -> it.getRate().getValue().doubleValue())  // RateEnum -> Double
-//                    .reduce(0.0, Double::sum); // Tính tổng
-//            int count = (int) companyEntity.getRateCompanyEntities().stream()
-//                    .filter(it -> it != null && it.getRate() != null)
-//                    .count(); // dem so luong
-//            companySearchResponse.setRating(count > 0 ? totalRating / count : 0.0);
-//        } else {
-//            companySearchResponse.setRating(0.0); // mac dinh 0.0
-//        }
+        List<PhoneNumberEntity> phoneNumberEntities = companyEntity.getPhoneNumbers();
+        if(phoneNumberEntities != null && !phoneNumberEntities.isEmpty()) {
+            for(PhoneNumberEntity phoneNumberEntity : phoneNumberEntities) {
+                companyDTO.getPhoneNumbers().add(phoneNumberEntity.getPhoneNumber());
+            }
+        }
 
-        return companySearchResponse;
+        List<EmailEntity> emailEntities = companyEntity.getEmails();
+        if(emailEntities != null && !emailEntities.isEmpty()) {
+            for(EmailEntity emailEntity : emailEntities) {
+                companyDTO.getEmails().add(emailEntity.getEmail());
+            }
+        }
+
+        return companyDTO;
     }
 
-    public CompanyDetailResponse toCompanyDetailResponse(CompanyEntity companyEntity) {
-        CompanyDetailResponse companyDetailResponse = modelMapper.map(companyEntity, CompanyDetailResponse.class);
+    public CompanyPublicResponse toCompanyPublicResponse(CompanyEntity companyEntity) {
+        CompanyPublicResponse companyPublicResponse = modelMapper.map(companyEntity, CompanyPublicResponse.class);
 
         // Set addresses
-        if (companyEntity.getUserWards() != null && !companyEntity.getUserWards().isEmpty()) {
-            List<String> addressList = new ArrayList<>();
-            for (UserWardEntity userWard : companyEntity.getUserWards()) {
-                WardEntity wardEntity = userWard.getWard();
-                String wardName = wardEntity.getName();
-
-                String cityName = wardEntity.getCity().getName();
-
-                String provinceName = wardEntity.getCity().getProvince().getName();
-
-                String address = userWard.getAddress() + ", " + wardName + ", " + cityName + ", " + provinceName;
-                addressList.add(address);
+        if (companyEntity.getWard() != null) {
+            WardEntity wardEntity = companyEntity.getWard();
+            String wardName = wardEntity.getName();
+            String cityName = wardEntity.getCity().getName();
+            String provinceName = wardEntity.getCity().getProvince().getName();
+            String fullAddress = wardName + ", " + cityName + ", " + provinceName;
+            if (StringUtils.notEmptyData(companyEntity.getSpecificAddress())) {
+                fullAddress = companyEntity.getSpecificAddress() + ", " + fullAddress;
             }
-            companyDetailResponse.setAddresses(addressList);
+            companyPublicResponse.setFullAddress(fullAddress);
         }
 
         // Set phone numbers
@@ -263,30 +229,48 @@ public class CompanyConverter {
             List<String> phoneNumbers = companyEntity.getPhoneNumbers().stream()
                     .map(it -> it.getPhoneNumber())
                     .collect(Collectors.toList());
-            companyDetailResponse.setPhoneNumbers(phoneNumbers);
+            companyPublicResponse.setPhoneNumbers(phoneNumbers);
         }
 
         if (companyEntity.getEmails() != null && !companyEntity.getEmails().isEmpty()) {
             List<String> emails = companyEntity.getEmails().stream()
                     .map(it -> it.getEmail())
                     .collect(Collectors.toList());
-            companyDetailResponse.setEmails(emails);
+            companyPublicResponse.setEmails(emails);
         }
 
         if (companyEntity.getFields() != null && !companyEntity.getFields().isEmpty()) {
-            String strField = companyEntity.getFields().stream()
-                    .map(it->it.getName())
-                    .collect(Collectors.joining(", "));
-            companyDetailResponse.setFields(strField);
+            List<String> fields = companyEntity.getFields().stream()
+                    .map(it -> it.getName())
+                    .collect(Collectors.toList());
+            companyPublicResponse.setFields(fields);
         }
 
         if (companyEntity.getJobPostings() != null && !companyEntity.getJobPostings().isEmpty()) {
-            List<JobPostingSearchResponse> jobPostings = companyEntity.getJobPostings().stream()
+            List<JobPostingSearchResponse> jobPostingResponses = companyEntity.getJobPostings().stream()
                     .map(it -> jobPostingConverter.toJobPostingSearchResponse(it))
                     .collect(Collectors.toList());
-            companyDetailResponse.setJobPostings(jobPostings);
+            companyPublicResponse.setJobPostings(jobPostingResponses);
+
+            // xu li so luong tuyen dung
+            List<JobPostingEntity> jobPostingEntities = companyEntity.getJobPostings();
+            Long recruitQuantity = 0L;
+            for (JobPostingEntity jobPostingEntity : jobPostingEntities) {
+                if (jobPostingEntity.getStatus() == true) {
+                    recruitQuantity += jobPostingEntity.getNumberOfApplicants();
+                }
+
+            }
+            companyPublicResponse.setRecruitQuantity(recruitQuantity);
         }
 
+        if (companyEntity.getFollowCompanyEntities() != null && !companyEntity.getFollowCompanyEntities().isEmpty()) {
+            companyPublicResponse.setNumberOfFollowers((long) companyEntity.getFollowCompanyEntities().size());
+        } else {
+            companyPublicResponse.setNumberOfFollowers(0L); // mac dinh 0
+        }
+
+        return companyPublicResponse;
 //        if (companyEntity.getRateCompanyEntities() != null && !companyEntity.getRateCompanyEntities().isEmpty()) {
 //            double totalRating = companyEntity.getRateCompanyEntities().stream()
 //                    .filter(it -> it != null && it.getRate() != null) // check null
@@ -295,17 +279,9 @@ public class CompanyConverter {
 //            int count = (int) companyEntity.getRateCompanyEntities().stream()
 //                    .filter(it -> it != null && it.getRate() != null)
 //                    .count(); // dem so luong
-//            companyDetailResponse.setRating(count > 0 ? totalRating / count : 0.0);
+//            companyPublicResponse.setRating(count > 0 ? totalRating / count : 0.0);
 //        } else {
-//            companyDetailResponse.setRating(0.0); // mac dinh 0.0
+//            companyPublicResponse.setRating(0.0); // mac dinh 0.0
 //        }
-
-        if (companyEntity.getFollowCompanyEntities() != null && !companyEntity.getFollowCompanyEntities().isEmpty()) {
-            companyDetailResponse.setNumberOfFollowers((long) companyEntity.getFollowCompanyEntities().size());
-        } else {
-            companyDetailResponse.setNumberOfFollowers(0L); // mac dinh 0
-        }
-
-        return companyDetailResponse;
     }
 }

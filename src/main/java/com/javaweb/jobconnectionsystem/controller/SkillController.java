@@ -28,33 +28,33 @@ public class SkillController {
     private SkillService skillService;
 
     // Endpoint thêm kỹ năng
-    @PostMapping
-    public ResponseEntity<?> saveSkill(@Valid @RequestBody SkillDTO skillDTO, BindingResult bindingResult) {
-        ResponseDTO responseDTO = new ResponseDTO();
-        try{
-            if (bindingResult.hasErrors()) {
-                List<String> errorMessages = bindingResult.getFieldErrors()
-                        .stream()
-                        .map(FieldError::getDefaultMessage)
-                        .collect(Collectors.toList());
-
-                responseDTO.setMessage("Validation failed");
-                responseDTO.setDetail(errorMessages);
-                return ResponseEntity.badRequest().body(responseDTO);
-            }
-            // neu dung thi //xuong service -> xuong repo -> save vao db
-            SkillEntity skillEntity = skillService.saveSkill(skillDTO);
-            if (skillEntity == null) {
-                return ResponseEntity.badRequest().body(null); // Trả về lỗi nếu bài đăng công việc không hợp lệ
-            }
-            return ResponseEntity.ok(skillEntity); // Trả về bài đăng công việc đã thêm
-        }
-        catch (Exception e){
-            responseDTO.setMessage("Internal server error");
-            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
-        }
-    }
+//    @PostMapping
+//    public ResponseEntity<?> saveSkill(@Valid @RequestBody SkillDTO skillDTO, BindingResult bindingResult) {
+////        ResponseDTO responseDTO = new ResponseDTO();
+////        try{
+////            if (bindingResult.hasErrors()) {
+////                List<String> errorMessages = bindingResult.getFieldErrors()
+////                        .stream()
+////                        .map(FieldError::getDefaultMessage)
+////                        .collect(Collectors.toList());
+////
+////                responseDTO.setMessage("Validation failed");
+////                responseDTO.setDetail(errorMessages);
+////                return ResponseEntity.badRequest().body(responseDTO);
+////            }
+////            // neu dung thi //xuong service -> xuong repo -> save vao db
+////            SkillEntity skillEntity = skillService.saveSkill(skillDTO);
+////            if (skillEntity == null) {
+////                return ResponseEntity.badRequest().body(null); // Trả về lỗi nếu bài đăng công việc không hợp lệ
+////            }
+////            return ResponseEntity.ok(skillEntity); // Trả về bài đăng công việc đã thêm
+////        }
+////        catch (Exception e){
+////            responseDTO.setMessage("Internal server error");
+////            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
+////            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
+////        }
+//    }
 
     // Endpoint lấy tất cả kỹ năng
     @GetMapping

@@ -3,19 +3,15 @@ package com.javaweb.jobconnectionsystem.converter;
 import com.javaweb.jobconnectionsystem.entity.*;
 
 import com.javaweb.jobconnectionsystem.enums.LevelEnum;
-import com.javaweb.jobconnectionsystem.model.dto.AddressDTO;
-import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
-import com.javaweb.jobconnectionsystem.model.dto.CertificationDTO;
-import com.javaweb.jobconnectionsystem.model.dto.JobTypeDTO;
-import com.javaweb.jobconnectionsystem.model.response.ApplicanApplicationReponse;
-import com.javaweb.jobconnectionsystem.model.response.ApplicantResponse;
-import com.javaweb.jobconnectionsystem.model.response.LoginResponse;
+import com.javaweb.jobconnectionsystem.model.dto.*;
+import com.javaweb.jobconnectionsystem.model.response.ApplicantApplicationReponse;
+import com.javaweb.jobconnectionsystem.model.response.ApplicantPublicResponse;
 import com.javaweb.jobconnectionsystem.repository.*;
+import com.javaweb.jobconnectionsystem.utils.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,6 +35,10 @@ public class ApplicantConverter {
     private PhoneNumberRepository phoneNumberRepository;
     @Autowired
     private ApplicantRepository applicantRepository;
+    @Autowired
+    private ApplicantJobTypeRepository applicantJobTypeRepository;
+    @Autowired
+    private CertificationRepository certificationRepository;
 
     public ApplicantEntity toApplicantEntity(ApplicantDTO applicantDTO) {
         // Bước kiểm tra tính hợp lệ của dữ liệu
@@ -88,11 +88,7 @@ public class ApplicantConverter {
             applicantEntity.setBlockingUsers(existingApplicant.getBlockingUsers());
             applicantEntity.setNotifications(existingApplicant.getNotifications());
             applicantEntity.setCertifications(existingApplicant.getCertifications());
-            ;
-            // các thuộc tính không phải thực
-            applicantEntity.setCreatedAt(existingApplicant.getCreatedAt());
-            applicantEntity.setIsActive(existingApplicant.getIsActive());
-            applicantEntity.setIsBanned(existingApplicant.getIsBanned());
+
             if(applicantDTO.getIsPublic() == null) applicantEntity.setIsPublic(existingApplicant.getIsPublic());
             else applicantEntity.setIsPublic(applicantDTO.getIsPublic());
 
@@ -101,7 +97,8 @@ public class ApplicantConverter {
             phoneNumberRepository.deleteAll(existingApplicant.getPhoneNumbers());
             existingApplicant.getEmails().clear();
             emailRepository.deleteAll(existingApplicant.getEmails());
-//            existingApplicant.getWards().removeAll(existingApplicant.getWards());
+            existingApplicant.getCertifications().clear();
+            certificationRepository.deleteAll(existingApplicant.getCertifications());
             List<ApplicantJobtypeEntity> applicantJobtypeEntitys = existingApplicant.getApplicantJobtypeEntities();
             if(applicantJobtypeEntitys != null && !applicantJobtypeEntitys.isEmpty()) {
                 for(ApplicantJobtypeEntity applicantJobtypeEntity : applicantJobtypeEntitys) {
@@ -145,61 +142,133 @@ public class ApplicantConverter {
                 applicantEntity.getEmails().add(emailEntity);
             }
         }
-        // Ward
-        List<AddressDTO> addressWardIds = applicantDTO.getAddressWardIds();
-        if (addressWardIds != null && !addressWardIds.isEmpty()) {
-            for (AddressDTO addressWardId : addressWardIds) {
-                String address = addressWardId.getAddress();
-                Long wardId = addressWardId.getWardId();
-                WardEntity wardEntity = wardRepository.findById(wardId).get();
-//                applicantEntity.getWards().add(wardEntity);
-                applicantEntity.setAddress(address);
+        // Certification
+        if(applicantEntity.getCertifications() != null && !applicantEntity.getCertifications().isEmpty()) {
+            applicantEntity.getApplications().clear();
+        }
+        List<CertificationDTO> certificationDTOS = applicantDTO.getCertifications();
+        if(certificationDTOS != null && !certificationDTOS.isEmpty()) {
+            for(CertificationDTO certificationDTO : certificationDTOS) {
+                CertificationEntity certificationEntity = modelMapper.map(certificationDTO, CertificationEntity.class);
+                certificationEntity.setApplicant(applicantEntity);
+                certificationRepository.save(certificationEntity);
+                applicantEntity.getCertifications().add(certificationEntity);
             }
         }
+        // Ward
+        applicantEntity.setSpecificAddress(applicantDTO.getSpecificAddress());
+        WardEntity wardEntity = wardRepository.findById(applicantDTO.getWard().getId()).get();
+        applicantEntity.setWard(wardEntity);
         // JobType
-        List<JobTypeDTO> levelJobTypeIds = applicantDTO.getLevelJobTypeIds();
-        if(levelJobTypeIds != null && !levelJobTypeIds.isEmpty()) {
-            for (JobTypeDTO levelJobTypeId : levelJobTypeIds) {
-                LevelEnum level = levelJobTypeId.getLevel();
-                Long jobTypeId = levelJobTypeId.getJobTypeId();
+        List<JobTypeDTO> jobTypes = applicantDTO.getJobTypes();
+        if(jobTypes != null && !jobTypes.isEmpty()) {
+            for (JobTypeDTO jobType : jobTypes) {
+                LevelEnum level = jobType.getLevel();
+                Long jobTypeId = jobType.getId();
                 JobTypeEntity jobTypeEntity = jobTypeRepository.findById(jobTypeId).get();
 
                 ApplicantJobtypeEntity applicantJobtypeEntity = new ApplicantJobtypeEntity();
                 applicantJobtypeEntity.setJobType(jobTypeEntity);
                 applicantJobtypeEntity.setLevel(level);
                 applicantJobtypeEntity.setApplicant(applicantEntity);
-//                applicantJobTypeRepository.save(applicantJobtypeEntity);
+                applicantJobTypeRepository.save(applicantJobtypeEntity);
                 applicantEntity.getApplicantJobtypeEntities().add(applicantJobtypeEntity);
-//                jobTypeEntity.getApplicantJobtypeEntities().add(applicantJobtypeEntity);
+                jobTypeEntity.getApplicantJobtypeEntities().add(applicantJobtypeEntity);
             }
         }
         // Skill
-        List<Long> skillIds = applicantDTO.getSkillIds();
-        if(skillIds != null && !skillIds.isEmpty()) {
-            for (Long skillId : skillIds) {
-                SkillEntity skillEntity = skillRepository.findById(skillId).get();
+        List<SkillDTO> skills = applicantDTO.getSkills();
+        if(skills != null && !skills.isEmpty()) {
+            for (SkillDTO skill : skills) {
+                SkillEntity skillEntity = skillRepository.findById(skill.getId()).get();
                 applicantEntity.getSkills().add(skillEntity);
             }
         }
         return  applicantEntity;
     }
 
-    public ApplicantResponse toApplicantResponse(ApplicantEntity applicantEntity) {
-        ApplicantResponse applicantResponse = modelMapper.map(applicantEntity, ApplicantResponse.class);
-        if (applicantEntity.getUserWards() != null && !applicantEntity.getUserWards().isEmpty()) {
-            List<String> addressList = new ArrayList<>();
-            for (UserWardEntity userWard : applicantEntity.getUserWards()) {
-                WardEntity wardEntity = userWard.getWard();
-                String wardName = wardEntity.getName();
+    public ApplicantDTO toApplicantDTO(ApplicantEntity applicantEntity) {
+        ApplicantDTO applicantDTO = modelMapper.map(applicantEntity, ApplicantDTO.class);
 
-                String cityName = wardEntity.getCity().getName();
-
-                String provinceName = wardEntity.getCity().getProvince().getName();
-
-                String address = userWard.getAddress() + ", " + wardName + ", " + cityName + ", " + provinceName;
-                addressList.add(address);
+        // set address
+        if (applicantEntity.getWard() != null) {
+            WardEntity wardEntity = applicantEntity.getWard();
+            String wardName = wardEntity.getName();
+            String cityName = wardEntity.getCity().getName();
+            String provinceName = wardEntity.getCity().getProvince().getName();
+            String fullAddress = wardName + ", " + cityName + ", " + provinceName;
+            if (StringUtils.notEmptyData(applicantEntity.getSpecificAddress())) {
+                fullAddress = applicantEntity.getSpecificAddress() + ", " + fullAddress;
             }
-            applicantResponse.setAddresses(addressList);
+            applicantDTO.setFullAddress(fullAddress);
+            applicantDTO.getWard().setId(wardEntity.getId());
+            applicantDTO.getWard().setName(wardEntity.getName());
+        }
+
+        //jobtype
+        List<ApplicantJobtypeEntity> applicantJobtypeEntities = applicantEntity.getApplicantJobtypeEntities();
+        if(applicantJobtypeEntities != null && !applicantJobtypeEntities.isEmpty()) {
+            for(ApplicantJobtypeEntity applicantJobtypeEntity : applicantJobtypeEntities) {
+                JobTypeEntity jobTypeEntity = applicantJobtypeEntity.getJobType();
+                JobTypeDTO jobTypeDTO = new JobTypeDTO();
+                jobTypeDTO.setLevel(applicantJobtypeEntity.getLevel());
+                jobTypeDTO.setName(jobTypeEntity.getName());
+                jobTypeDTO.setId(jobTypeEntity.getId());
+
+                applicantDTO.getJobTypes().add(jobTypeDTO);
+            }
+        }
+
+        //skill
+        List<SkillEntity> skillEntities = applicantEntity.getSkills();
+        if(skillEntities != null && !skillEntities.isEmpty()) {
+            for(SkillEntity skillEntity : skillEntities) {
+                SkillDTO skillDTO = new SkillDTO();
+                skillDTO.setId(skillEntity.getId());
+                skillDTO.setName(skillEntity.getName());
+
+                applicantDTO.getSkills().add(skillDTO);
+            }
+        }
+        //certification
+        List<CertificationEntity> certificationEntities = applicantEntity.getCertifications();
+        if(certificationEntities != null && !certificationEntities.isEmpty()) {
+            for(CertificationEntity certificationEntity : certificationEntities) {
+                CertificationDTO certificationDTO = modelMapper.map(certificationEntity, CertificationDTO.class);
+                applicantDTO.getCertifications().add(certificationDTO);
+            }
+        }
+
+        List<PhoneNumberEntity> phoneNumberEntities = applicantEntity.getPhoneNumbers();
+        if(phoneNumberEntities != null && !phoneNumberEntities.isEmpty()) {
+            for(PhoneNumberEntity phoneNumberEntity : phoneNumberEntities) {
+                applicantDTO.getPhoneNumbers().add(phoneNumberEntity.getPhoneNumber());
+            }
+        }
+
+        List<EmailEntity> emailEntities = applicantEntity.getEmails();
+        if(emailEntities != null && !emailEntities.isEmpty()) {
+            for(EmailEntity emailEntity : emailEntities) {
+                applicantDTO.getEmails().add(emailEntity.getEmail());
+            }
+        }
+
+        return applicantDTO;
+    }
+
+    public ApplicantPublicResponse toApplicantPublicResponse(ApplicantEntity applicantEntity) {
+        ApplicantPublicResponse applicantResponse = modelMapper.map(applicantEntity, ApplicantPublicResponse.class);
+
+        if (applicantEntity.getWard() != null) {
+            WardEntity wardEntity = applicantEntity.getWard();
+            String wardName = wardEntity.getName();
+            String cityName = wardEntity.getCity().getName();
+            String provinceName = wardEntity.getCity().getProvince().getName();
+            String fullAddress = wardName + ", " + cityName + ", " + provinceName;
+            if (StringUtils.notEmptyData(applicantEntity.getSpecificAddress())) {
+                fullAddress = applicantEntity.getSpecificAddress() + ", " + fullAddress;
+            }
+            applicantResponse.setFullAddress(fullAddress);
         }
 
         if (applicantEntity.getPhoneNumbers() != null && !applicantEntity.getPhoneNumbers().isEmpty()) {
@@ -216,55 +285,33 @@ public class ApplicantConverter {
             applicantResponse.setEmails(emails);
         }
 
-        if (applicantEntity.getNotifications() != null && !applicantEntity.getNotifications().isEmpty()) {
-            List<Long> notificationIds = applicantEntity.getNotifications().stream()
-                    .map(NotificationEntity::getId)
+        if (applicantEntity.getApplicantJobtypeEntities() != null && !applicantEntity.getApplicantJobtypeEntities().isEmpty()) {
+            List<String> jobTypes = applicantEntity.getApplicantJobtypeEntities().stream()
+                    .map(applicantJobtypeEntity -> {
+                        JobTypeEntity jobTypeEntity = applicantJobtypeEntity.getJobType();
+                        return jobTypeEntity.getName();
+                    })
                     .collect(Collectors.toList());
-            applicantResponse.setNotificationIds(notificationIds);
-        }
-
-        if (applicantEntity.getBlockedUsers() != null && !applicantEntity.getBlockedUsers().isEmpty()) {
-            List<Long> blockedUserIds = applicantEntity.getBlockedUsers().stream()
-                    .map(BlockUserEntity::getId)
-                    .collect(Collectors.toList());
-            applicantResponse.setBlockedUserIds(blockedUserIds);
+            applicantResponse.setJobTypes(jobTypes);
         }
 
         if (applicantEntity.getSkills() != null && !applicantEntity.getSkills().isEmpty()) {
-            List<Long> skillIds = applicantEntity.getSkills().stream()
-                    .map(SkillEntity::getId)
+            List<String> skills = applicantEntity.getSkills().stream()
+                    .map(SkillEntity::getName)
                     .collect(Collectors.toList());
-            applicantResponse.setSkillIds(skillIds);
+            applicantResponse.setSkills(skills);
         }
 
         if (applicantEntity.getCertifications() != null && !applicantEntity.getCertifications().isEmpty()) {
-            List<Long> certificationIds = applicantEntity.getCertifications().stream()
-                    .map(CertificationEntity::getId)
+            List<CertificationDTO> certifications = applicantEntity.getCertifications().stream()
+                    .map(certificationEntity -> {
+                        CertificationDTO certificationDTO = modelMapper.map(certificationEntity, CertificationDTO.class);
+                        return certificationDTO;
+                    })
                     .collect(Collectors.toList());
-            applicantResponse.setCertificationIds(certificationIds);
+            applicantResponse.setCertifications(certifications);
         }
 
         return applicantResponse;
     }
-
-    public  ApplicanApplicationReponse convertToEntity(ApplicationEntity  applicationDTO) {
-            if (applicationDTO == null) {
-                return null;
-            }
-
-            ApplicanApplicationReponse dto = new ApplicanApplicationReponse();
-            dto.setId(applicationDTO.getId());
-            dto.setStatus(applicationDTO.getStatus());
-            dto.setEmail(applicationDTO.getEmail());
-            dto.setPhoneNumber(applicationDTO.getPhoneNumber());
-            dto.setDescription(applicationDTO.getDescription());
-            dto.setResume(applicationDTO.getResume());
-            dto.setTitle(applicationDTO.getJobPosting().getTitle());
-            // Set the jobPostingId
-            dto.setJobPostingId(applicationDTO.getJobPosting() != null ? applicationDTO.getJobPosting().getId() : null);
-
-            return dto;
-        }
-
-
 }

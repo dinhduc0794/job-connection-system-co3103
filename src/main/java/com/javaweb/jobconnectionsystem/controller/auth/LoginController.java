@@ -31,7 +31,8 @@ public class LoginController {
     private JwtUtils jwtUtils;
     @Autowired
     private AccountService accountService;
-   @PostMapping()
+
+    @PostMapping()
     public ResponseEntity<?> loginHere(@Valid @RequestBody LoginDTO loginDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {

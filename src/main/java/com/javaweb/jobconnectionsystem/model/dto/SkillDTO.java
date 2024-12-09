@@ -10,8 +10,5 @@ import java.util.List;
 @Setter
 public class SkillDTO {
     private Long id;
-    @NotBlank(message = "Name is required")
     private String name;
-    private Long jobTypeId;
-    private List<Long> applicantIds;
 }

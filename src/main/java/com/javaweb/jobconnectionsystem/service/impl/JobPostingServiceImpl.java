@@ -1,12 +1,15 @@
 package com.javaweb.jobconnectionsystem.service.impl;
 
 import com.javaweb.jobconnectionsystem.converter.JobPostingConverter;
+import com.javaweb.jobconnectionsystem.entity.CompanyEntity;
 import com.javaweb.jobconnectionsystem.entity.JobPostingEntity;
 import com.javaweb.jobconnectionsystem.entity.JobTypeEntity;
 import com.javaweb.jobconnectionsystem.model.dto.JobPostingDTO;
 import com.javaweb.jobconnectionsystem.model.request.JobPostingSearchRequest;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingDetailResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
+import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
+import com.javaweb.jobconnectionsystem.repository.CompanyRepository;
 import com.javaweb.jobconnectionsystem.repository.JobPostingRepository;
 import com.javaweb.jobconnectionsystem.service.JobPostingService;
 import jakarta.persistence.OneToOne;
@@ -25,6 +28,8 @@ public class JobPostingServiceImpl implements JobPostingService {
     private JobPostingRepository jobPostingRepository;
     @Autowired
     private JobPostingConverter jobPostingConverter;
+    @Autowired
+    private CompanyRepository companyRepository;
 
     @Override
     public List<JobPostingSearchResponse> getAllJobPostings() {
@@ -72,10 +77,22 @@ public class JobPostingServiceImpl implements JobPostingService {
     }
 
     @Override
-    public JobPostingEntity saveJobPosting(JobPostingDTO jobPostingDTO) {
+    public ResponseDTO saveJobPosting(JobPostingDTO jobPostingDTO) {
+        ResponseDTO responseDTO = new ResponseDTO();
         JobPostingEntity jobPostingEntity = jobPostingConverter.toJobPostingEntity(jobPostingDTO);
-
-        return jobPostingRepository.save(jobPostingEntity);
+        if (jobPostingDTO.getId() != null) {
+            CompanyEntity companyEntity = companyRepository.findById(jobPostingDTO.getCompanyId()).get();
+            companyEntity.setRemainingPost(companyEntity.getRemainingPost() - 1);
+            companyRepository.save(companyEntity);
+            responseDTO.setMessage("Create job posting successfully");
+            responseDTO.setData(jobPostingEntity);
+        }
+        else {
+            responseDTO.setMessage("Update job posting successfully");
+            responseDTO.setData(jobPostingEntity);
+        }
+        jobPostingRepository.save(jobPostingEntity);
+        return responseDTO;
     }
 
 

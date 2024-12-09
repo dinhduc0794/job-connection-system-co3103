@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class FieldDTO {
     private Long id;
-
+    private String name;
 }

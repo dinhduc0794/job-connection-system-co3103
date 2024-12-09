@@ -2,7 +2,8 @@ package com.javaweb.jobconnectionsystem.controller;
 
 import com.javaweb.jobconnectionsystem.entity.ApplicantEntity;
 import com.javaweb.jobconnectionsystem.model.request.CompanySearchRequest;
-import com.javaweb.jobconnectionsystem.model.response.CompanySearchResponse;
+import com.javaweb.jobconnectionsystem.model.response.ApplicantPublicResponse;
+import com.javaweb.jobconnectionsystem.model.response.CompanyPublicResponse;
 import com.javaweb.jobconnectionsystem.service.ApplicantService;
 import com.javaweb.jobconnectionsystem.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ public class AdminController {
     @Autowired
     private CompanyService companyService;
     @GetMapping("/applicants")
-    public ResponseEntity<List<ApplicantEntity>> getAllApplicants() {
-        List<ApplicantEntity> applicants = applicantService.getAllApplicants();
+    public ResponseEntity<List<ApplicantPublicResponse>> getAllApplicants() {
+        List<ApplicantPublicResponse> applicants = applicantService.getAllApplicants();
         if (applicants.isEmpty()) {
             return ResponseEntity.noContent().build(); // Nếu không có ứng viên, trả về 204 No Content
         }
@@ -32,8 +33,8 @@ public class AdminController {
     }
 
     @GetMapping("/companies")
-    public ResponseEntity<List<CompanySearchResponse>> getCompaniesByConditions(@ModelAttribute CompanySearchRequest params) {
-        List<CompanySearchResponse> companyResponses = companyService.getAllCompanies(params);
+    public ResponseEntity<List<CompanyPublicResponse>> getCompaniesByConditions(@ModelAttribute CompanySearchRequest params) {
+        List<CompanyPublicResponse> companyResponses = companyService.getAllCompanies(params);
 
         if (companyResponses.isEmpty()) {
             return ResponseEntity.noContent().build();

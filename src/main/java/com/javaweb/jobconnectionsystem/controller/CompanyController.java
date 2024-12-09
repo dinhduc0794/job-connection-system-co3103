@@ -1,6 +1,5 @@
 package com.javaweb.jobconnectionsystem.controller;
 
-import com.javaweb.jobconnectionsystem.entity.ApplicantEntity;
 import com.javaweb.jobconnectionsystem.entity.ApplicationEntity;
 import com.javaweb.jobconnectionsystem.entity.CompanyEntity;
 import com.javaweb.jobconnectionsystem.entity.JobPostingEntity;
@@ -8,7 +7,6 @@ import com.javaweb.jobconnectionsystem.model.dto.ApplicationDTO;
 import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
 import com.javaweb.jobconnectionsystem.model.dto.JobPostingDTO;
 import com.javaweb.jobconnectionsystem.model.request.CompanySearchRequest;
-import com.javaweb.jobconnectionsystem.model.request.JobPostingSearchRequest;
 import com.javaweb.jobconnectionsystem.model.response.*;
 import com.javaweb.jobconnectionsystem.service.ApplicationService;
 import com.javaweb.jobconnectionsystem.service.CompanyService;
@@ -36,9 +34,10 @@ public class CompanyController {
     @Autowired
     private JobPostingService jobPostingService;
 
+    // lay tat ca cac cong ty duoi dang CompanyPublicResponse (khong co usn, psw) -> dung cho trang tim kiem cong ty
     @GetMapping("/public/companies")
-    public ResponseEntity<List<CompanySearchResponse>> getCompaniesByConditions(@ModelAttribute CompanySearchRequest params) {
-        List<CompanySearchResponse> companyResponses = companyService.getAllCompanies(params);
+    public ResponseEntity<List<CompanyPublicResponse>> getCompaniesByConditions(@ModelAttribute CompanySearchRequest params) {
+        List<CompanyPublicResponse> companyResponses = companyService.getAllCompanies(params);
 
         if (companyResponses.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -46,21 +45,24 @@ public class CompanyController {
         return ResponseEntity.ok(companyResponses);
     }
 
-    @GetMapping("/companies/{id}")
-    public ResponseEntity<CompanyEntity> getCompanyById(@PathVariable Long id) {
-        Optional<CompanyEntity> company = companyService.getCompanyEntityById(id);
-        return company.map(ResponseEntity::ok) // Trả về ứng viên nếu tìm thấy
-                .orElseGet(() -> ResponseEntity.notFound().build()); // Trả về 404 nếu không tìm thấy ứng viên
-    }
-
-
+    // lay ra 1 cong ty cu the dang CompanyPublicResponse (khong co usn, psw) -> dung cho trang xem chi tiet cong ty (khi click vao 1 cong ty)
     @GetMapping("/public/companies/{id}")
     public ResponseEntity<?> getPublicCompanyById(@PathVariable Long id) {
-        CompanyDetailResponse companyDetail = companyService.getCompanyDetailResponseById(id);
+        CompanyPublicResponse companyDetail = companyService.getCompanyDetailResponseById(id);
         if (companyDetail == null) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(companyDetail);
+    }
+
+    // lay ra 1 cong ty cu the dang CompanyDTO (co usn, psw) -> dung cho chinh cong ty do de xem, sua thong tin
+    @GetMapping("/companies/{id}")
+    public ResponseEntity<CompanyDTO> getCompanyById(@PathVariable Long id) {
+        CompanyDTO companyDTO = companyService.getCompanyById(id);
+        if (companyDTO == null) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(companyDTO);
     }
 
     // Endpoint thêm công ty
@@ -156,11 +158,8 @@ public class CompanyController {
                 return ResponseEntity.badRequest().body(responseDTO);
             }
             // neu dung thi //xuong service -> xuong repo -> save vao db
-            JobPostingEntity jobPostingEntity = jobPostingService.saveJobPosting(jobPostingDTO);
-            if (jobPostingEntity == null) {
-                return ResponseEntity.badRequest().body(null); // Trả về lỗi nếu bài đăng công việc không hợp lệ
-            }
-            return ResponseEntity.ok(jobPostingEntity); // Trả về bài đăng công việc đã thêm
+            responseDTO = jobPostingService.saveJobPosting(jobPostingDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
         }
         catch (Exception e){
             responseDTO.setMessage("Internal server error");

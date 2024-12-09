@@ -27,24 +27,24 @@ public class UserEntity extends AccountEntity {
     @Column(name = "is_banned")
     private Boolean isBanned = false;
 
-    @Column(name = "address")
-    private String address;
 
     @Column(name = "image")
     private String image = "bg.jpg";
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<UserWardEntity> userWards = new ArrayList<>();
+    @Column(name = "specific_address")
+    private String specificAddress;
+    // user n : 1 ward
+    @ManyToOne
+    @JoinColumn(name = "ward_id")
+    @JsonBackReference
+    private WardEntity ward;
 
     // 1 user can have many phone numbers
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<PhoneNumberEntity> phoneNumbers = new ArrayList<>();
 
     // 1 user can have many email
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<EmailEntity> emails = new ArrayList<>();

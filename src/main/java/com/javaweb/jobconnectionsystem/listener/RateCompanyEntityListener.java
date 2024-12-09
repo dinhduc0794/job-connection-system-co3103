@@ -15,7 +15,7 @@ import java.util.List;
 public class RateCompanyEntityListener {
 
     @Autowired
-    private CompanyRepository companyRepository; // Giả sử bạn có một repo để truy vấn company
+    private CompanyRepository companyRepository;
 
     @PostPersist
     @PostUpdate
@@ -40,3 +40,4 @@ public class RateCompanyEntityListener {
         return totalRating / ratings.size();
     }
 }
+

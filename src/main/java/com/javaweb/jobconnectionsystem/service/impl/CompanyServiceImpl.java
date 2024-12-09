@@ -4,11 +4,7 @@ import com.javaweb.jobconnectionsystem.converter.CompanyConverter;
 import com.javaweb.jobconnectionsystem.entity.*;
 import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
 import com.javaweb.jobconnectionsystem.model.request.CompanySearchRequest;
-import com.javaweb.jobconnectionsystem.model.request.JobPostingSearchRequest;
-import com.javaweb.jobconnectionsystem.model.response.CompanyDetailResponse;
-import com.javaweb.jobconnectionsystem.model.response.CompanySearchResponse;
-import com.javaweb.jobconnectionsystem.model.response.JobPostingDetailResponse;
-import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
+import com.javaweb.jobconnectionsystem.model.response.CompanyPublicResponse;
 import com.javaweb.jobconnectionsystem.repository.CompanyRepository;
 import com.javaweb.jobconnectionsystem.repository.EmailRepository;
 import com.javaweb.jobconnectionsystem.repository.PhoneNumberRepository;
@@ -32,12 +28,12 @@ public class CompanyServiceImpl implements CompanyService {
     private EmailRepository emailRepository;
 
     @Override
-    public List<CompanySearchResponse> getAllCompanies(CompanySearchRequest params) {
+    public List<CompanyPublicResponse> getAllCompanies(CompanySearchRequest params) {
         List<CompanyEntity> companyEntities = companyRepository.findAll(params);
 
-        List<CompanySearchResponse> companyResponses = new ArrayList<>();
+        List<CompanyPublicResponse> companyResponses = new ArrayList<>();
         for (CompanyEntity ent : companyEntities) {
-            companyResponses.add(companyConverter.toCompanySearchResponse(ent));
+            companyResponses.add(companyConverter.toCompanyPublicResponse(ent));
         }
         return companyResponses;
     }
@@ -48,19 +44,17 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Optional<CompanyEntity> getCompanyEntityById(Long id) {
-        Optional<CompanyEntity> company = companyRepository.findById(id);
-        if (company.isEmpty()) {
-            return null;
-        }
-        return company;
+    public CompanyDTO getCompanyById(Long id) {
+        CompanyEntity companyEntity = companyRepository.findById(id).get();
+        CompanyDTO companyDTO = companyConverter.toCompanyDTO(companyEntity);
+        return companyDTO;
     }
 
     @Override
-    public CompanyDetailResponse getCompanyDetailResponseById(Long id) {
+    public CompanyPublicResponse getCompanyDetailResponseById(Long id) {
         CompanyEntity companyEntity = companyRepository.findById(id).get();
-        CompanyDetailResponse companyDetailResponse = companyConverter.toCompanyDetailResponse(companyEntity);
-        return companyDetailResponse;
+        CompanyPublicResponse companyPublicResponse = companyConverter.toCompanyPublicResponse(companyEntity);
+        return companyPublicResponse;
     }
 
     @Override
