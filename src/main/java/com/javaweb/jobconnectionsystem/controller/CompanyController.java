@@ -125,7 +125,7 @@ public class CompanyController {
         }
     }
 
-    @GetMapping("/companies/jobposting/{id}/applications")
+    @GetMapping("/companies/jobpostings/{id}/applications")
     public ResponseEntity<?> getApplicationByJobpostingId(@PathVariable Long id){
         ResponseDTO responseDTO = new ResponseDTO();
         List<ApplicationEntity> applications = applicationService.getAllApplicationByJobpostingId(id);
@@ -205,6 +205,20 @@ public class CompanyController {
             responseDTO.setMessage("canot delete this application");
             responseDTO.setDetail(Collections.singletonList("this application is not in status Rejected"));
             return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
+    @DeleteMapping("/companies/jobpostings/{id}")
+    public ResponseEntity<?> deleteJobPosting(@PathVariable Long id) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            jobPostingService.deleteJobPostingById(id);
+            responseDTO.setMessage("Delete successfully");
+            responseDTO.setDetail(Collections.singletonList("Job posting has been deleted"));
+            return ResponseEntity.ok().body(responseDTO);
+        } catch (RuntimeException e) {
+            responseDTO.setMessage("Internal server error");
+            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
         }
     }
 

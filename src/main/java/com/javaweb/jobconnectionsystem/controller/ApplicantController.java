@@ -192,21 +192,45 @@ public class ApplicantController {
         }
     }
     @PostMapping("/applicants/applications")
-    public ResponseEntity<?> saveApplications(@RequestBody ApplicationDTO applicationDTO) {
-        try {
-            // Gọi service để lưu application
-            ApplicationEntity savedApplication = applicationService.saveApplication(applicationDTO);
-
-            // Trả về thông tin ứng dụng đã lưu
-            return ResponseEntity.ok(savedApplication);
-        } catch (RuntimeException e) {
-            // Bắt RuntimeException từ service và trả về lỗi 400 với message chi tiết
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            // Bắt các lỗi không mong muốn khác và trả về lỗi 500
-            return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).body("An error occurred while processing the request.");
+    public ResponseEntity<?> saveApplication(@Valid @RequestBody ApplicationDTO applicationDTO, BindingResult bindingResult) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        try{
+            if (bindingResult.hasErrors()) {
+                List<String> errorMessages = bindingResult.getFieldErrors()
+                        .stream()
+                        .map(FieldError::getDefaultMessage)
+                        .collect(Collectors.toList());
+                responseDTO.setMessage("Validation failed");
+                responseDTO.setDetail(errorMessages);
+                return ResponseEntity.badRequest().body(responseDTO);
+            }
+            ApplicationEntity applicationEntity = applicationService.saveApplication(applicationDTO);
+            if (applicationEntity == null) {
+                return ResponseEntity.badRequest().body(null);
+            }
+            return ResponseEntity.ok(applicationEntity);
+        }
+        catch (Exception e) {
+            responseDTO.setMessage("Internal server error");
+            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
         }
     }
+//    public ResponseEntity<?> saveApplications(@RequestBody ApplicationDTO applicationDTO) {
+//        try {
+//            // Gọi service để lưu application
+//            ApplicationEntity savedApplication = applicationService.saveApplication(applicationDTO);
+//
+//            // Trả về thông tin ứng dụng đã lưu
+//            return ResponseEntity.ok(savedApplication);
+//        } catch (RuntimeException e) {
+//            // Bắt RuntimeException từ service và trả về lỗi 400 với message chi tiết
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        } catch (Exception e) {
+//            // Bắt các lỗi không mong muốn khác và trả về lỗi 500
+//            return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).body("An error occurred while processing the request.");
+//        }
+//    }
     @GetMapping("/applicants/{id}/applications")
     public ResponseEntity<?> getAllApplication(@PathVariable Long id){
         ResponseDTO responseDTO = new ResponseDTO();
