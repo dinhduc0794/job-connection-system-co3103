@@ -64,7 +64,8 @@ public class JWTAuthFilter extends OncePerRequestFilter {
                 Pair.of("/public/companies", "GET"),
                 Pair.of("/login", "POST"),
                 Pair.of("/register/applicant","POST"),
-                Pair.of("/register/company","POST")// Bỏ qua xác thực cho POST /public/login
+                Pair.of("/register/company","POST"),// Bỏ qua xác thực cho POST /public/login
+                Pair.of("/jobtypes","GET")
         );
         String uri = request.getRequestURI();
         if (uri.startsWith("/public")) {

@@ -38,6 +38,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(HttpMethod.POST, "/login/**", "/register/**").permitAll()
                         .requestMatchers("/public/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/jobtypes").permitAll()
                         .requestMatchers("/admin/**").hasAnyAuthority("admin")
                         .requestMatchers("/applicants**").hasAnyAuthority("applicant")
                         .requestMatchers("/companies**").hasAnyAuthority("company")
