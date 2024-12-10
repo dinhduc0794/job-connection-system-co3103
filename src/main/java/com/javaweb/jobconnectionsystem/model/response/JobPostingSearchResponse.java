@@ -26,6 +26,7 @@ public class JobPostingSearchResponse extends PaginationDTO {
     private String jobType;
     private String skills;
     private String yoe;
+    private Long numberOfApplicants;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
