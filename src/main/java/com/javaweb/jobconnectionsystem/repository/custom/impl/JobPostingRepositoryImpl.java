@@ -30,11 +30,11 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
         // Phai group by truoc order, sau thi bi loi
         sql.append(" GROUP BY jp.id");
 
-        if (params.getSort() != null && params.getSort().equals("asc")) {
-            sql.append(" ORDER BY jp.id ASC");
+        if (params.getSortByTime() != null && params.getSortByTime().equals("asc")) {
+            sql.append(" ORDER BY jp.updated_at ASC");
         }
-        else if (params.getSort() != null && params.getSort().equals("desc")) {
-            sql.append(" ORDER BY jp.id DESC");
+        else if (params.getSortByTime() != null && params.getSortByTime().equals("desc")) {
+            sql.append(" ORDER BY jp.updated_at DESC");
         }
 
 

@@ -25,6 +25,6 @@ public class JobPostingSearchRequest extends PaginationDTO {
     private Integer minRating;
     private Long minOfApplicants;
     private Long allowance;
-    private String sort;
+    private String sortByTime;
     List<String> skills;
 }
