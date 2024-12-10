@@ -90,6 +90,7 @@ public class JobPostingServiceImpl implements JobPostingService {
             JobPostingEntity jobPostingEntity = jobPostingConverter.toJobPostingEntity(jobPostingDTO);
             JobPostingEntity existingJobPosting = jobPostingRepository.findById(jobPostingDTO.getId()).get();
             jobPostingEntity.setJobType(existingJobPosting.getJobType());
+            jobPostingEntity.setWard(existingJobPosting.getWard());
             CompanyEntity companyEntity = companyRepository.findById(jobPostingDTO.getCompanyId()).get();
             companyEntity.setRemainingPost(companyEntity.getRemainingPost() - 1);
             companyRepository.save(companyEntity);
