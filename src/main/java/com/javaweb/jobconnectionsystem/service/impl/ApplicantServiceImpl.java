@@ -66,7 +66,6 @@ public class ApplicantServiceImpl implements ApplicantService {
         }
         ApplicantEntity applicantEntity = applicantConverter.toApplicantEntity(applicantDTO);
         responseDTO.setData(applicantEntity);
-        applicantRepository.save(applicantEntity);
         return responseDTO;
     }
 

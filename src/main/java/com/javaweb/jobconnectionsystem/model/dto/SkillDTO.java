@@ -11,4 +11,8 @@ import java.util.List;
 public class SkillDTO {
     private Long id;
     private String name;
+    public SkillDTO( Long id, String name ) {
+        this.id = id;
+        this.name = name;
+    }
 }

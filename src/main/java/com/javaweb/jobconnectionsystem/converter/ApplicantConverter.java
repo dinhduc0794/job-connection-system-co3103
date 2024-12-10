@@ -9,9 +9,12 @@ import com.javaweb.jobconnectionsystem.model.response.ApplicantApplicationRepons
 import com.javaweb.jobconnectionsystem.model.response.ApplicantPublicResponse;
 import com.javaweb.jobconnectionsystem.repository.*;
 import com.javaweb.jobconnectionsystem.utils.StringUtils;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,6 +44,9 @@ public class ApplicantConverter {
     @Autowired
     private CertificationRepository certificationRepository;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+    @Transactional
     public ApplicantEntity toApplicantEntity(ApplicantDTO applicantDTO) {
         // Bước kiểm tra tính hợp lệ của dữ liệu
         if(applicantDTO.getPhoneNumbers() != null && !applicantDTO.getPhoneNumbers().isEmpty()) {
@@ -69,14 +75,12 @@ public class ApplicantConverter {
                 }
             }
         }
-
         // Sau khi kiểm tra tính hợp lệ của dữ liệu, thực hiện việc chỉnh sửa hoặc tạp mới
         ApplicantEntity applicantEntity = modelMapper.map(applicantDTO, ApplicantEntity.class);
 
         if (applicantDTO.getId() != null) {
             // trường hợp chỉnh sửa thông tin
-            ApplicantEntity existingApplicant = applicantRepository.findById(applicantDTO.getId())
-                    .orElseThrow(() -> new RuntimeException("Applicant not found"));
+            ApplicantEntity existingApplicant = applicantRepository.findById(applicantDTO.getId()).get();
             // thêm lại các thuộc tính không thuộc trường thay đổi thông tin
             // các thuộc tính là thực thể và liên quan
             applicantEntity.setApplications(existingApplicant.getApplications());
@@ -92,16 +96,33 @@ public class ApplicantConverter {
 
             if(applicantDTO.getIsPublic() == null) applicantEntity.setIsPublic(existingApplicant.getIsPublic());
             else applicantEntity.setIsPublic(applicantDTO.getIsPublic());
-
+            // xóa phone
             List<PhoneNumberEntity> phoneNumberEntities = existingApplicant.getPhoneNumbers();
-            existingApplicant.getPhoneNumbers().clear();
-            phoneNumberRepository.deleteAll(phoneNumberEntities);
+            if (phoneNumberEntities != null && !phoneNumberEntities.isEmpty()) {
+                for (PhoneNumberEntity phoneNumber : phoneNumberEntities) {
+                    phoneNumberRepository.delete(phoneNumber);
+                }
+                existingApplicant.getPhoneNumbers().clear();
+            }
+            entityManager.flush();
+            // Xóa các emails
             List<EmailEntity> emailEntities = existingApplicant.getEmails();
-            existingApplicant.getEmails().clear();
-            emailRepository.deleteAll(emailEntities);
-            List<CertificationEntity> cer =  existingApplicant.getCertifications();
-            existingApplicant.getCertifications().clear();
-            certificationRepository.deleteAll(cer);
+            if (emailEntities != null && !emailEntities.isEmpty()) {
+                for (EmailEntity email : emailEntities) {
+                    emailRepository.delete(email);
+                }
+                existingApplicant.getEmails().clear();
+            }
+            entityManager.flush();
+            // xóa certification
+            List<CertificationEntity> certifications = existingApplicant.getCertifications();
+            if (certifications != null && !certifications.isEmpty()) {
+                for (CertificationEntity certification : certifications) {
+                    certificationRepository.delete(certification);
+                }
+                existingApplicant.getCertifications().clear();
+            }
+            entityManager.flush();
             List<ApplicantJobtypeEntity> applicantJobtypeEntitys = existingApplicant.getApplicantJobtypeEntities();
             if(applicantJobtypeEntitys != null && !applicantJobtypeEntitys.isEmpty()) {
                 for(ApplicantJobtypeEntity applicantJobtypeEntity : applicantJobtypeEntitys) {
@@ -109,13 +130,26 @@ public class ApplicantConverter {
                     jobTypeEntity.getApplicantJobtypeEntities().remove(applicantJobtypeEntity);
                 }
             }
-            existingApplicant.getSkills().removeAll(existingApplicant.getSkills());
+            entityManager.flush();
+            if(!existingApplicant.getSkills().isEmpty()) {
+                List<SkillEntity> skills = skillRepository.findByApplicants_Id(existingApplicant.getId());
+                if(skills != null && !skills.isEmpty()) {
+                    for (SkillEntity skill : skills) {
+                        existingApplicant.getSkills().remove(skill);
+                    }
+                }
+            }
+            entityManager.flush();
+            applicantRepository.save(existingApplicant);
+            entityManager.flush();
         }
         else {
             applicantEntity.setIsBanned(false);
             applicantEntity.setIsActive(true);
             applicantEntity.setIsPublic(true);
         }
+        applicantEntity.getPhoneNumbers().clear();
+        applicantEntity.getEmails().clear();
         List<String> phoneNumbers = applicantDTO.getPhoneNumbers();
         if(phoneNumbers != null && !phoneNumbers.isEmpty()) {
             for(String phoneNumber : phoneNumbers) {
@@ -123,6 +157,7 @@ public class ApplicantConverter {
                 phoneNumberEntity.setPhoneNumber(phoneNumber);
                 phoneNumberEntity.setUser(applicantEntity);
                 applicantEntity.getPhoneNumbers().add(phoneNumberEntity);
+                phoneNumberRepository.save(phoneNumberEntity);
             }
         }
         List<String> emails = applicantDTO.getEmails();
@@ -132,6 +167,7 @@ public class ApplicantConverter {
                 emailEntity.setEmail(email);
                 emailEntity.setUser(applicantEntity);
                 applicantEntity.getEmails().add(emailEntity);
+                emailRepository.save(emailEntity);
             }
         }
         // Certification
@@ -143,8 +179,8 @@ public class ApplicantConverter {
             for(CertificationDTO certificationDTO : certificationDTOS) {
                 CertificationEntity certificationEntity = modelMapper.map(certificationDTO, CertificationEntity.class);
                 certificationEntity.setApplicant(applicantEntity);
-                certificationRepository.save(certificationEntity);
                 applicantEntity.getCertifications().add(certificationEntity);
+                certificationRepository.save(certificationEntity);
             }
         }
         // Ward
@@ -158,7 +194,6 @@ public class ApplicantConverter {
                 LevelEnum level = jobType.getLevel();
                 Long jobTypeId = jobType.getId();
                 JobTypeEntity jobTypeEntity = jobTypeRepository.findById(jobTypeId).get();
-
                 ApplicantJobtypeEntity applicantJobtypeEntity = new ApplicantJobtypeEntity();
                 applicantJobtypeEntity.setJobType(jobTypeEntity);
                 applicantJobtypeEntity.setLevel(level);
@@ -177,7 +212,7 @@ public class ApplicantConverter {
             }
         }
         applicantRepository.save(applicantEntity);
-        return  applicantEntity;
+        return applicantEntity;
     }
 
     public ApplicantDTO toApplicantDTO(ApplicantEntity applicantEntity) {

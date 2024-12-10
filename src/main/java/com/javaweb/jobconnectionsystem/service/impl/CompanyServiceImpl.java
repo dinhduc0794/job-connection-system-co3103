@@ -79,7 +79,6 @@ public class CompanyServiceImpl implements CompanyService {
         }
         CompanyEntity companyEntity = companyConverter.toCompanyEntity(companyDTO);
         responseDTO.setData(companyEntity);
-        companyEntity = companyRepository.save(companyEntity);
         return responseDTO;
     }
 

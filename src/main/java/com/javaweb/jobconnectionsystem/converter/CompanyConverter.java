@@ -9,9 +9,12 @@ import com.javaweb.jobconnectionsystem.model.response.CompanyPublicResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.repository.*;
 import com.javaweb.jobconnectionsystem.utils.StringUtils;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,7 +35,9 @@ public class CompanyConverter {
     private EmailRepository emailRepository;
     @Autowired
     private CompanyRepository companyRepository;
-
+    @PersistenceContext
+    private EntityManager entityManager;
+    @Transactional
     public CompanyEntity toCompanyEntity (CompanyDTO companyDTO) {
         // Bước kiểm tra tính hợp lệ của dữ liệu
         if(companyDTO.getPhoneNumbers() != null && !companyDTO.getPhoneNumbers().isEmpty()) {
@@ -100,12 +105,26 @@ public class CompanyConverter {
             // các thuộc tính không phải thực thể
             companyEntity.setRemainingPost(existingCompany.getRemainingPost());
             // xóa hết thuộc tính cũ
-            phoneNumberRepository.deleteAll(existingCompany.getPhoneNumbers());
-            existingCompany.getPhoneNumbers().clear();
-            emailRepository.deleteAll(existingCompany.getEmails());
-            existingCompany.getEmails().clear();
-//            existingCompany.getWards().removeAll(existingCompany.getWards());
+            List<PhoneNumberEntity> phoneNumberEntities = existingCompany.getPhoneNumbers();
+            if (phoneNumberEntities != null && !phoneNumberEntities.isEmpty()) {
+                for (PhoneNumberEntity phoneNumber : phoneNumberEntities) {
+                    phoneNumberRepository.delete(phoneNumber);
+                }
+                existingCompany.getPhoneNumbers().clear();
+            }
+            entityManager.flush();
+            // Xóa các emails
+            List<EmailEntity> emailEntities = existingCompany.getEmails();
+            if (emailEntities != null && !emailEntities.isEmpty()) {
+                for (EmailEntity email : emailEntities) {
+                    emailRepository.delete(email);
+                }
+                existingCompany.getEmails().clear();
+            }
+            entityManager.flush();
             existingCompany.getFields().removeAll(existingCompany.getFields());
+            companyRepository.save(existingCompany);
+            entityManager.flush();
         }
         // các thộc tính nằm ở bảng khác
 //        companyRepository.save(companyEntity);
@@ -119,8 +138,8 @@ public class CompanyConverter {
                 PhoneNumberEntity phoneNumberEntity = new PhoneNumberEntity();
                 phoneNumberEntity.setPhoneNumber(phoneNumber);
                 phoneNumberEntity.setUser(companyEntity);
-//                phoneNumberRepository.save(phoneNumberEntity);
                 companyEntity.getPhoneNumbers().add(phoneNumberEntity);
+                phoneNumberRepository.save(phoneNumberEntity);
             }
         }
         // Email
@@ -133,8 +152,8 @@ public class CompanyConverter {
                 EmailEntity emailEntity = new EmailEntity();
                 emailEntity.setEmail(email);
                 emailEntity.setUser(companyEntity);
-//                emailRepository.save(emailEntity);
                 companyEntity.getEmails().add(emailEntity);
+                emailRepository.save(emailEntity);
             }
         }
         // Ward
