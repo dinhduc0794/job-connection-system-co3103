@@ -79,26 +79,32 @@ public class JobPostingServiceImpl implements JobPostingService {
     @Override
     public ResponseDTO saveJobPosting(JobPostingDTO jobPostingDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
-        if (jobPostingDTO.getId() == null) {
-            CompanyEntity companyEntity = companyRepository.findById(jobPostingDTO.getCompanyId()).get();
-            if (companyEntity.getRemainingPost() == 0) {
-                responseDTO.setMessage("Company does not have any remaining post to create a new job posting! Please upgrade your plan to create more job postings.");
-                return responseDTO;
-            }
+
+        CompanyEntity companyEntityCheck = companyRepository.findById(jobPostingDTO.getCompanyId()).get();
+        if (jobPostingDTO.getId() == null && companyEntityCheck.getRemainingPost() == 0) {
+            responseDTO.setMessage("Company does not have any remaining post to create a new job posting! Please upgrade your plan to create more job postings.");
+            return responseDTO;
         }
-        JobPostingEntity jobPostingEntity = jobPostingConverter.toJobPostingEntity(jobPostingDTO);
+
         if (jobPostingDTO.getId() != null) {
+            JobPostingEntity jobPostingEntity = jobPostingConverter.toJobPostingEntity(jobPostingDTO);
+            JobPostingEntity existingJobPosting = jobPostingRepository.findById(jobPostingDTO.getId()).get();
+            jobPostingEntity.setJobType(existingJobPosting.getJobType());
             CompanyEntity companyEntity = companyRepository.findById(jobPostingDTO.getCompanyId()).get();
             companyEntity.setRemainingPost(companyEntity.getRemainingPost() - 1);
             companyRepository.save(companyEntity);
+            jobPostingRepository.save(jobPostingEntity);
             responseDTO.setMessage("Create job posting successfully");
             responseDTO.setData(jobPostingEntity);
+
         }
         else {
+            JobPostingEntity jobPostingEntity = jobPostingConverter.toJobPostingEntity(jobPostingDTO);
+            jobPostingRepository.save(jobPostingEntity);
             responseDTO.setMessage("Update job posting successfully");
             responseDTO.setData(jobPostingEntity);
+
         }
-        jobPostingRepository.save(jobPostingEntity);
         return responseDTO;
     }
 

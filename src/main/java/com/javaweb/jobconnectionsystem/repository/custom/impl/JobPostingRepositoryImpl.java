@@ -99,7 +99,7 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
                 Object value = fi.get(params);
                 if (value != null) {
                     switch (key) {
-                        case "sort":
+                        case "sortByTime":
                             break;
                         case "skill":
                             break;
