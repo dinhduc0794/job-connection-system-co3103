@@ -136,10 +136,12 @@ public class ApplicantConverter {
                 if(skills != null && !skills.isEmpty()) {
                     for (SkillEntity skill : skills) {
                         existingApplicant.getSkills().remove(skill);
+                        skill.getApplicants().remove(existingApplicant);
                     }
                 }
+                entityManager.flush();
             }
-            entityManager.flush();
+
             applicantRepository.save(existingApplicant);
             entityManager.flush();
         }
@@ -204,11 +206,19 @@ public class ApplicantConverter {
             }
         }
         // Skill
+        applicantEntity.getSkills().clear();
         List<SkillDTO> skills = applicantDTO.getSkills();
-        if(skills != null && !skills.isEmpty()) {
+        if (skills != null && !skills.isEmpty()) {
             for (SkillDTO skill : skills) {
-                SkillEntity skillEntity = skillRepository.findById(skill.getId()).get();
-                applicantEntity.getSkills().add(skillEntity);
+                SkillEntity skillEntity = skillRepository.findById(skill.getId()).orElse(null);
+                if (skillEntity != null) {
+                    if (!applicantEntity.getSkills().contains(skillEntity)) {
+                        applicantEntity.getSkills().add(skillEntity);
+                    }
+                    if (!skillEntity.getApplicants().contains(applicantEntity)) {
+                        skillEntity.getApplicants().add(applicantEntity);
+                    }
+                }
             }
         }
         applicantRepository.save(applicantEntity);
