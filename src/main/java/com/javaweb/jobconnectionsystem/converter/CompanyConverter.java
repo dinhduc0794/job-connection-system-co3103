@@ -150,16 +150,6 @@ public class CompanyConverter {
         companyEntity.setSpecificAddress(companyDTO.getSpecificAddress());
         WardEntity wardEntity = wardRepository.findById(companyDTO.getWard().getId()).get();
         companyEntity.setWard(wardEntity);
-//        List<AddressDTO> addressWardIds = companyDTO.getAddressWardIds();
-//        if (addressWardIds != null && !addressWardIds.isEmpty()) {
-//            for (AddressDTO addressWardId : addressWardIds) {
-//                String address = addressWardId.getAddress();
-//                Long wardId = addressWardId.getWardId();
-//                WardEntity wardEntity = wardRepository.findById(wardId).get();
-////                companyEntity.getWards().add(wardEntity);
-//                companyEntity.setAddress(address);
-//            }
-//        }
 
         // Field
         List<FieldDTO> fieldDTOs = companyDTO.getFields();
@@ -170,6 +160,7 @@ public class CompanyConverter {
                 companyEntity.getFields().add(fieldEntity);
             }
         }
+        companyEntity = companyRepository.save(companyEntity);
         return  companyEntity;
     }
 
