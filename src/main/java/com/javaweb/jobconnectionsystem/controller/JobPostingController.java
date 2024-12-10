@@ -77,10 +77,4 @@ public class JobPostingController {
         }
         return ResponseEntity.ok(jobPosting);
     }
-
-    // Endpoint thêm bài đăng công việc
-
-
-    @PostMapping("/applications")
-
 }

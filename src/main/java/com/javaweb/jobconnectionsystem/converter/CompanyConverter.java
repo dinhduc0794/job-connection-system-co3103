@@ -4,6 +4,7 @@ import com.javaweb.jobconnectionsystem.entity.*;
 import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
 import com.javaweb.jobconnectionsystem.model.dto.AddressDTO;
 import com.javaweb.jobconnectionsystem.model.dto.FieldDTO;
+import com.javaweb.jobconnectionsystem.model.location.WardDTO;
 import com.javaweb.jobconnectionsystem.model.response.CompanyPublicResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.repository.*;
@@ -164,7 +165,21 @@ public class CompanyConverter {
     }
 
     public  CompanyDTO toCompanyDTO(CompanyEntity companyEntity) {
-        CompanyDTO companyDTO = modelMapper.map(companyEntity, CompanyDTO.class);
+        CompanyDTO companyDTO = CompanyDTO.builder()
+                .id(companyEntity.getId())
+                .username(companyEntity.getUsername())
+                .password(companyEntity.getPassword())
+                .isActive(companyEntity.getIsActive())
+                .description(companyEntity.getDescription())
+                .isPublic(companyEntity.getIsPublic())
+                .isBanned(companyEntity.getIsBanned())
+                .image(companyEntity.getImage())
+                .specificAddress(companyEntity.getSpecificAddress())
+                .name(companyEntity.getName())
+                .taxCode(companyEntity.getTaxCode())
+                .remainingPost(companyEntity.getRemainingPost())
+                .rating(companyEntity.getRating())
+                .build();
 
         // Set address
         if(companyEntity.getWard() != null) {
@@ -177,32 +192,31 @@ public class CompanyConverter {
                 fullAddress = companyEntity.getSpecificAddress() + ", " + fullAddress;
             }
             companyDTO.setFullAddress(fullAddress);
-            companyDTO.getWard().setId(wardEntity.getId());
-            companyDTO.getWard().setName(wardEntity.getName());
+            WardDTO wardDTO = new WardDTO(wardEntity);
+            companyDTO.setWard(wardDTO);
         }
 
         List<FieldEntity> fieldEntities = companyEntity.getFields();
-        if(fieldEntities != null && !fieldEntities.isEmpty()) {
-            for(FieldEntity fieldEntity : fieldEntities) {
-                FieldDTO fieldDTO = new FieldDTO();
-                fieldDTO.setId(fieldEntity.getId());
-                fieldDTO.setName(fieldEntity.getName());
-                companyDTO.getFields().add(fieldDTO);
-            }
+
+        if (fieldEntities != null && !fieldEntities.isEmpty()) {
+            List<FieldDTO> fieldDTOs = fieldEntities.stream()
+                    .map(it -> new FieldDTO(it))
+                    .collect(Collectors.toList());
+            companyDTO.setFields(fieldDTOs);
         }
 
-        List<PhoneNumberEntity> phoneNumberEntities = companyEntity.getPhoneNumbers();
-        if(phoneNumberEntities != null && !phoneNumberEntities.isEmpty()) {
-            for(PhoneNumberEntity phoneNumberEntity : phoneNumberEntities) {
-                companyDTO.getPhoneNumbers().add(phoneNumberEntity.getPhoneNumber());
-            }
+        if (companyEntity.getPhoneNumbers() != null && !companyEntity.getPhoneNumbers().isEmpty()) {
+            List<String> phoneNumbers = companyEntity.getPhoneNumbers().stream()
+                    .map(PhoneNumberEntity::getPhoneNumber)
+                    .collect(Collectors.toList());
+            companyDTO.setPhoneNumbers(phoneNumbers);
         }
 
-        List<EmailEntity> emailEntities = companyEntity.getEmails();
-        if(emailEntities != null && !emailEntities.isEmpty()) {
-            for(EmailEntity emailEntity : emailEntities) {
-                companyDTO.getEmails().add(emailEntity.getEmail());
-            }
+        if (companyEntity.getEmails() != null && !companyEntity.getEmails().isEmpty()) {
+            List<String> emails = companyEntity.getEmails().stream()
+                    .map(EmailEntity::getEmail)
+                    .collect(Collectors.toList());
+            companyDTO.setEmails(emails);
         }
 
         return companyDTO;

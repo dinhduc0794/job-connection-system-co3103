@@ -4,6 +4,7 @@ import com.javaweb.jobconnectionsystem.entity.*;
 
 import com.javaweb.jobconnectionsystem.enums.LevelEnum;
 import com.javaweb.jobconnectionsystem.model.dto.*;
+import com.javaweb.jobconnectionsystem.model.location.WardDTO;
 import com.javaweb.jobconnectionsystem.model.response.ApplicantApplicationReponse;
 import com.javaweb.jobconnectionsystem.model.response.ApplicantPublicResponse;
 import com.javaweb.jobconnectionsystem.repository.*;
@@ -188,10 +189,24 @@ public class ApplicantConverter {
     }
 
     public ApplicantDTO toApplicantDTO(ApplicantEntity applicantEntity) {
-        ApplicantDTO applicantDTO = modelMapper.map(applicantEntity, ApplicantDTO.class);
+        ApplicantDTO applicantDTO = ApplicantDTO.builder()
+                .id(applicantEntity.getId())
+                .username(applicantEntity.getUsername())
+                .password(applicantEntity.getPassword())
+                .isActive(applicantEntity.getIsActive())
+                .description(applicantEntity.getDescription())
+                .isPublic(applicantEntity.getIsPublic())
+                .isBanned(applicantEntity.getIsBanned())
+                .isAvailable(applicantEntity.getIsAvailable())
+                .image(applicantEntity.getImage())
+                .specificAddress(applicantEntity.getSpecificAddress())
+                .firstName(applicantEntity.getFirstName())
+                .lastName(applicantEntity.getLastName())
+                .dob(applicantEntity.getDob())
+                .build();
 
         // set address
-        if (applicantEntity.getWard() != null) {
+        if(applicantEntity.getWard() != null) {
             WardEntity wardEntity = applicantEntity.getWard();
             String wardName = wardEntity.getName();
             String cityName = wardEntity.getCity().getName();
@@ -201,56 +216,57 @@ public class ApplicantConverter {
                 fullAddress = applicantEntity.getSpecificAddress() + ", " + fullAddress;
             }
             applicantDTO.setFullAddress(fullAddress);
-            applicantDTO.getWard().setId(wardEntity.getId());
-            applicantDTO.getWard().setName(wardEntity.getName());
+            WardDTO wardDTO = new WardDTO(wardEntity);
+            applicantDTO.setWard(wardDTO);
         }
 
         //jobtype
-        List<ApplicantJobtypeEntity> applicantJobtypeEntities = applicantEntity.getApplicantJobtypeEntities();
-        if(applicantJobtypeEntities != null && !applicantJobtypeEntities.isEmpty()) {
-            for(ApplicantJobtypeEntity applicantJobtypeEntity : applicantJobtypeEntities) {
-                JobTypeEntity jobTypeEntity = applicantJobtypeEntity.getJobType();
-                JobTypeDTO jobTypeDTO = new JobTypeDTO();
-                jobTypeDTO.setLevel(applicantJobtypeEntity.getLevel());
-                jobTypeDTO.setName(jobTypeEntity.getName());
-                jobTypeDTO.setId(jobTypeEntity.getId());
-
-                applicantDTO.getJobTypes().add(jobTypeDTO);
-            }
+        if (applicantEntity.getApplicantJobtypeEntities() != null && !applicantEntity.getApplicantJobtypeEntities().isEmpty()) {
+            List<JobTypeDTO> jobTypes = applicantEntity.getApplicantJobtypeEntities().stream()
+                    .map(applicantJobtypeEntity -> {
+                        JobTypeDTO jobTypeDTO = modelMapper.map(applicantJobtypeEntity.getJobType(), JobTypeDTO.class);
+                        jobTypeDTO.setLevel(applicantJobtypeEntity.getLevel());
+                        return jobTypeDTO;
+                    })
+                    .collect(Collectors.toList());
+            applicantDTO.setJobTypes(jobTypes);
         }
 
         //skill
-        List<SkillEntity> skillEntities = applicantEntity.getSkills();
-        if(skillEntities != null && !skillEntities.isEmpty()) {
-            for(SkillEntity skillEntity : skillEntities) {
-                SkillDTO skillDTO = new SkillDTO();
-                skillDTO.setId(skillEntity.getId());
-                skillDTO.setName(skillEntity.getName());
-
-                applicantDTO.getSkills().add(skillDTO);
-            }
+        if (applicantEntity.getSkills() != null && !applicantEntity.getSkills().isEmpty()) {
+            List<SkillDTO> skills = applicantEntity.getSkills().stream()
+                    .map(skillEntity -> {
+                        SkillDTO skillDTO = modelMapper.map(skillEntity, SkillDTO.class);
+                        return skillDTO;
+                    })
+                    .collect(Collectors.toList());
+            applicantDTO.setSkills(skills);
         }
+
         //certification
-        List<CertificationEntity> certificationEntities = applicantEntity.getCertifications();
-        if(certificationEntities != null && !certificationEntities.isEmpty()) {
-            for(CertificationEntity certificationEntity : certificationEntities) {
-                CertificationDTO certificationDTO = modelMapper.map(certificationEntity, CertificationDTO.class);
-                applicantDTO.getCertifications().add(certificationDTO);
-            }
+        if (applicantEntity.getCertifications() != null && !applicantEntity.getCertifications().isEmpty()) {
+            List<CertificationDTO> certifications = applicantEntity.getCertifications().stream()
+                    .map(certificationEntity -> {
+                        CertificationDTO certificationDTO = modelMapper.map(certificationEntity, CertificationDTO.class);
+                        return certificationDTO;
+                    })
+                    .collect(Collectors.toList());
+            applicantDTO.setCertifications(certifications);
         }
 
-        List<PhoneNumberEntity> phoneNumberEntities = applicantEntity.getPhoneNumbers();
-        if(phoneNumberEntities != null && !phoneNumberEntities.isEmpty()) {
-            for(PhoneNumberEntity phoneNumberEntity : phoneNumberEntities) {
-                applicantDTO.getPhoneNumbers().add(phoneNumberEntity.getPhoneNumber());
-            }
+
+        if (applicantEntity.getPhoneNumbers() != null && !applicantEntity.getPhoneNumbers().isEmpty()) {
+            List<String> phoneNumbers = applicantEntity.getPhoneNumbers().stream()
+                    .map(PhoneNumberEntity::getPhoneNumber)
+                    .collect(Collectors.toList());
+            applicantDTO.setPhoneNumbers(phoneNumbers);
         }
 
-        List<EmailEntity> emailEntities = applicantEntity.getEmails();
-        if(emailEntities != null && !emailEntities.isEmpty()) {
-            for(EmailEntity emailEntity : emailEntities) {
-                applicantDTO.getEmails().add(emailEntity.getEmail());
-            }
+        if (applicantEntity.getEmails() != null && !applicantEntity.getEmails().isEmpty()) {
+            List<String> emails = applicantEntity.getEmails().stream()
+                    .map(EmailEntity::getEmail)
+                    .collect(Collectors.toList());
+            applicantDTO.setEmails(emails);
         }
 
         return applicantDTO;
