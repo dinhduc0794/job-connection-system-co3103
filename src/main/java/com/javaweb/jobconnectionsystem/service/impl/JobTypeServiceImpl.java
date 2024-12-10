@@ -26,7 +26,12 @@ public class JobTypeServiceImpl implements JobTypeService {
     }
 
     @Override
-    public List<JobTypeDTO> getAllJobTypes() {
+    public List<JobTypeEntity> getAllJobTypes() {
+        return jobTypeRepository.findAll();
+    }
+
+    @Override
+    public List<JobTypeDTO> getAllJobTypeDTOs() {
         List<JobTypeEntity> jobTypeEntities = jobTypeRepository.findAll();
         List<JobTypeDTO> jobTypeDTOS = new ArrayList<>();
         for (JobTypeEntity jobTypeEntity : jobTypeEntities) {

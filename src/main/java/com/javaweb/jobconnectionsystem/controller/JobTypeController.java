@@ -21,9 +21,18 @@ public class JobTypeController {
 
 
     // Endpoint lấy tất cả loại công việc
+    @GetMapping("/jobtypes")
+    public ResponseEntity<List<JobTypeEntity>> getAllJobTypes() {
+        List<JobTypeEntity> jobTypes = jobTypeService.getAllJobTypes();
+        if (jobTypes.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Nếu không có loại công việc, trả về 204 No Content
+        }
+        return ResponseEntity.ok(jobTypes); // Trả về danh sách loại công việc
+    }
+
     @GetMapping("/public/jobtypes")
-    public ResponseEntity<List<JobTypeDTO>> getAllJobTypes() {
-        List<JobTypeDTO> jobTypes = jobTypeService.getAllJobTypes();
+    public ResponseEntity<List<JobTypeDTO>> getAllJobTypeDTOs() {
+        List<JobTypeDTO> jobTypes = jobTypeService.getAllJobTypeDTOs();
         if (jobTypes.isEmpty()) {
             return ResponseEntity.noContent().build(); // Nếu không có loại công việc, trả về 204 No Content
         }

@@ -10,8 +10,10 @@ public interface JobTypeService {
     // Thêm loại công việc
     JobTypeEntity addJobType(JobTypeEntity jobType);
 
+    List<JobTypeEntity> getAllJobTypes();
+
     // Lấy tất cả loại công việc
-    List<JobTypeDTO> getAllJobTypes();
+    List<JobTypeDTO> getAllJobTypeDTOs();
 
     // Lấy loại công việc theo ID
     Optional<JobTypeEntity> getJobTypeById(Long id);
