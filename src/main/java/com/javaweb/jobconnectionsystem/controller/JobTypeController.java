@@ -1,6 +1,7 @@
 package com.javaweb.jobconnectionsystem.controller;
 
 import com.javaweb.jobconnectionsystem.entity.JobTypeEntity;
+import com.javaweb.jobconnectionsystem.model.dto.JobTypeDTO;
 import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
 import com.javaweb.jobconnectionsystem.service.JobTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,8 @@ public class JobTypeController {
 
     // Endpoint lấy tất cả loại công việc
     @GetMapping("/public/jobtypes")
-    public ResponseEntity<List<JobTypeEntity>> getAllJobTypes() {
-        List<JobTypeEntity> jobTypes = jobTypeService.getAllJobTypes();
+    public ResponseEntity<List<JobTypeDTO>> getAllJobTypes() {
+        List<JobTypeDTO> jobTypes = jobTypeService.getAllJobTypes();
         if (jobTypes.isEmpty()) {
             return ResponseEntity.noContent().build(); // Nếu không có loại công việc, trả về 204 No Content
         }

@@ -29,7 +29,14 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
 
         // Phai group by truoc order, sau thi bi loi
         sql.append(" GROUP BY jp.id");
-        sql.append(" ORDER BY jp.id DESC");
+
+        if (params.getSort() != null && params.getSort().equals("asc")) {
+            sql.append(" ORDER BY jp.id ASC");
+        }
+        else if (params.getSort() != null && params.getSort().equals("desc")) {
+            sql.append(" ORDER BY jp.id DESC");
+        }
+
 
         // Pagination
         String pagination = " LIMIT " + pageable.getPageSize() + " OFFSET " + pageable.getOffset();
@@ -92,6 +99,8 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
                 Object value = fi.get(params);
                 if (value != null) {
                     switch (key) {
+                        case "sort":
+                            break;
                         case "skill":
                             break;
                         case "salary":

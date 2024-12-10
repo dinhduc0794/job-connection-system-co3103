@@ -1,11 +1,13 @@
 package com.javaweb.jobconnectionsystem.service.impl;
 
 import com.javaweb.jobconnectionsystem.entity.JobTypeEntity;
+import com.javaweb.jobconnectionsystem.model.dto.JobTypeDTO;
 import com.javaweb.jobconnectionsystem.repository.JobTypeRepository;
 import com.javaweb.jobconnectionsystem.service.JobTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,8 +26,16 @@ public class JobTypeServiceImpl implements JobTypeService {
     }
 
     @Override
-    public List<JobTypeEntity> getAllJobTypes() {
-        return jobTypeRepository.findAll();
+    public List<JobTypeDTO> getAllJobTypes() {
+        List<JobTypeEntity> jobTypeEntities = jobTypeRepository.findAll();
+        List<JobTypeDTO> jobTypeDTOS = new ArrayList<>();
+        for (JobTypeEntity jobTypeEntity : jobTypeEntities) {
+            JobTypeDTO jobTypeDTO = new JobTypeDTO();
+            jobTypeDTO.setId(jobTypeEntity.getId());
+            jobTypeDTO.setName(jobTypeEntity.getName());
+            jobTypeDTOS.add(jobTypeDTO);
+        }
+        return jobTypeDTOS;
     }
 
     @Override
