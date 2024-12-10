@@ -118,7 +118,7 @@ public class ApplicantServiceImpl implements ApplicantService {
             skillRepository.delete(skillEntity);
         }
         List<ApplicantJobtypeEntity> applicantJobType = new ArrayList<>(applicant.getApplicantJobtypeEntities());
-        applicant.getApplicantJobtypeEntities().clear();
+        if (applicant.getApplicantJobtypeEntities() != null) applicant.getApplicantJobtypeEntities().clear();
         for(ApplicantJobtypeEntity applicantJobTypeEntity : applicantJobType){
             applicantJobTypeEntity.setApplicant(null);
             JobTypeEntity job=applicantJobTypeEntity.getJobType();

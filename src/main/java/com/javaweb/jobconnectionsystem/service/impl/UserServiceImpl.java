@@ -77,10 +77,10 @@ public class UserServiceImpl implements UserService {
         user.setIsPublic(userDetails.getIsPublic());
         user.setIsBanned(userDetails.getIsBanned());
         // cập nhật sdt
-        user.getPhoneNumbers().clear(); // Xóa các số cũ
+        if (user.getPhoneNumbers() != null) user.getPhoneNumbers().clear(); // Xóa các số cũ
         user.getPhoneNumbers().addAll(userDetails.getPhoneNumbers()); // Thêm các số mới
         // Cập nhật email
-        user.getEmails().clear(); // Xóa các email cũ
+        if (user.getEmails() != null) user.getEmails().clear(); // Xóa các email cũ
         user.getEmails().addAll(userDetails.getEmails()); // Thêm các email mới
         // Cập nhật thông tin người dùng
         return userRepository.save(user);  // Lưu lại người dùng đã cập nhật

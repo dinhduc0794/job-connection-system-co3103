@@ -102,7 +102,7 @@ public class ApplicantConverter {
                 for (PhoneNumberEntity phoneNumber : phoneNumberEntities) {
                     phoneNumberRepository.delete(phoneNumber);
                 }
-                existingApplicant.getPhoneNumbers().clear();
+                if (existingApplicant.getPhoneNumbers() != null) existingApplicant.getPhoneNumbers().clear();
             }
             entityManager.flush();
             // Xóa các emails
@@ -111,7 +111,7 @@ public class ApplicantConverter {
                 for (EmailEntity email : emailEntities) {
                     emailRepository.delete(email);
                 }
-                existingApplicant.getEmails().clear();
+                if (existingApplicant.getEmails() != null) existingApplicant.getEmails().clear();
             }
             entityManager.flush();
             // xóa certification
@@ -120,7 +120,8 @@ public class ApplicantConverter {
                 for (CertificationEntity certification : certifications) {
                     certificationRepository.delete(certification);
                 }
-                existingApplicant.getCertifications().clear();
+                if (existingApplicant.getCertifications() != null)
+                    existingApplicant.getCertifications().clear();
             }
             entityManager.flush();
             List<ApplicantJobtypeEntity> applicantJobtypeEntitys = existingApplicant.getApplicantJobtypeEntities();
@@ -150,8 +151,8 @@ public class ApplicantConverter {
             applicantEntity.setIsActive(true);
             applicantEntity.setIsPublic(true);
         }
-        applicantEntity.getPhoneNumbers().clear();
-        applicantEntity.getEmails().clear();
+        if (applicantEntity.getPhoneNumbers() != null) applicantEntity.getPhoneNumbers().clear();
+        if (applicantEntity.getEmails() != null) applicantEntity.getEmails().clear();
         List<String> phoneNumbers = applicantDTO.getPhoneNumbers();
         if(phoneNumbers != null && !phoneNumbers.isEmpty()) {
             for(String phoneNumber : phoneNumbers) {
@@ -206,7 +207,7 @@ public class ApplicantConverter {
             }
         }
         // Skill
-        applicantEntity.getSkills().clear();
+        if (applicantEntity.getSkills() != null) applicantEntity.getSkills().clear();
         List<SkillDTO> skills = applicantDTO.getSkills();
         if (skills != null && !skills.isEmpty()) {
             for (SkillDTO skill : skills) {
