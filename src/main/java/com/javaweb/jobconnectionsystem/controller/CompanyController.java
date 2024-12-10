@@ -70,7 +70,7 @@ public class CompanyController {
     public ResponseEntity<?> saveCompany(@Valid @RequestBody CompanyDTO companyDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
         if(companyDTO.getId()==null){
-            return ResponseEntity.badRequest().body("sửa thì id của tao đâu ");
+            return ResponseEntity.badRequest().body("Id is required to update a company");
         }
         try{
             if (bindingResult.hasErrors()) {
@@ -84,11 +84,8 @@ public class CompanyController {
                 return ResponseEntity.badRequest().body(responseDTO);
             }
             // neu dung thi //xuong service -> xuong repo -> save vao db
-            CompanyEntity companyEntity = companyService.saveCompany(companyDTO);
-            if (companyEntity == null) {
-                return ResponseEntity.badRequest().body(null); // Trả về lỗi nếu bài đăng công việc không hợp lệ
-            }
-            return ResponseEntity.ok(companyEntity); // Trả về bài đăng công việc đã thêm
+            responseDTO = companyService.saveCompany(companyDTO);
+            return ResponseEntity.ok(responseDTO);
         }
         catch (Exception e){
             responseDTO.setMessage("Internal server error");

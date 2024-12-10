@@ -35,7 +35,7 @@ public class RegisterController {
     public ResponseEntity<?> saveApplicant(@Valid @RequestBody ApplicantDTO applicantDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
         if(applicantDTO.getId()!=null){
-            return ResponseEntity.badRequest().body("thêm mới không có gửi id cho tao");
+            return ResponseEntity.badRequest().body("No id is sent for new registration");
         }
         try{
             if (bindingResult.hasErrors()) {
@@ -48,11 +48,8 @@ public class RegisterController {
                 responseDTO.setDetail(errorMessages);
                 return ResponseEntity.badRequest().body(responseDTO);
             }
-            ApplicantEntity applicantEntity = applicantService.saveApplicant(applicantDTO);
-            if (applicantEntity == null) {
-                return ResponseEntity.badRequest().body(null);
-            }
-            return ResponseEntity.ok("Register success");
+            responseDTO = applicantService.saveApplicant(applicantDTO);
+            return ResponseEntity.ok(responseDTO);
         }
         catch (Exception e) {
             responseDTO.setMessage("Internal server error");
@@ -64,7 +61,7 @@ public class RegisterController {
     public ResponseEntity<?> saveCompany(@Valid @RequestBody CompanyDTO companyDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
         if(companyDTO.getId()!=null){
-            return ResponseEntity.badRequest().body("Thêm mới không có gửi id");
+            return ResponseEntity.badRequest().body("No id is sent for new registration");
         }
         try {
             if (bindingResult.hasErrors()) {
@@ -78,11 +75,8 @@ public class RegisterController {
                 return ResponseEntity.badRequest().body(responseDTO);
             }
             // neu dung thi //xuong service -> xuong repo -> save vao db
-            CompanyEntity companyEntity = companyService.saveCompany(companyDTO);
-            if (companyEntity == null) {
-                return ResponseEntity.badRequest().body(null); // Trả về lỗi nếu bài đăng công việc không hợp lệ
-            }
-            return ResponseEntity.ok("Register company success"); // Trả về bài đăng công việc đã thêm
+            responseDTO = companyService.saveCompany(companyDTO);
+            return ResponseEntity.ok(responseDTO);
         } catch (Exception e) {
             responseDTO.setMessage("Internal server error");
             responseDTO.setDetail(Collections.singletonList(e.getMessage()));

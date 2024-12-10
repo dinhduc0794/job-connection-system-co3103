@@ -35,7 +35,7 @@ public class CompanyDTO extends PaginationDTO {
     private String name;
     @NotBlank(message = "Company tax code is required")
     private String taxCode;
-    private Long remainingPost;
+    private Long remainingPost = 5L;
     private List<FieldDTO> fields;
     private Double rating;
 

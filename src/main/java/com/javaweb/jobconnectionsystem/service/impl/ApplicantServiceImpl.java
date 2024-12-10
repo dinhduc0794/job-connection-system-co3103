@@ -6,6 +6,7 @@ import com.javaweb.jobconnectionsystem.entity.*;
 import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
 import com.javaweb.jobconnectionsystem.model.response.ApplicantPublicResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
+import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
 import com.javaweb.jobconnectionsystem.repository.*;
 import com.javaweb.jobconnectionsystem.service.ApplicantService;
 import org.modelmapper.ModelMapper;
@@ -48,12 +49,25 @@ public class ApplicantServiceImpl implements ApplicantService {
     }
 
     @Override
-    public ApplicantEntity saveApplicant(ApplicantDTO applicantDTO) {
+    public ResponseDTO saveApplicant(ApplicantDTO applicantDTO) {
 //        String encodedPassword = passwordEncoder.encode(applicantDTO.getPassword());
 //        applicantDTO.setPassword(encodedPassword);
+
+        ResponseDTO responseDTO = new ResponseDTO();
+        if (applicantDTO.getId() != null) {
+            if (!applicantRepository.existsById(applicantDTO.getId())) {
+                responseDTO.setMessage("Không tìm thấy ứng viên cần sửa");
+                return responseDTO;
+            }
+            responseDTO.setMessage("Sửa thông tin ứng viên thành công");
+        }
+        else {
+            responseDTO.setMessage("Đăng ký ứng viên mới thành công");
+        }
         ApplicantEntity applicantEntity = applicantConverter.toApplicantEntity(applicantDTO);
-        applicantEntity = applicantRepository.save(applicantEntity);
-        return applicantEntity;
+        responseDTO.setData(applicantEntity);
+        applicantRepository.save(applicantEntity);
+        return responseDTO;
     }
 
 

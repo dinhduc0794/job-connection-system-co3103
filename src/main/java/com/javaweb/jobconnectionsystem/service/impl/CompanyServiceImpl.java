@@ -5,6 +5,7 @@ import com.javaweb.jobconnectionsystem.entity.*;
 import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
 import com.javaweb.jobconnectionsystem.model.request.CompanySearchRequest;
 import com.javaweb.jobconnectionsystem.model.response.CompanyPublicResponse;
+import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
 import com.javaweb.jobconnectionsystem.repository.CompanyRepository;
 import com.javaweb.jobconnectionsystem.repository.EmailRepository;
 import com.javaweb.jobconnectionsystem.repository.PhoneNumberRepository;
@@ -61,19 +62,32 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CompanyEntity saveCompany(CompanyDTO companyDTO) {
+    public ResponseDTO saveCompany(CompanyDTO companyDTO) {
 //        String encodedPassword = passwordEncoder.encode(companyDTO.getPassword());
 //        companyDTO.setPassword(encodedPassword);
+
+        ResponseDTO responseDTO = new ResponseDTO();
+        if (companyDTO.getId() != null) {
+            if (!companyRepository.existsById(companyDTO.getId())) {
+                responseDTO.setMessage("Không tìm thấy công ty cần sửa");
+                return responseDTO;
+            }
+            responseDTO.setMessage("Sửa thông tin công ty thành công");
+        }
+        else {
+            responseDTO.setMessage("Đăng ký công ty mới thành công");
+        }
         CompanyEntity companyEntity = companyConverter.toCompanyEntity(companyDTO);
+        responseDTO.setData(companyEntity);
         companyEntity = companyRepository.save(companyEntity);
-        return companyEntity;
+        return responseDTO;
     }
 
     @Override
     public CompanyEntity updateCompany(Long id, CompanyEntity companyDetails) {
         CompanyEntity company = companyRepository.findById(id).orElseThrow(() -> new RuntimeException("Company not found"));
         if (companyRepository.findByTaxCode(companyDetails.getTaxCode())!= null ) {
-            throw new RuntimeException("Company name already exists");
+            throw new RuntimeException("Mã số thuế đã tồn tại");
         }
         company.setName(companyDetails.getName());
         company.setTaxCode(companyDetails.getTaxCode());

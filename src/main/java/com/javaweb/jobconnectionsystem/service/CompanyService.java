@@ -4,13 +4,14 @@ import com.javaweb.jobconnectionsystem.entity.CompanyEntity;
 import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
 import com.javaweb.jobconnectionsystem.model.request.CompanySearchRequest;
 import com.javaweb.jobconnectionsystem.model.response.CompanyPublicResponse;
+import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
 
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CompanyService {
-    CompanyEntity saveCompany(CompanyDTO companyDTO);
+    ResponseDTO saveCompany(CompanyDTO companyDTO);
 
     List<CompanyPublicResponse> getAllCompanies(CompanySearchRequest params);
 

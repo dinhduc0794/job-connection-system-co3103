@@ -68,12 +68,12 @@ public class ApplicantController {
     }
 
 
-    // Endpoint thêm ứng viên
+    // Endpoint SỬA ỨNG VIÊN
     @PostMapping("/applicants")
     public ResponseEntity<?> saveApplicant(@Valid @RequestBody ApplicantDTO applicantDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
         if(applicantDTO.getId()==null){
-            return ResponseEntity.badRequest().body("sửa thì id của tao đâu ");
+            return ResponseEntity.badRequest().body("Id is required to update an applicant");
         }
         try{
             if (bindingResult.hasErrors()) {
@@ -86,11 +86,8 @@ public class ApplicantController {
                 responseDTO.setDetail(errorMessages);
                 return ResponseEntity.badRequest().body(responseDTO);
             }
-            ApplicantEntity applicantEntity = applicantService.saveApplicant(applicantDTO);
-            if (applicantEntity == null) {
-                return ResponseEntity.badRequest().body(null);
-            }
-            return ResponseEntity.ok(applicantEntity);
+            responseDTO = applicantService.saveApplicant(applicantDTO);
+            return ResponseEntity.ok(responseDTO);
         }
         catch (Exception e) {
             responseDTO.setMessage("Internal server error");
