@@ -112,11 +112,11 @@ public class JobPostingController {
         ResponseDTO responseDTO = new ResponseDTO();
         List<ApplicationEntity> applicationByJobposting = applicationService.getAllApplicationByJobpostingId(id);
         if ( applicationByJobposting.isEmpty()){
-            responseDTO.setMessage("you have no application");
+            responseDTO.setMessage("You have no application");
             return ResponseEntity.ok(responseDTO);
         }
         else {
-            responseDTO.setMessage("application with applicant");
+            responseDTO.setMessage("Application with applicant");
             responseDTO.setData(applicationByJobposting);
             return ResponseEntity.ok(responseDTO);
         }
@@ -127,12 +127,12 @@ public class JobPostingController {
         ResponseDTO responseDTO = new ResponseDTO();
         try{
             applicationService.deleteApplicationByApplicantId(id);
-            responseDTO.setMessage("delete succesfully");
-            responseDTO.setDetail(Collections.singletonList("application has been deleted"));
+            responseDTO.setMessage("Delete succesfully");
+            responseDTO.setDetail(Collections.singletonList("Application has been deleted"));
             return ResponseEntity.ok(responseDTO);
         }catch(RuntimeException e ){
-            responseDTO.setMessage("canot delete this application");
-            responseDTO.setDetail(Collections.singletonList("this application is not in status Rejected"));
+            responseDTO.setMessage("Can not delete this application");
+            responseDTO.setDetail(Collections.singletonList("This application is not in status Rejected"));
             return ResponseEntity.badRequest().body(responseDTO);
         }
     }

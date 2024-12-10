@@ -212,7 +212,7 @@ public class ApplicantController {
         ResponseDTO responseDTO = new ResponseDTO();
         List<ApplicationEntity> applicationByApplicanID = applicationService.getAllApplicationByApplicantId(id);
         if (applicationByApplicanID.isEmpty()){
-            responseDTO.setMessage("you have no application");
+            responseDTO.setMessage("You have no application");
             return ResponseEntity.ok(responseDTO);
         }
         else {
@@ -234,7 +234,7 @@ public class ApplicantController {
                         );
                     })
                     .collect(Collectors.toList());
-            responseDTO.setMessage("application with jobposting");
+            responseDTO.setMessage("Application with jobposting");
             responseDTO.setData(applicationResponseDTOs);
             return ResponseEntity.ok(responseDTO);
         }
@@ -245,11 +245,11 @@ public class ApplicantController {
         ResponseDTO responseDTO = new ResponseDTO();
         ApplicationEntity application = applicationService.getApplicationById(id);
         if (application == null){
-            responseDTO.setMessage("application not found");
+            responseDTO.setMessage("Application not found");
             return ResponseEntity.ok(responseDTO);
         }
         else {
-            responseDTO.setMessage("application with jobposting");
+            responseDTO.setMessage("Application with jobposting");
             responseDTO.setData(application);
             return ResponseEntity.ok(responseDTO);
         }
@@ -260,12 +260,12 @@ public class ApplicantController {
         ResponseDTO responseDTO = new ResponseDTO();
         try{
             applicationService.getAllApplicationByApplicantId(id);
-            responseDTO.setMessage("delete succesfully");
-            responseDTO.setDetail(Collections.singletonList("application has been deleted"));
+            responseDTO.setMessage("Delete succesfully");
+            responseDTO.setDetail(Collections.singletonList("Application has been deleted"));
             return ResponseEntity.ok(responseDTO);
         }catch(RuntimeException e ){
-            responseDTO.setMessage("canot delete this application");
-            responseDTO.setDetail(Collections.singletonList("some thing wrong"));
+            responseDTO.setMessage("Can not delete this application");
+            responseDTO.setDetail(Collections.singletonList("Something wrong"));
             return ResponseEntity.badRequest().body(responseDTO);
         }
     }

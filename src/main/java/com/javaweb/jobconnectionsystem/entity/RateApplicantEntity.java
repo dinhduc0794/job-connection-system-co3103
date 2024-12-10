@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class RateApplicantEntity extends BaseEntity{
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "rate", nullable = false)

@@ -40,8 +40,8 @@ public class ApplicationServiceImpl implements ApplicationService {
             } else {
                 throw new RuntimeException("Company information is missing in job posting");
             }
-            notificationEntity.setContent(applicationEntity.getApplicant().getFirstName() + " has registered your job posting "
-                    + applicationEntity.getJobPosting().getTitle() + "with email"
+            notificationEntity.setContent(applicationEntity.getApplicant().getFirstName() + " has sent an application to job posting "
+                    + applicationEntity.getJobPosting().getTitle() + " with email "
                     + applicationDTO.getEmail() + " and phone " + applicationDTO.getPhoneNumber());
             notificationRepository.save(notificationEntity);
             return applicationRepository.save(applicationEntity);

@@ -7,5 +7,5 @@ import lombok.Data;
 public class BlockingDTO {
     Long id ;
     Long blockerId;
-    Long blockedUserID;
+    Long blockedUserId;
 }
