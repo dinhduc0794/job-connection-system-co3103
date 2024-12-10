@@ -93,13 +93,15 @@ public class ApplicantConverter {
             if(applicantDTO.getIsPublic() == null) applicantEntity.setIsPublic(existingApplicant.getIsPublic());
             else applicantEntity.setIsPublic(applicantDTO.getIsPublic());
 
-            // xóa hết thuộc tính cũ
+            List<PhoneNumberEntity> phoneNumberEntities = existingApplicant.getPhoneNumbers();
             existingApplicant.getPhoneNumbers().clear();
-            phoneNumberRepository.deleteAll(existingApplicant.getPhoneNumbers());
+            phoneNumberRepository.deleteAll(phoneNumberEntities);
+            List<EmailEntity> emailEntities = existingApplicant.getEmails();
             existingApplicant.getEmails().clear();
-            emailRepository.deleteAll(existingApplicant.getEmails());
+            emailRepository.deleteAll(emailEntities);
+            List<CertificationEntity> cer =  existingApplicant.getCertifications();
             existingApplicant.getCertifications().clear();
-            certificationRepository.deleteAll(existingApplicant.getCertifications());
+            certificationRepository.deleteAll(cer);
             List<ApplicantJobtypeEntity> applicantJobtypeEntitys = existingApplicant.getApplicantJobtypeEntities();
             if(applicantJobtypeEntitys != null && !applicantJobtypeEntitys.isEmpty()) {
                 for(ApplicantJobtypeEntity applicantJobtypeEntity : applicantJobtypeEntitys) {
@@ -108,16 +110,11 @@ public class ApplicantConverter {
                 }
             }
             existingApplicant.getSkills().removeAll(existingApplicant.getSkills());
-        } else {
+        }
+        else {
             applicantEntity.setIsBanned(false);
             applicantEntity.setIsActive(true);
             applicantEntity.setIsPublic(true);
-        }
-        // các thộc tính nằm ở bảng khác
-        applicantRepository.save(applicantEntity);
-        // PhoneNumber
-        if(applicantEntity.getPhoneNumbers() != null && !applicantEntity.getPhoneNumbers().isEmpty()) {
-            applicantEntity.getPhoneNumbers().clear();
         }
         List<String> phoneNumbers = applicantDTO.getPhoneNumbers();
         if(phoneNumbers != null && !phoneNumbers.isEmpty()) {
@@ -125,13 +122,8 @@ public class ApplicantConverter {
                 PhoneNumberEntity phoneNumberEntity = new PhoneNumberEntity();
                 phoneNumberEntity.setPhoneNumber(phoneNumber);
                 phoneNumberEntity.setUser(applicantEntity);
-                phoneNumberRepository.save(phoneNumberEntity);
                 applicantEntity.getPhoneNumbers().add(phoneNumberEntity);
             }
-        }
-        // Email
-        if(applicantEntity.getEmails() != null && !applicantEntity.getEmails().isEmpty()) {
-            applicantEntity.getEmails().clear();
         }
         List<String> emails = applicantDTO.getEmails();
         if(emails != null && !emails.isEmpty()) {
@@ -139,7 +131,6 @@ public class ApplicantConverter {
                 EmailEntity emailEntity = new EmailEntity();
                 emailEntity.setEmail(email);
                 emailEntity.setUser(applicantEntity);
-                emailRepository.save(emailEntity);
                 applicantEntity.getEmails().add(emailEntity);
             }
         }
@@ -185,6 +176,7 @@ public class ApplicantConverter {
                 applicantEntity.getSkills().add(skillEntity);
             }
         }
+        applicantRepository.save(applicantEntity);
         return  applicantEntity;
     }
 

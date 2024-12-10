@@ -21,7 +21,7 @@ public class CompanyEntity extends UserEntity {
     @Column(name = "tax_code", unique = true, nullable = false)
     private String taxCode;
     @Column(name = "remaining_post", nullable = false)
-    private Long remainingPost = 5L;
+    private Long remainingPost = 10L;
     @Column(name = "rating")
     private Double rating = 0.0;
 

@@ -23,4 +23,5 @@ public class CertificationDTO {
     private String proof;
     private Date startDate;
     private Date endDate;
+
 }

@@ -79,6 +79,13 @@ public class JobPostingServiceImpl implements JobPostingService {
     @Override
     public ResponseDTO saveJobPosting(JobPostingDTO jobPostingDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
+        if (jobPostingDTO.getId() == null) {
+            CompanyEntity companyEntity = companyRepository.findById(jobPostingDTO.getCompanyId()).get();
+            if (companyEntity.getRemainingPost() == 0) {
+                responseDTO.setMessage("Company does not have any remaining post to create a new job posting! Please upgrade your plan to create more job postings.");
+                return responseDTO;
+            }
+        }
         JobPostingEntity jobPostingEntity = jobPostingConverter.toJobPostingEntity(jobPostingDTO);
         if (jobPostingDTO.getId() != null) {
             CompanyEntity companyEntity = companyRepository.findById(jobPostingDTO.getCompanyId()).get();

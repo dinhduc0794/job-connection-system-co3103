@@ -100,10 +100,10 @@ public class CompanyConverter {
             // các thuộc tính không phải thực thể
             companyEntity.setRemainingPost(existingCompany.getRemainingPost());
             // xóa hết thuộc tính cũ
-            existingCompany.getPhoneNumbers().clear();
             phoneNumberRepository.deleteAll(existingCompany.getPhoneNumbers());
-            existingCompany.getEmails().clear();
+            existingCompany.getPhoneNumbers().clear();
             emailRepository.deleteAll(existingCompany.getEmails());
+            existingCompany.getEmails().clear();
 //            existingCompany.getWards().removeAll(existingCompany.getWards());
             existingCompany.getFields().removeAll(existingCompany.getFields());
         }
