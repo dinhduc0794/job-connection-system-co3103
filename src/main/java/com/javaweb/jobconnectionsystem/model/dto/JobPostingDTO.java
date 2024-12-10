@@ -38,7 +38,6 @@ public class JobPostingDTO extends PaginationDTO {
     @Size(min = 1, message = "Skill is required")
     private List<String> skills;
 
-    @NotNull(message = "Job type is required")
     private Long jobTypeId;
     private String image;
 
@@ -52,6 +51,5 @@ public class JobPostingDTO extends PaginationDTO {
     @NotNull(message = "Company is required")
     private Long companyId;
 
-    @NotNull(message = "Address is required")
     private Long wardId;
 }
