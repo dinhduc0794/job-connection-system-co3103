@@ -62,8 +62,8 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyEntity saveCompany(CompanyDTO companyDTO) {
-        String encodedPassword = passwordEncoder.encode(companyDTO.getPassword());
-        companyDTO.setPassword(encodedPassword);
+//        String encodedPassword = passwordEncoder.encode(companyDTO.getPassword());
+//        companyDTO.setPassword(encodedPassword);
         CompanyEntity companyEntity = companyConverter.toCompanyEntity(companyDTO);
         companyEntity = companyRepository.save(companyEntity);
         return companyEntity;

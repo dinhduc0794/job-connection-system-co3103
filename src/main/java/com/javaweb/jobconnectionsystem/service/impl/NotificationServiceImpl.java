@@ -24,8 +24,12 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public List<NotificationEntity> getAllNotifications() {
-        return notificationRepository.findAll();
+    public List<NotificationEntity> getAllNotifications(Long userId) {
+        List<NotificationEntity> notifications = notificationRepository.findByUserId(userId);
+        if(notifications == null) {
+            throw new RuntimeException("No notifications found for user " + userId);
+        }
+        return notifications;
     }
 
     @Override

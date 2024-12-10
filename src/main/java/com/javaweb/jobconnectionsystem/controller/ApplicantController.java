@@ -2,6 +2,7 @@ package com.javaweb.jobconnectionsystem.controller;
 
 import com.javaweb.jobconnectionsystem.entity.*;
 import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
+import com.javaweb.jobconnectionsystem.model.dto.ApplicationDTO;
 import com.javaweb.jobconnectionsystem.model.dto.RateCompanyDTO;
 import com.javaweb.jobconnectionsystem.model.dto.SkillDTO;
 import com.javaweb.jobconnectionsystem.model.response.ApplicantApplicationReponse;
@@ -9,6 +10,7 @@ import com.javaweb.jobconnectionsystem.model.response.ApplicantPublicResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
 import com.javaweb.jobconnectionsystem.service.*;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -187,6 +189,22 @@ public class ApplicantController {
             responseDTO.setMessage("Internal server error");
             responseDTO.setDetail(Collections.singletonList(e.getMessage()));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
+        }
+    }
+    @PostMapping("/applicants/applications")
+    public ResponseEntity<?> saveApplications(@RequestBody ApplicationDTO applicationDTO) {
+        try {
+            // Gọi service để lưu application
+            ApplicationEntity savedApplication = applicationService.saveApplication(applicationDTO);
+
+            // Trả về thông tin ứng dụng đã lưu
+            return ResponseEntity.ok(savedApplication);
+        } catch (RuntimeException e) {
+            // Bắt RuntimeException từ service và trả về lỗi 400 với message chi tiết
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            // Bắt các lỗi không mong muốn khác và trả về lỗi 500
+            return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).body("An error occurred while processing the request.");
         }
     }
     @GetMapping("/applicants/{id}/applications")

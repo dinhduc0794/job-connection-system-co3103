@@ -10,7 +10,7 @@ public interface NotificationService {
     NotificationEntity addNotification(NotificationEntity notification);
 
     // Lấy tất cả thông báo
-    List<NotificationEntity> getAllNotifications();
+    List<NotificationEntity> getAllNotifications(Long userId);
 
     // Lấy thông báo theo ID
     Optional<NotificationEntity> getNotificationById(Long id);

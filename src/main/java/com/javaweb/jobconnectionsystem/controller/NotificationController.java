@@ -1,6 +1,7 @@
 package com.javaweb.jobconnectionsystem.controller;
 
 import com.javaweb.jobconnectionsystem.entity.NotificationEntity;
+import com.javaweb.jobconnectionsystem.model.response.NotificationReponse;
 import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
 import com.javaweb.jobconnectionsystem.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/notifications")
@@ -30,22 +32,27 @@ public class NotificationController {
     }
 
     // Endpoint lấy tất cả thông báo
-    @GetMapping
-    public ResponseEntity<List<NotificationEntity>> getAllNotifications() {
-        List<NotificationEntity> notifications = notificationService.getAllNotifications();
-        if (notifications.isEmpty()) {
-            return ResponseEntity.noContent().build(); // Nếu không có thông báo, trả về 204 No Content
-        }
-        return ResponseEntity.ok(notifications); // Trả về danh sách thông báo
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getAllNotifications(@PathVariable Long userId) {
+      try {
+          List<NotificationEntity> notifications = notificationService.getAllNotifications(userId);
+          List<NotificationReponse> notificationDTOs = notifications.stream()
+                  .map(notification -> new NotificationReponse(notification.getId(), notification.getContent()))
+                  .collect(Collectors.toList());
+          return ResponseEntity.ok(notificationDTOs);
+      }catch (RuntimeException ex) {
+          // Trả về thông báo lỗi với mã 404 hoặc mã lỗi tùy chọn
+          return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+      }
     }
 
     // Endpoint lấy thông báo theo ID
-    @GetMapping("/{id}")
-    public ResponseEntity<NotificationEntity> getNotificationById(@PathVariable Long id) {
-        Optional<NotificationEntity> notification = notificationService.getNotificationById(id);
-        return notification.map(ResponseEntity::ok) // Trả về thông báo nếu tìm thấy
-                .orElseGet(() -> ResponseEntity.notFound().build()); // Trả về 404 nếu không tìm thấy thông báo
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<NotificationEntity> getNotificationById(@PathVariable Long id) {
+//        Optional<NotificationEntity> notification = notificationService.getNotificationById(id);
+//        return notification.map(ResponseEntity::ok) // Trả về thông báo nếu tìm thấy
+//                .orElseGet(() -> ResponseEntity.notFound().build()); // Trả về 404 nếu không tìm thấy thông báo
+//    }
 
     // Endpoint cập nhật thông báo
     @PutMapping("/{id}")

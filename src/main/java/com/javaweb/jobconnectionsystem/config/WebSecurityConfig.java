@@ -41,6 +41,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/admin/**").hasAnyAuthority("admin")
                         .requestMatchers("/applicants**").hasAnyAuthority("applicant")
                         .requestMatchers("/companies**").hasAnyAuthority("company")
+                        .requestMatchers("/notifications**").hasAnyAuthority("applicant","company")
+                        .requestMatchers("/blockings").hasAnyAuthority("applicant","company")
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
@@ -65,7 +67,7 @@ public class WebSecurityConfig {
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailservice);
-        authProvider.setPasswordEncoder(passwordEncoder());
+        authProvider.setPasswordEncoder(plainTextPasswordEncoder());
         return authProvider;
     }
 

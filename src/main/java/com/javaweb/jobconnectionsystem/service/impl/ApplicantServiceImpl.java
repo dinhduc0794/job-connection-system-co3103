@@ -49,8 +49,8 @@ public class ApplicantServiceImpl implements ApplicantService {
 
     @Override
     public ApplicantEntity saveApplicant(ApplicantDTO applicantDTO) {
-        String encodedPassword = passwordEncoder.encode(applicantDTO.getPassword());
-        applicantDTO.setPassword(encodedPassword);
+//        String encodedPassword = passwordEncoder.encode(applicantDTO.getPassword());
+//        applicantDTO.setPassword(encodedPassword);
         ApplicantEntity applicantEntity = applicantConverter.toApplicantEntity(applicantDTO);
         applicantEntity = applicantRepository.save(applicantEntity);
         return applicantEntity;
