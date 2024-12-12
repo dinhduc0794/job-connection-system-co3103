@@ -97,7 +97,7 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
                             if (value instanceof Number) {
                                 jpql.append(" AND co." + key + " = " + value);
                             } else if (value instanceof String) {
-                                jpql.append(" AND co." + key + " LIKE '%" + value.toString() + "%'");
+                                jpql.append(" AND LOWER(co." + key + ") LIKE '%" + value.toString().toLowerCase() + "%'");
                             }
                             break;
                     }
