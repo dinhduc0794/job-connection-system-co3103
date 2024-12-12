@@ -30,13 +30,15 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
         // Phai group by truoc order, sau thi bi loi
         sql.append(" GROUP BY jp.id");
 
-        if (params.getSortByTime() != null && params.getSortByTime().equals("asc")) {
-            sql.append(" ORDER BY jp.updated_at ASC");
+        if (params.getSortByTime() != null) {
+            if (params.getSortByTime().equals("asc")){
+                sql.append(" ORDER BY jp.updated_at ASC");
+            }
+            else if (params.getSortByTime().equals("desc")) {
+                sql.append(" ORDER BY jp.updated_at DESC");
+            }
         }
-        else if (params.getSortByTime() != null && params.getSortByTime().equals("desc")) {
-            sql.append(" ORDER BY jp.updated_at DESC");
-        }
-
+        else sql.append(" ORDER BY jp.id DESC");
 
         // Pagination
         String pagination = " LIMIT " + pageable.getPageSize() + " OFFSET " + pageable.getOffset();
@@ -137,8 +139,8 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
                             if (value instanceof Number) {
                                 sql.append(" AND jp." + key + " = " + value);
                             }
-                            else if (value instanceof String){
-                                sql.append(" AND jp." + key + " LIKE '%" + value.toString() + "%'");
+                            else if (value instanceof String) {
+                                sql.append(" AND LOWER(jp." + key.toString().toLowerCase() + ") LIKE '%" + value.toString().toLowerCase() + "%'");
                             }
                             break;
                     }

@@ -82,7 +82,7 @@ public class JobPostingServiceImpl implements JobPostingService {
 
         CompanyEntity companyEntityCheck = companyRepository.findById(jobPostingDTO.getCompanyId()).get();
         if (jobPostingDTO.getId() == null && companyEntityCheck.getRemainingPost() == 0) {
-            responseDTO.setMessage("Company does not have any remaining post to create a new job posting! Please upgrade your plan to create more job postings.");
+            responseDTO.setMessage("Cannot add post because company has run out of posts");
             return responseDTO;
         }
 

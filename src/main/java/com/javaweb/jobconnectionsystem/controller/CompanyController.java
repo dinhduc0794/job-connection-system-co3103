@@ -140,6 +140,7 @@ public class CompanyController {
             return ResponseEntity.ok(responseDTO);
         }
     }
+
     @PostMapping("/companies/jobpostings")
     public ResponseEntity<?> saveJobPosting(@Valid @RequestBody JobPostingDTO jobPostingDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
@@ -218,5 +219,4 @@ public class CompanyController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
         }
     }
-
 }

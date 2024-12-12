@@ -41,7 +41,7 @@ public class AuthServiceImpl implements AuthService {
         if (authentication.isAuthenticated()) {
             UserDetails userDetails = userDetailservice.loadUserByUsername(loginDTO.getUsername());
             return JwtUtils.generateToken(userDetails) ;
-        } else {
+       } else {
             throw new BadCredentialsException("Username or password is incorrect");
         }
 
