@@ -66,8 +66,8 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public ResponseDTO saveCompany(CompanyDTO companyDTO) {
-//        String encodedPassword = passwordEncoder.encode(companyDTO.getPassword());
-//        companyDTO.setPassword(encodedPassword);
+        String encodedPassword = passwordEncoder.encode(companyDTO.getPassword());
+        companyDTO.setPassword(encodedPassword);
 
         ResponseDTO responseDTO = new ResponseDTO();
         if (companyDTO.getId() != null) {

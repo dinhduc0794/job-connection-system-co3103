@@ -157,6 +157,7 @@ public class ApplicantConverter {
                 applicantEntity.getSkills().add(skillEntity);
             }
         }
+        applicantEntity = applicantRepository.save(applicantEntity);
         return  applicantEntity;
     }
     public ApplicantDTO toApplicantDTO(ApplicantEntity applicantEntity) {
