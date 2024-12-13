@@ -3,7 +3,7 @@ import '../css/ApplicationForm.css';
 import TokenManager from '../utils/tokenManager';
 
 const ApplicationForm = ({ onClose, jobPostingId }) => {
-  const [role, setRole] = useState(null); 
+  const [role, setRole] = useState(null);
   const [userId, setUserId] = useState(null);
   const [formData, setFormData] = useState({
     email: '',
@@ -61,7 +61,7 @@ const ApplicationForm = ({ onClose, jobPostingId }) => {
           description: formData.introduction,
         };
 
-        const response = await fetch('/applicants/applications', {
+        const response = await fetch('http://47.128.243.193:8080/applicants/applications', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token.value}`,

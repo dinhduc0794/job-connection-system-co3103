@@ -16,7 +16,7 @@ const ApplicantInfo = ({ userId }) => {
   const [isLoading, setIsLoading] = useState(false);  // State loading
   const token = TokenManager.getToken();
 
-  
+
   const [locations, setLocations] = useState([]);
   const [selectedProvince, setSelectedProvince] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
@@ -30,12 +30,12 @@ const ApplicantInfo = ({ userId }) => {
   useEffect(() => {
     if (userId) {
       axios
-        .get(`/applicants/${userId}`, {
-        headers: {
-          'Authorization': `Bearer ${token.value}`,
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
+        .get(`http://47.128.243.193:8080/applicants/${userId}`, {
+          headers: {
+            'Authorization': `Bearer ${token.value}`,
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
         })
         .then((response) => {
           const data = response.data;
@@ -52,25 +52,25 @@ const ApplicantInfo = ({ userId }) => {
     }
     //fetich jobtype options
     axios
-    .get('/public/jobtypes')
-    .then((response) => {
-      setJobTypesOptions(response.data);
-    })
-    .catch((error) => console.error('Error fetching job types options:', error));
- // Fetch skill options
+      .get('http://47.128.243.193:8080/public/jobtypes')
+      .then((response) => {
+        setJobTypesOptions(response.data);
+      })
+      .catch((error) => console.error('Error fetching job types options:', error));
+    // Fetch skill options
     axios
-      .get('/public/skills')
+      .get('http://47.128.243.193:8080/public/skills')
       .then((response) => {
         setSkillsOptions(response.data); // Populate skill options
       })
       .catch((error) => console.error('Error fetching skills options:', error));
   }, [userId]);
 
-  
+
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await fetch('/public/locations');
+        const response = await fetch('http://47.128.243.193:8080/public/locations');
         const data = await response.json();
         setLocations(data);
       } catch (error) {
@@ -111,22 +111,22 @@ const ApplicantInfo = ({ userId }) => {
     }));
   };
   // Hàm thêm một job type mới
-const handleAddJobType = () => {
-  setEditableInfo((prevState) => ({
-    ...prevState,
-    jobTypes: [...prevState.jobTypes, { name: '', level: '' }],
-  }));
-};
+  const handleAddJobType = () => {
+    setEditableInfo((prevState) => ({
+      ...prevState,
+      jobTypes: [...prevState.jobTypes, { name: '', level: '' }],
+    }));
+  };
 
-// Hàm xóa một job type
-const handleRemoveJobType = (index) => {
-  setEditableInfo((prevState) => ({
-    ...prevState,
-    jobTypes: prevState.jobTypes.filter((_, i) => i !== index),
-  }));
-};
+  // Hàm xóa một job type
+  const handleRemoveJobType = (index) => {
+    setEditableInfo((prevState) => ({
+      ...prevState,
+      jobTypes: prevState.jobTypes.filter((_, i) => i !== index),
+    }));
+  };
 
-  
+
   const handleSkillChange = (e, index) => {
     const updatedSkills = [...editableInfo.skills];
     const skillId = e.target.value;
@@ -160,7 +160,7 @@ const handleRemoveJobType = (index) => {
       emails: [...prevState.emails, ''], // Thêm chuỗi rỗng vào mảng emails
     }));
   };
-  
+
   const removeEmail = (index) => {
     const updatedEmails = [...editableInfo.emails];
     updatedEmails.splice(index, 1);
@@ -169,14 +169,14 @@ const handleRemoveJobType = (index) => {
       emails: updatedEmails,
     }));
   };
-  
+
   const addPhone = () => {
     setEditableInfo((prevState) => ({
       ...prevState,
       phoneNumbers: [...prevState.phoneNumbers, ''], // Thêm chuỗi rỗng vào mảng phoneNumbers
     }));
   };
-  
+
   const removePhone = (index) => {
     const updatedPhones = [...editableInfo.phoneNumbers];
     updatedPhones.splice(index, 1);
@@ -185,15 +185,15 @@ const handleRemoveJobType = (index) => {
       phoneNumbers: updatedPhones,
     }));
   };
-  
+
 
   const addCertification = () => {
     setEditableInfo((prevState) => ({
       ...prevState,
       certifications: [
         ...prevState.certifications,
-        { 
-          name: '', 
+        {
+          name: '',
           level: '',
           description: '',
           proof: '',
@@ -223,9 +223,9 @@ const handleRemoveJobType = (index) => {
       }));
     }
   };
-  
 
-  
+
+
 
   const {
     firstName,
@@ -246,23 +246,23 @@ const handleRemoveJobType = (index) => {
 
   // Hàm để thay đổi trạng thái của các trường thông tin khi nhấn Cập nhật
   const handleInputChange = (e) => {
-  const { name, value } = e.target;
-  setEditableInfo((prevState) => ({
-    ...prevState,
-    [name]: value || '', // Nếu value là undefined hoặc null, sẽ thay bằng chuỗi rỗng
-  }));
-};
+    const { name, value } = e.target;
+    setEditableInfo((prevState) => ({
+      ...prevState,
+      [name]: value || '', // Nếu value là undefined hoặc null, sẽ thay bằng chuỗi rỗng
+    }));
+  };
 
 
   // Hàm gửi dữ liệu thay đổi lên server
   const handleUpdate = () => {
     setIsLoading(true); // Bật loading khi bắt đầu cập nhật
-  
+
     const selectedWard = locations
       .find((province) => province.name === selectedProvince)
       ?.cities.find((city) => city.name === selectedCity)
       ?.wards.find((ward) => ward.name === selectedDistrict);
-  
+
     const updatedData = {
       id: userId,
       username: editableInfo.username,
@@ -296,7 +296,7 @@ const handleRemoveJobType = (index) => {
         id: skill.id,
       })),
     };
-  
+
     // Gửi POST request đến API
     axios
       .post(`/applicants`, updatedData, {
@@ -310,7 +310,7 @@ const handleRemoveJobType = (index) => {
         setApplicantInfo(response.data); // Cập nhật thông tin sau khi thay đổi
         setEditableInfo(response.data); // Cập nhật editableInfo để UI phản ánh ngay
         setIsEditing(false); // Tắt chế độ chỉnh sửa
-        
+
         setInitialProvince(applicantInfo.province); // Khôi phục tỉnh ban đầu
         setInitialCity(applicantInfo.city); // Khôi phục thành phố ban đầu
         setInitialDistrict(applicantInfo.ward); // Khôi phục huyện ban đầu
@@ -322,10 +322,10 @@ const handleRemoveJobType = (index) => {
         console.error('Lỗi khi cập nhật thông tin:', error);
         setIsLoading(false); // Tắt loading khi cập nhật thất bại
         alert('Cập nhật thất bại. Vui lòng thử lại.');
-      } 
-    );
+      }
+      );
   };
-  
+
 
   const handleConfirmEdit = () => {
     handleUpdate();  // Gọi hàm handleUpdate khi xác nhận
@@ -352,7 +352,7 @@ const handleRemoveJobType = (index) => {
     setSelectedCity(''); // Reset thành phố
     setSelectedDistrict(''); // Reset huyện
   };
-  
+
 
   const handleCityChange = (e) => {
     const newCity = e.target.value;
@@ -360,7 +360,7 @@ const handleRemoveJobType = (index) => {
     setSelectedCity(newCity); // Cập nhật thành phố
     setSelectedDistrict(''); // Reset huyện
   };
-  
+
 
   const handleDistrictChange = (e) => {
     const newDistrict = e.target.value;
@@ -370,115 +370,115 @@ const handleRemoveJobType = (index) => {
 
   return (
     <div className="applicant-info">
-       {isLoading ? (
-      <Loading /> // Hiển thị Loading khi isLoading = true
-    ) : (
-      <>
-      <h1>Thông tin cá nhân</h1>
-      <div className="info-section">
-        <div className="info-row">
-          <p><strong>Họ:</strong></p>
-          <input
-            type="text"
-            name="lastName"
-            value={lastName || ''}
-            disabled={!isEditing}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="info-row">
-          <p><strong>Tên:</strong></p>
-          <input
-            type="text"
-            name="firstName"
-            value={firstName || ''}
-            disabled={!isEditing}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="info-row">
-          <p><strong>Ngày sinh:</strong></p>
-          <input
-            type="date"
-            name="dob"
-            value={dob ? formatDate(dob) : ''}  // Dùng formatDate để chuyển đổi định dạng ngày
-            disabled={!isEditing}
-            onChange={handleInputChange}
-          />
-        </div>
-        
-        {/* Email */}
-        <div className="info-row">
-          <p><strong>Email:</strong></p>
-          <div className="email-container">
-            {emails?.map((email, index) => (
-              <div key={index} className="info-row">
-                <input
-                  type="text"
-                  value={email || ''}
-                  disabled={!isEditing}
-                  onChange={(e) => {
-                    const updatedEmails = [...editableInfo.emails];
-                    updatedEmails[index] = e.target.value;
-                    setEditableInfo((prevState) => ({
-                      ...prevState,
-                      emails: updatedEmails,
-                    }));
-                  }}
-                  className="input-field"
-                />
-                {isEditing && (
-                  <button
-                    onClick={() => removeEmail(index)}
-                    className="remove-skill-btn"
-                  >
-                    -
-                  </button>
-                )}
-              </div>
-            ))}
-            {isEditing && (
-              <button onClick={addEmail} className="add-skill-btn">+</button>
-            )}
-          </div>
-        </div>
+      {isLoading ? (
+        <Loading /> // Hiển thị Loading khi isLoading = true
+      ) : (
+        <>
+          <h1>Thông tin cá nhân</h1>
+          <div className="info-section">
+            <div className="info-row">
+              <p><strong>Họ:</strong></p>
+              <input
+                type="text"
+                name="lastName"
+                value={lastName || ''}
+                disabled={!isEditing}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="info-row">
+              <p><strong>Tên:</strong></p>
+              <input
+                type="text"
+                name="firstName"
+                value={firstName || ''}
+                disabled={!isEditing}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="info-row">
+              <p><strong>Ngày sinh:</strong></p>
+              <input
+                type="date"
+                name="dob"
+                value={dob ? formatDate(dob) : ''}  // Dùng formatDate để chuyển đổi định dạng ngày
+                disabled={!isEditing}
+                onChange={handleInputChange}
+              />
+            </div>
 
-        {/* Số điện thoại */}
-        <div className="info-row">
-          <p><strong>Số điện thoại:</strong></p>
-          <div className="phone-container">
-            {phoneNumbers?.map((phone, index) => (
-              <div key={index} className="info-row">
-                <input
-                  type="text"
-                  value={phone || ''}
-                  disabled={!isEditing}
-                  onChange={(e) => {
-                    const updatedPhones = [...editableInfo.phoneNumbers];
-                    updatedPhones[index] = e.target.value;
-                    setEditableInfo((prevState) => ({
-                      ...prevState,
-                      phoneNumbers: updatedPhones,
-                    }));
-                  }}
-                  className="input-field"
-                />
+            {/* Email */}
+            <div className="info-row">
+              <p><strong>Email:</strong></p>
+              <div className="email-container">
+                {emails?.map((email, index) => (
+                  <div key={index} className="info-row">
+                    <input
+                      type="text"
+                      value={email || ''}
+                      disabled={!isEditing}
+                      onChange={(e) => {
+                        const updatedEmails = [...editableInfo.emails];
+                        updatedEmails[index] = e.target.value;
+                        setEditableInfo((prevState) => ({
+                          ...prevState,
+                          emails: updatedEmails,
+                        }));
+                      }}
+                      className="input-field"
+                    />
+                    {isEditing && (
+                      <button
+                        onClick={() => removeEmail(index)}
+                        className="remove-skill-btn"
+                      >
+                        -
+                      </button>
+                    )}
+                  </div>
+                ))}
                 {isEditing && (
-                  <button
-                    onClick={() => removePhone(index)}
-                    className="remove-skill-btn"
-                  >
-                    -
-                  </button>
+                  <button onClick={addEmail} className="add-skill-btn">+</button>
                 )}
               </div>
-            ))}
-            {isEditing && (
-              <button onClick={addPhone} className="add-skill-btn">+</button>
-            )}
-          </div>
-        </div>
-         
+            </div>
+
+            {/* Số điện thoại */}
+            <div className="info-row">
+              <p><strong>Số điện thoại:</strong></p>
+              <div className="phone-container">
+                {phoneNumbers?.map((phone, index) => (
+                  <div key={index} className="info-row">
+                    <input
+                      type="text"
+                      value={phone || ''}
+                      disabled={!isEditing}
+                      onChange={(e) => {
+                        const updatedPhones = [...editableInfo.phoneNumbers];
+                        updatedPhones[index] = e.target.value;
+                        setEditableInfo((prevState) => ({
+                          ...prevState,
+                          phoneNumbers: updatedPhones,
+                        }));
+                      }}
+                      className="input-field"
+                    />
+                    {isEditing && (
+                      <button
+                        onClick={() => removePhone(index)}
+                        className="remove-skill-btn"
+                      >
+                        -
+                      </button>
+                    )}
+                  </div>
+                ))}
+                {isEditing && (
+                  <button onClick={addPhone} className="add-skill-btn">+</button>
+                )}
+              </div>
+            </div>
+
             <div className='info-row'>
               <p><strong>Tỉnh:</strong></p>
               <div className="skills-container">
@@ -498,245 +498,245 @@ const handleRemoveJobType = (index) => {
               </div>
             </div>
 
-              <div className='info-row'>
-                <p><strong>Quận:</strong></p>
-                <div className="skills-container">
-                  <select
-                    className="input-field-skill"
-                    value={selectedCity || ''}
-                    onChange={handleCityChange}
-                    disabled={!isEditing || !selectedProvince}
-                  >
-                    <option value=''>Chọn Quận</option>
-                    {locations
-                      .find((province) => province.name === selectedProvince)?.cities.map((city) => (
-                        <option key={city.id} value={city.name}>
-                          {city.name}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className='info-row'>
-              <p><strong>Phường:</strong></p>
-                <div className="skills-container">
-                  <select
-                    className="input-field-skill"
-                    value={selectedDistrict || ''}
-                    onChange={handleDistrictChange}
-                    disabled={!isEditing}
-                  >
-                    <option value=''>Chọn Phường</option>
-                    {locations
-                      .find((province) => province.name === selectedProvince)?.cities
-                      .find((city) => city.name === selectedCity)?.wards.map((ward) => (
-                        <option key={ward.id} value={ward.name}>
-                          {ward.name}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-              </div>
-
-
-
-        <div className="info-row">
-          <p><strong>Địa chỉ:</strong></p>
-          <input
-            type="text"
-            name="address"
-            value={specificAddress || ''}
-            disabled={!isEditing}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="info-row">
-          <p><strong>Mô tả:</strong></p>
-          <textarea
-            name="description"
-            value={description || ''}
-            disabled={!isEditing}
-            onChange={handleInputChange}
-          />
-        </div>
-
-        <div className="info-row">
-          <p><strong>Kỹ năng:</strong></p>
-          <div className="skills-container">
-            {skills?.map((skill, index) => (
-              <div key={index} className="info-row">
+            <div className='info-row'>
+              <p><strong>Quận:</strong></p>
+              <div className="skills-container">
                 <select
-                  value={skill.id || ''}
-                  disabled={!isEditing}
-                  onChange={(e) => handleSkillChange(e, index)}
                   className="input-field-skill"
+                  value={selectedCity || ''}
+                  onChange={handleCityChange}
+                  disabled={!isEditing || !selectedProvince}
                 >
-                  <option value="">Chọn kỹ năng</option>
-                  {skillsOptions.map((option) => (
-                    <option key={option.id} value={option.id} >
-                      {option.name}
-                    </option>
-                  ))}
+                  <option value=''>Chọn Quận</option>
+                  {locations
+                    .find((province) => province.name === selectedProvince)?.cities.map((city) => (
+                      <option key={city.id} value={city.name}>
+                        {city.name}
+                      </option>
+                    ))}
                 </select>
+              </div>
+            </div>
+
+            <div className='info-row'>
+              <p><strong>Phường:</strong></p>
+              <div className="skills-container">
+                <select
+                  className="input-field-skill"
+                  value={selectedDistrict || ''}
+                  onChange={handleDistrictChange}
+                  disabled={!isEditing}
+                >
+                  <option value=''>Chọn Phường</option>
+                  {locations
+                    .find((province) => province.name === selectedProvince)?.cities
+                    .find((city) => city.name === selectedCity)?.wards.map((ward) => (
+                      <option key={ward.id} value={ward.name}>
+                        {ward.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+            </div>
+
+
+
+            <div className="info-row">
+              <p><strong>Địa chỉ:</strong></p>
+              <input
+                type="text"
+                name="address"
+                value={specificAddress || ''}
+                disabled={!isEditing}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="info-row">
+              <p><strong>Mô tả:</strong></p>
+              <textarea
+                name="description"
+                value={description || ''}
+                disabled={!isEditing}
+                onChange={handleInputChange}
+              />
+            </div>
+
+            <div className="info-row">
+              <p><strong>Kỹ năng:</strong></p>
+              <div className="skills-container">
+                {skills?.map((skill, index) => (
+                  <div key={index} className="info-row">
+                    <select
+                      value={skill.id || ''}
+                      disabled={!isEditing}
+                      onChange={(e) => handleSkillChange(e, index)}
+                      className="input-field-skill"
+                    >
+                      <option value="">Chọn kỹ năng</option>
+                      {skillsOptions.map((option) => (
+                        <option key={option.id} value={option.id} >
+                          {option.name}
+                        </option>
+                      ))}
+                    </select>
+                    {isEditing && (
+                      <button
+                        onClick={() => removeSkill(index)}
+                        className="remove-skill-btn"
+                      >
+                        -
+                      </button>
+                    )}
+                  </div>
+                ))}
                 {isEditing && (
-                  <button
-                    onClick={() => removeSkill(index)}
-                    className="remove-skill-btn"
-                  >
-                    -
-                  </button>
+                  <button onClick={addSkill} className="add-skill-btn">+</button>
                 )}
               </div>
-            ))}
-            {isEditing && (
-              <button onClick={addSkill} className="add-skill-btn">+</button>
-            )}
-          </div>
-        </div>
+            </div>
 
-        {editableInfo.jobTypes && (
-          <div className="info-row">
-            <p><strong>Cấp độ công việc:</strong></p>
-            <div className="jobtype-container">
-              {editableInfo.jobTypes.map((jobType, index) => (
-                <div key={index} className="jobtype-row">
-                  <select
-                    value={jobType.name || ''}
-                    disabled={!isEditing}
-                    onChange={(e) => handleJobTypeChange(index, 'name', e.target.value)}
-                  >
-                    <option value="">Chọn loại công việc</option>
-                    {jobTypesOptions.map((option) => (
-                      <option key={option.id} value={option.name}>{option.name}</option>
-                    ))}
-                  </select>
+            {editableInfo.jobTypes && (
+              <div className="info-row">
+                <p><strong>Cấp độ công việc:</strong></p>
+                <div className="jobtype-container">
+                  {editableInfo.jobTypes.map((jobType, index) => (
+                    <div key={index} className="jobtype-row">
+                      <select
+                        value={jobType.name || ''}
+                        disabled={!isEditing}
+                        onChange={(e) => handleJobTypeChange(index, 'name', e.target.value)}
+                      >
+                        <option value="">Chọn loại công việc</option>
+                        {jobTypesOptions.map((option) => (
+                          <option key={option.id} value={option.name}>{option.name}</option>
+                        ))}
+                      </select>
 
-                  <select
-                    value={jobType.level || ''}
-                    disabled={!isEditing}
-                    onChange={(e) => handleJobTypeChange(index, 'level', e.target.value)}
-                  >
-                    <option value="">Chọn cấp bậc</option>
-                    <option value="INTERN">INTERN</option>
-                    <option value="FRESHER">FRESHER</option>
-                    <option value="JUNIOR">JUNIOR</option>
-                    <option value="SENIOR">SENIOR</option>
-                    <option value="LEAD">LEAD</option>
-                    <option value="MANAGER">MANAGER</option>
-                    <option value="DIRECTOR">DIRECTOR</option>
-                  </select>
+                      <select
+                        value={jobType.level || ''}
+                        disabled={!isEditing}
+                        onChange={(e) => handleJobTypeChange(index, 'level', e.target.value)}
+                      >
+                        <option value="">Chọn cấp bậc</option>
+                        <option value="INTERN">INTERN</option>
+                        <option value="FRESHER">FRESHER</option>
+                        <option value="JUNIOR">JUNIOR</option>
+                        <option value="SENIOR">SENIOR</option>
+                        <option value="LEAD">LEAD</option>
+                        <option value="MANAGER">MANAGER</option>
+                        <option value="DIRECTOR">DIRECTOR</option>
+                      </select>
 
+                      {isEditing && (
+                        <>
+                          <button
+                            className="remove-jobtype-btn"
+                            onClick={() => handleRemoveJobType(index)}
+                          >-
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  ))}
                   {isEditing && (
-                    <>
-                      <button
-                        className="remove-jobtype-btn"
-                        onClick={() => handleRemoveJobType(index)}
-                      >-
-                      </button>
-                    </>
+                    <button
+                      className="add-jobtype-btn"
+                      onClick={() => handleAddJobType()}
+                    >+
+                    </button>
                   )}
                 </div>
-              ))}
-              {isEditing && (
-                <button
-                  className="add-jobtype-btn"
-                  onClick={() => handleAddJobType()}
-                >+
-                </button>
-            )}
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="certifications-section">
-          <h2>Chứng nhận</h2>
-          {certifications?.length > 0 ? (
-            certifications.map((cert, index) => (
-              <div key={index} className="certification-item">
-                <p>
-                  <strong>Tên chứng nhận:</strong>
-                  <input
-                    type="text"
-                    value={cert.name || ''}
-                    disabled={!isEditing}
-                    onChange={(e) => handleCertificationChange(e, index, 'name')}
-                  />
-                </p>
-                <p>
-                  <strong>Cấp độ:</strong>
-                  <input
-                    type="text"
-                    value={cert.level || ''}
-                    disabled={!isEditing}
-                    onChange={(e) => handleCertificationChange(e, index, 'level')}
-                  />
-                </p>
-                <p>
-                  <strong>Mô tả:</strong>
-                  <input
-                    type="text"
-                    value={cert.description || ''}
-                    disabled={!isEditing}
-                    onChange={(e) => handleCertificationChange(e, index, 'description')}
-                  />
-                </p>
-                <p>
-                  <strong>Ngày bắt đầu:</strong>
-                  <input
-                    type="date"
-                    value={cert.startDate? formatDate(cert.startDate) : '' }
-                    disabled={!isEditing}
-                    onChange={(e) => handleCertificationChange(e, index, 'startDate')}
-                  />
-                </p>
-                <p>
-                  <strong>Ngày kết thúc:</strong>
-                  <input
-                    type="date"
-                    value={cert.endDate? formatDate(cert.endDate) : '' }
-                    disabled={!isEditing}
-                    onChange={(e) => handleCertificationChange(e, index, 'endDate')}
-                  />
-                </p>
-                {isEditing && (
-                  <button
-                    onClick={() => removeCertification(index)}
-                    className="remove-skill-btn"
-                  >
-                    -
-                  </button>
-                )}
               </div>
-            ))
-          ) : (
-            <div>Chưa có chứng nhận nào.</div>
-          )}
-          {isEditing && (
-            <button onClick={addCertification} className="add-skill-btn">+</button>
-          )}
-        </div>
+            )}
+          </div>
 
-      {isEditing ? (
-        <div className="button-container">
-          <button className="update-btn" onClick={() => setIsModalVisible(true)}>Lưu</button>
-          <button className="cancel-btn" onClick={handleCancel}>Thoát</button>
-        </div>
-      ) : (
-        <button className="update-btn" onClick={() => setIsEditing(true)}>Cập nhật</button>
+          <div className="certifications-section">
+            <h2>Chứng nhận</h2>
+            {certifications?.length > 0 ? (
+              certifications.map((cert, index) => (
+                <div key={index} className="certification-item">
+                  <p>
+                    <strong>Tên chứng nhận:</strong>
+                    <input
+                      type="text"
+                      value={cert.name || ''}
+                      disabled={!isEditing}
+                      onChange={(e) => handleCertificationChange(e, index, 'name')}
+                    />
+                  </p>
+                  <p>
+                    <strong>Cấp độ:</strong>
+                    <input
+                      type="text"
+                      value={cert.level || ''}
+                      disabled={!isEditing}
+                      onChange={(e) => handleCertificationChange(e, index, 'level')}
+                    />
+                  </p>
+                  <p>
+                    <strong>Mô tả:</strong>
+                    <input
+                      type="text"
+                      value={cert.description || ''}
+                      disabled={!isEditing}
+                      onChange={(e) => handleCertificationChange(e, index, 'description')}
+                    />
+                  </p>
+                  <p>
+                    <strong>Ngày bắt đầu:</strong>
+                    <input
+                      type="date"
+                      value={cert.startDate ? formatDate(cert.startDate) : ''}
+                      disabled={!isEditing}
+                      onChange={(e) => handleCertificationChange(e, index, 'startDate')}
+                    />
+                  </p>
+                  <p>
+                    <strong>Ngày kết thúc:</strong>
+                    <input
+                      type="date"
+                      value={cert.endDate ? formatDate(cert.endDate) : ''}
+                      disabled={!isEditing}
+                      onChange={(e) => handleCertificationChange(e, index, 'endDate')}
+                    />
+                  </p>
+                  {isEditing && (
+                    <button
+                      onClick={() => removeCertification(index)}
+                      className="remove-skill-btn"
+                    >
+                      -
+                    </button>
+                  )}
+                </div>
+              ))
+            ) : (
+              <div>Chưa có chứng nhận nào.</div>
+            )}
+            {isEditing && (
+              <button onClick={addCertification} className="add-skill-btn">+</button>
+            )}
+          </div>
+
+          {isEditing ? (
+            <div className="button-container">
+              <button className="update-btn" onClick={() => setIsModalVisible(true)}>Lưu</button>
+              <button className="cancel-btn" onClick={handleCancel}>Thoát</button>
+            </div>
+          ) : (
+            <button className="update-btn" onClick={() => setIsEditing(true)}>Cập nhật</button>
+          )}
+          {/* Hộp xác nhận khi nhấn "Cập nhật" */}
+          {isModalVisible && (
+            <ConfirmModal
+              isVisible={isModalVisible}  // Thêm isVisible vào đây
+              message="Bạn chắc chắn muốn cập nhật thông tin?"
+              onConfirm={handleConfirmEdit}
+              onCancel={handleCancelEdit}
+            />
+          )}
+        </>
       )}
-      {/* Hộp xác nhận khi nhấn "Cập nhật" */}
-      {isModalVisible && (
-        <ConfirmModal
-          isVisible={isModalVisible}  // Thêm isVisible vào đây
-          message="Bạn chắc chắn muốn cập nhật thông tin?"
-          onConfirm={handleConfirmEdit}
-          onCancel={handleCancelEdit}
-        />
-      )}
-       </>
-    )}
     </div>
   );
 };

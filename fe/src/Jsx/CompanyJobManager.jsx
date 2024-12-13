@@ -32,7 +32,7 @@ const CompanyJobManagement = () => {
     const fetchCompanyData = async () => {
       if (!userId) return;
       try {
-        const response = await axios.get(`/public/companies/${userId}`);
+        const response = await axios.get(`http://47.128.243.193:8080/public/companies/${userId}`);
         setCompanyData(response.data);
         setLoading(false);
       } catch (err) {
@@ -52,7 +52,7 @@ const CompanyJobManagement = () => {
     }
     setIsDeleting(true); // Bắt đầu trạng thái đang xóa
     try {
-      const response = await axios.delete(`/companies/jobpostings/${selectedJobId}`, {
+      const response = await axios.delete(`http://47.128.243.193:8080/companies/jobpostings/${selectedJobId}`, {
         headers: {
           Authorization: `Bearer ${token.value}`,
           "Content-Type": "application/json",

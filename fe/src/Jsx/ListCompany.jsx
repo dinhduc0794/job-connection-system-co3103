@@ -16,7 +16,7 @@ function ListCompany() {
     // Gọi API
     const fetchCompanies = async () => {
       try {
-        const response = await fetch('/public/companies');
+        const response = await fetch('http://47.128.243.193:8080/public/companies');
         const data = await response.json();
         // Lọc công ty có `recruitQuantity` > 20
         const filteredCompanies = data.filter((company) => company.recruitQuantity > 10);
@@ -40,8 +40,8 @@ function ListCompany() {
   const handlePageClick = (pageIndex) => setCurrentPage(pageIndex);
 
   const handleAllCompany = () => {
-        navigate(`/allcompany`);
-    }
+    navigate(`/allcompany`);
+  }
   // if (loading) {
   //   return (
   //     <div className="loading-container">
@@ -67,52 +67,52 @@ function ListCompany() {
 
         {/* Flexbox chứa các công ty */}
         <div className="company-flexbox-container">
-        {loading ? ( // Hiển thị khi đang tải
-          <div className="loading-container">
+          {loading ? ( // Hiển thị khi đang tải
+            <div className="loading-container">
               <img src={loadinggif} alt="Loading..." className="loading-company" />
-          </div>
-        ) : currentItems.length > 0 ? ( // Hiển thị danh sách công việc
-          <>
-            <button className="carousel-control left" onClick={handlePreviousPage}>
-              &lt;
-            </button>
-
-            <div className="company-list">
-              {currentItems.map((company) => (
-                 <div
-                  className="company-card"
-                  key={company.id}
-                  onClick={() => handleCompany(company.id)} // Gắn sự kiện onClick cho từng công ty
-                  style={{ cursor: 'pointer' }} // Thêm con trỏ chuột chỉ vào công ty
-                >
-                  {/* Phần trên: logo (hoặc hình đại diện) + thông tin */}
-                  <div className="card-top">
-                    <div className="company-logo">
-                      <img src={logo} alt={company.name} />
-                    </div>
-                    <div className="company-info">
-                      <h3 title={company.name}>
-                        {company.name.length > 50 ? `${company.name.substring(0, 50)}...` : company.name}
-                      </h3>
-                      <p>{company.fields.join(', ')}</p>
-                    </div>
-                  </div>
-
-                  {/* Phần dưới: số lượng tuyển dụng */}
-                  <div className="card-bottom">
-                    <p>Số lượng tuyển: {company.recruitQuantity}</p>
-                  </div>
-                </div>
-              ))}
             </div>
+          ) : currentItems.length > 0 ? ( // Hiển thị danh sách công việc
+            <>
+              <button className="carousel-control left" onClick={handlePreviousPage}>
+                &lt;
+              </button>
 
-            <button className="carousel-control right" onClick={handleNextPage}>
-              &gt;
-            </button>
-          </>
-        ) : (
-          <p>Không có công ty nào...</p>
-        )}
+              <div className="company-list">
+                {currentItems.map((company) => (
+                  <div
+                    className="company-card"
+                    key={company.id}
+                    onClick={() => handleCompany(company.id)} // Gắn sự kiện onClick cho từng công ty
+                    style={{ cursor: 'pointer' }} // Thêm con trỏ chuột chỉ vào công ty
+                  >
+                    {/* Phần trên: logo (hoặc hình đại diện) + thông tin */}
+                    <div className="card-top">
+                      <div className="company-logo">
+                        <img src={logo} alt={company.name} />
+                      </div>
+                      <div className="company-info">
+                        <h3 title={company.name}>
+                          {company.name.length > 50 ? `${company.name.substring(0, 50)}...` : company.name}
+                        </h3>
+                        <p>{company.fields.join(', ')}</p>
+                      </div>
+                    </div>
+
+                    {/* Phần dưới: số lượng tuyển dụng */}
+                    <div className="card-bottom">
+                      <p>Số lượng tuyển: {company.recruitQuantity}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <button className="carousel-control right" onClick={handleNextPage}>
+                &gt;
+              </button>
+            </>
+          ) : (
+            <p>Không có công ty nào...</p>
+          )}
 
 
         </div>

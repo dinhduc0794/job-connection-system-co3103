@@ -1,5 +1,5 @@
 {
-  "proxy": "http://localhost:8080",
+  "proxy": "http://47.128.243.193:8080",
   "name": "fe",
   "version": "0.1.0",
   "private": true,

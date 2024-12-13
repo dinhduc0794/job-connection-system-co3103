@@ -23,7 +23,7 @@ function AppNavbar() {
         // Fetch thông tin người dùng từ API
         if (userId) {
             axios
-                .get(`/public/applicants/${userId}`)
+                .get(`http://47.128.243.193:8080/public/applicants/${userId}`)
                 .then(response => {
                     const { firstName, lastName, emails } = response.data;
                     setUserInfo({
@@ -50,7 +50,7 @@ function AppNavbar() {
             <div className="nav">
                 <div className='nav__logo'>
                     <a className="navbar-brand-custom" href="/">
-                        <img 
+                        <img
                             src="https://images.vexels.com/media/users/3/245747/isolated/preview/fc5e5179e126bb8b8878c65ed0639179-great-job-badge.png"
                             width="40"
                             height="40"
@@ -68,7 +68,7 @@ function AppNavbar() {
                             Việc Làm
                             <i className="fa-solid fa-angle-down"></i>
                         </a>
-                        
+
                         <ul className="subnav">
                             <li><Link to="/alljob">Toàn Bộ Việc Làm</Link></li>
                             <li><a href="./">Việc Làm IT</a></li>
@@ -110,8 +110,8 @@ function AppNavbar() {
                     </div>
 
                     <div className="nav__avatar">
-                        <img 
-                            src="https://meatworld.info/wp-content/uploads/avatar-trang-16.jpg" 
+                        <img
+                            src="./images/default.png"
                             alt={`${userInfo.firstName} ${userInfo.lastName}`}
                             className="avatar-icon"
                         />

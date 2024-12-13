@@ -26,15 +26,16 @@ const ChangePassword = () => {
   // Lấy thông tin user từ API
   useEffect(() => {
     if (role && userId) {
-      const url = role === "applicant" 
-        ? `/applicants/${userId}` 
-        : `/companies/${userId}`;
+      const url = role === "applicant"
+        ? `http://47.128.243.193:8080/applicants/${userId}`
+        : `http://47.128.243.193:8080/companies/${userId}`;
 
       fetch(url, {
         headers: {
           'Authorization': `Bearer ${token.value}`,
           'Content-Type': 'application/json'
-        }})
+        }
+      })
         .then((response) => response.json())
         .then((data) => setUserInfo(data))
         .catch((error) => console.error("Error fetching user info:", error));
@@ -66,9 +67,9 @@ const ChangePassword = () => {
       newPassword: newPassword,
     };
 
-    fetch("/accounts/reset-password", {
+    fetch("http://47.128.243.193:8080/accounts/reset-password", {
       method: "POST",
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
         'Authorization': `Bearer ${token.value}`
       },

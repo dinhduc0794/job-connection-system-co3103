@@ -16,7 +16,7 @@ const Notifications = () => {
   useEffect(() => {
     if (userId) {
       // Gọi API để lấy dữ liệu thông báo
-      fetch(`/notifications/${userId}`, {
+      fetch(`http://47.128.243.193:8080/notifications/${userId}`, {
         headers: {
           'Authorization': `Bearer ${token.value}`,
           'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ const Notifications = () => {
   const handleDelete = () => {
     setIsDeleting(true); // Đặt trạng thái đang xóa
     // Gọi API DELETE để xóa thông báo
-    fetch(`/notifications/${selectedNotificationId}`, {
+    fetch(`http://47.128.243.193:8080/notifications/${selectedNotificationId}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token.value}`,

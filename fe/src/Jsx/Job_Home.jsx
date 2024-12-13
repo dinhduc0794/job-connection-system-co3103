@@ -26,7 +26,7 @@ function Job_Home() {
     const [notification, setNotification] = useState(null); // Trạng thái thông báo
     const [interestedPosts, setInterestedPosts] = useState([]);
     const [isSaving, setIsSaving] = useState(false);
-    
+
 
 
     const [role, setRole] = useState(null);
@@ -35,24 +35,24 @@ function Job_Home() {
     const token = TokenManager.getToken();
 
     useEffect(() => {
-          if (token) {
+        if (token) {
             setRole(token.role?.toLowerCase());
             setUserId(token.id);
-          }
-        }, [token]);
+        }
+    }, [token]);
 
     const navigate = useNavigate();
     useEffect(() => {
         const fetchInterestedPosts = async () => {
             if (!userId) return; // Không gọi API nếu chưa có userId
-    
+
             try {
-                const response = await fetch(`/applicants/${userId}/interested-posts`, {
+                const response = await fetch(`http://47.128.243.193:8080/applicants/${userId}/interested-posts`, {
                     headers: {
                         'Authorization': `Bearer ${token?.value}`,
                     },
                 });
-    
+
                 if (response.ok) {
                     const result = await response.json();
                     setInterestedPosts(result.data?.map(post => post.id) || []);
@@ -63,27 +63,27 @@ function Job_Home() {
                 console.error("Error fetching interested posts:", error);
             }
         };
-    
+
         fetchInterestedPosts();
     }, [userId, token]);
 
     const handleSave = async (e, id) => {
         e.stopPropagation(); // Prevent triggering the card click
-    
+
         if (!userId) {
             setNotification('Vui lòng đăng nhập để lưu bài đăng!');
             setTimeout(() => setNotification(null), 3000);
             return;
         }
-        else if(role === 'company') {
+        else if (role === 'company') {
             setNotification('Bạn phải là ứng viên mới có thể lưu bài đăng!');
             setTimeout(() => setNotification(null), 3000);
             return;
         }
-        
+
         setIsSaving(true); // Bắt đầu lưu, thay đổi biểu tượng thành GIF loading
         try {
-            const response = await fetch('/applicants/interested-posts', {
+            const response = await fetch('http://47.128.243.193:8080/applicants/interested-posts', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token.value}`,
@@ -94,9 +94,9 @@ function Job_Home() {
                     jobPostingId: id
                 })
             });
-    
+
             const result = await response.json();
-    
+
             if (response.ok) {
                 setNotification(result.message); // Hiển thị thông báo từ API
                 setTimeout(() => setNotification(null), 3000);
@@ -114,13 +114,13 @@ function Job_Home() {
             setTimeout(() => setNotification(null), 3000);
         }
     };
-    
+
 
     useEffect(() => {
         const fetchJobs = async () => {
             setIsLoading(true);
             try {
-                const response = await fetch(`/public/jobpostings?page=${jobPage}`);
+                const response = await fetch(`http://47.128.243.193:8080/public/jobpostings?page=${jobPage}`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -178,7 +178,7 @@ function Job_Home() {
                                 className="job-card"
                                 onClick={() => handleJobDetail(job.id)}
                             >
-                                
+
 
                                 <div className="job-content">
                                     <img
@@ -195,16 +195,16 @@ function Job_Home() {
                                         </p>
                                         <p className="job-salary" title={job.minSalary}>
                                             <span className="icon-and-text">
-                                                <DollarSign size={16} 
-                                                style={{ color: 'green' }}
-                                            />
+                                                <DollarSign size={16}
+                                                    style={{ color: 'green' }}
+                                                />
                                                 {job.minSalary} - {job.maxSalary} triệu
                                             </span>
                                         </p>
                                         <p className="job-location" title={job.province}>
                                             <span className="icon-and-text">
-                                                <MapPin size={16} 
-                                                style={{ color: 'blue' }}
+                                                <MapPin size={16}
+                                                    style={{ color: 'blue' }}
                                                 />
                                                 {job.province}
                                             </span>
@@ -212,12 +212,12 @@ function Job_Home() {
                                     </div>
                                 </div>
                                 <div
-                                className={`job-heart ${interestedPosts.includes(job.id) ? 'saved' : ''}`}
-                                onClick={(e) => handleSave(e, job.id)}
+                                    className={`job-heart ${interestedPosts.includes(job.id) ? 'saved' : ''}`}
+                                    onClick={(e) => handleSave(e, job.id)}
                                 >
                                     <Heart
                                         size={20}
-                                        className={`heart-icon ${isSaving  ? 'saving' : ''} ${interestedPosts.includes(job.id) ? 'red' : ''}`}
+                                        className={`heart-icon ${isSaving ? 'saving' : ''} ${interestedPosts.includes(job.id) ? 'red' : ''}`}
                                     />
                                 </div>
                             </div>

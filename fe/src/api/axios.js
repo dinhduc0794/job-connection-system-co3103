@@ -3,7 +3,7 @@ import { useAuth } from '../Contexts/AuthContext';
 import TokenManager from '../utils/tokenManager';
 import AuthService from '../services/authService';
 //const baseURL = 'http://your-api';
-const baseURL = 'http://localhost:8080';
+const baseURL = 'http://47.128.243.193:8080';
 //const REFRESH_TIMEOUT = 10000;
 const axiosInstance = axios.create({
   baseURL,
@@ -12,14 +12,14 @@ const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
-}
+  }
 });
 
 axiosInstance.interceptors.request.use(
   async (config) => {
     const token = TokenManager.getToken()?.value;
     // Kiểm tra token hết hạn trước mỗi request
-    if (token &&TokenManager.isTokenExpired()) {
+    if (token && TokenManager.isTokenExpired()) {
       const shouldRelogin = window.confirm('Phiên làm việc đã hết hạn. Bạn có muốn đăng nhập lại không?');
       if (shouldRelogin) {
         window.location.href = '/login'; // Chuyển tới trang đăng nhập
@@ -29,8 +29,8 @@ axiosInstance.interceptors.request.use(
       }
       return Promise.reject('Phiên làm việc đã hết hạn');
     }
-    
-    
+
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

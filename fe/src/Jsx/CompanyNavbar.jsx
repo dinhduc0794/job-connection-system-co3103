@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import TokenManager from '../utils/tokenManager';
 import { useAuth } from "../Contexts/AuthContext";
 
-function CompanyNavbar() {  
+function CompanyNavbar() {
     const { handleLogout, isAuthenticated } = useAuth();
     const navigate = useNavigate(); // Hook điều hướng
     const [role, setRole] = useState(null); // State để lưu role
@@ -14,16 +14,16 @@ function CompanyNavbar() {
     const [companyInfo, setCompanyInfo] = useState(null); // State để lưu thông tin công ty
     useEffect(() => {
         if (token) {
-          setRole(token.role?.toLowerCase()); // Lấy role từ token
-          setUserId(token.id); // Lấy userId từ token
+            setRole(token.role?.toLowerCase()); // Lấy role từ token
+            setUserId(token.id); // Lấy userId từ token
         }
-      }, [token]);
-      
+    }, [token]);
+
     // Lấy thông tin công ty từ API
     useEffect(() => {
         const fetchCompanyInfo = async () => {
             try {
-                const response = await fetch(`/public/companies/${userId}`);
+                const response = await fetch(`http://47.128.243.193:8080/public/companies/${userId}`);
                 const data = await response.json();
                 setCompanyInfo(data); // Lưu dữ liệu vào state
             } catch (error) {
@@ -37,7 +37,7 @@ function CompanyNavbar() {
     const handleNavigate = (tab) => {
         navigate(`/CompanyProfile/${tab}`); // Điều hướng với tham số tab
     };
-    
+
     const onLogoutClick = () => {
         const confirmLogout = window.confirm('Bạn có chắc chắn muốn đăng xuất?');
         if (confirmLogout) {
@@ -50,7 +50,7 @@ function CompanyNavbar() {
             <div className="nav">
                 <div className='nav__logo'>
                     <a className="navbar-brand-custom" href="/">
-                        <img 
+                        <img
                             src="https://images.vexels.com/media/users/3/245747/isolated/preview/fc5e5179e126bb8b8878c65ed0639179-great-job-badge.png"
                             width="40"
                             height="40"
@@ -110,9 +110,9 @@ function CompanyNavbar() {
                     </div>
 
                     <div className="nav__avatar">
-                        <img 
-                            src="https://meatworld.info/wp-content/uploads/avatar-trang-16.jpg" 
-                            alt="Học Đăng"
+                        <img
+                            src="./images/default.png"
+                            alt=""
                             className="avatar-icon"
                         />
                         <ul className="dropdown-menu">

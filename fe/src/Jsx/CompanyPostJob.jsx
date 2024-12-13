@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "../css/CompanyPostJob.css";
-import {useNavigate  } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import TokenManager from '../utils/tokenManager';
 
 
 const CompanyPostJob = () => {
   const navigate = useNavigate(); // Hook điều hướng
-  
+
   const [role, setRole] = useState(null); // State để lưu role
   const [userId, setUserId] = useState(null); // State để lưu userId
   const [userInfo, setUserInfo] = useState(null);
@@ -19,16 +19,16 @@ const CompanyPostJob = () => {
   const [skills, setSkills] = useState([]); // Danh sách kỹ năng theo công việc
 
 
-   // Dữ liệu cho địa điểm
-   const [provinces, setProvinces] = useState([]); // Tỉnh
-   const [selectedProvince, setSelectedProvince] = useState(null); // Tỉnh đã chọn
-   const [selectedDistrict, setSelectedDistrict] = useState(null); // Huyện đã chọn
-   const [selectedCity, setSelectedCity] = useState(null); // Dùng cho huyện
-   const [districts, setDistricts] = useState([]); // Quận/Huyện
-   const [wards, setWards] = useState([]); // Xã/Phường
-   const [selectedWard, setSelectedWard] = useState(null); // Xã/Phường đã chọn
+  // Dữ liệu cho địa điểm
+  const [provinces, setProvinces] = useState([]); // Tỉnh
+  const [selectedProvince, setSelectedProvince] = useState(null); // Tỉnh đã chọn
+  const [selectedDistrict, setSelectedDistrict] = useState(null); // Huyện đã chọn
+  const [selectedCity, setSelectedCity] = useState(null); // Dùng cho huyện
+  const [districts, setDistricts] = useState([]); // Quận/Huyện
+  const [wards, setWards] = useState([]); // Xã/Phường
+  const [selectedWard, setSelectedWard] = useState(null); // Xã/Phường đã chọn
 
-   // Trường state để lưu giá trị nhập vào
+  // Trường state để lưu giá trị nhập vào
   const [jobTitle, setJobTitle] = useState("");
   const [minSalary, setMinSalary] = useState("");
   const [maxSalary, setMaxSalary] = useState("");
@@ -49,7 +49,7 @@ const CompanyPostJob = () => {
   }, [token]);
 
   useEffect(() => {
-    fetch("/public/fields")
+    fetch("http://47.128.243.193:8080/public/fields")
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -62,18 +62,18 @@ const CompanyPostJob = () => {
       .catch((error) => console.error("Error fetching fields:", error));
 
     //danh sách tỉnh
-    fetch("/public/locations")
+    fetch("http://47.128.243.193:8080/public/locations")
       .then((response) => response.json())
       .then((data) => {
         setProvinces(data);
-        console.log("Locations loaded:", data); 
+        console.log("Locations loaded:", data);
       })
       .catch((error) => console.error("Error fetching locations:", error));
   }, []);
 
 
   // JobTyoe:
-   // Xử lý khi chọn lĩnh vực
+  // Xử lý khi chọn lĩnh vực
   const handleFieldChange = (fieldId) => {
     setSelectedField(fieldId); // Cập nhật lĩnh vực được chọn
     setSelectedJobType(null); // Reset công việc
@@ -97,7 +97,7 @@ const CompanyPostJob = () => {
     setSelectedSkills([...selectedSkills, ""]);
   };
 
-  
+
   // Xử lý khi chọn kỹ năng từ dropdown
   const handleSkillChange = (value, index) => {
     const updatedSkills = [...selectedSkills];
@@ -156,7 +156,7 @@ const CompanyPostJob = () => {
   };
 
   const handleSubmit = () => {
-  
+
     // Chuẩn bị dữ liệu
     const jobPostingData = {
       title: jobTitle,
@@ -167,7 +167,7 @@ const CompanyPostJob = () => {
       maxSalary: parseInt(maxSalary, 10) || 0,
       allowance: parseInt(allowance, 10) || 0,
       yoe: parseInt(yoe, 10) || 0,
-      numberOfApplicants: numOfAppli ,
+      numberOfApplicants: numOfAppli,
       wardId: parseInt(selectedWard, 10),
       jobTypeId: parseInt(selectedJobType, 10),
       skills: selectedSkills.map((skillId) => {
@@ -177,10 +177,10 @@ const CompanyPostJob = () => {
       }).filter((skillName) => skillName !== null), // Loại bỏ null nếu không tìm thấy kỹ năng
       companyId: userId, // Giá trị cố định hoặc lấy từ tài khoản công ty đăng nhập
     };
-  
+
     console.log("Dữ liệu gửi đi:", jobPostingData);
-  
-    fetch("/companies/jobpostings", {
+
+    fetch("http://47.128.243.193:8080/companies/jobpostings", {
       method: "POST",
       headers: {
         'Authorization': `Bearer ${token.value}`,
@@ -215,10 +215,10 @@ const CompanyPostJob = () => {
       <div className="form-group">
         <label>Tiêu đề</label>
         <input
-         type="text" 
-         placeholder="Nhập tiêu đề công việc"
-         value={jobTitle}
-        onChange={(e) => setJobTitle(e.target.value)} 
+          type="text"
+          placeholder="Nhập tiêu đề công việc"
+          value={jobTitle}
+          onChange={(e) => setJobTitle(e.target.value)}
         />
       </div>
       <div className="form-group">
@@ -251,10 +251,10 @@ const CompanyPostJob = () => {
       <div className="form-group">
         <label>Số lượng tuyển</label>
         <input
-         type="number" placeholder="Nhập số lượng tuyển" 
-         
-         value={numOfAppli}
-         onChange={(e) => setNumOfAppli(e.target.value)}
+          type="number" placeholder="Nhập số lượng tuyển"
+
+          value={numOfAppli}
+          onChange={(e) => setNumOfAppli(e.target.value)}
         />
       </div>
       <div className="form-group">
@@ -277,14 +277,14 @@ const CompanyPostJob = () => {
           value={level}
           onChange={(e) => setLevel(e.target.value)}
         >
-           <option value="">Chọn cấp bậc</option>
-            <option value="INTERN">Intern</option>
-            <option value="FRESHER">Fresher</option>
-            <option value="JUNIOR">Junior</option>
-            <option value="SENIOR">Senior</option>
-            <option value="LEAD">Lead</option>
-            <option value="MANAGER">Manager</option>
-            <option value="DIRECTOR">Director</option>
+          <option value="">Chọn cấp bậc</option>
+          <option value="INTERN">Intern</option>
+          <option value="FRESHER">Fresher</option>
+          <option value="JUNIOR">Junior</option>
+          <option value="SENIOR">Senior</option>
+          <option value="LEAD">Lead</option>
+          <option value="MANAGER">Manager</option>
+          <option value="DIRECTOR">Director</option>
         </select>
       </div>
 
@@ -292,10 +292,10 @@ const CompanyPostJob = () => {
       <div className="form-group">
         <label>Kinh nghiệm</label>
         <input
-         type="number" placeholder="Nhập yêu cầu kinh nghiệm (năm)" 
-         
-         value={yoe}
-         onChange={(e) => setYoe(e.target.value)}
+          type="number" placeholder="Nhập yêu cầu kinh nghiệm (năm)"
+
+          value={yoe}
+          onChange={(e) => setYoe(e.target.value)}
         />
       </div>
 
@@ -340,7 +340,7 @@ const CompanyPostJob = () => {
             +
           </button>
         </label>
-        
+
         <div className="skills-container">
           {selectedSkills.map((skillId, index) => (
             <div key={index} className="skill-row">
@@ -427,11 +427,11 @@ const CompanyPostJob = () => {
       <div className="form-group">
         <label>Mô tả công việc</label>
         <textarea
-          rows="15" 
+          rows="15"
           placeholder="Nhập chi tiết bao gồm: Mô tả công việc, Yêu cầu ứng viên, Quyền lợi, Địa điểm làm việc, Thời gian làm việc, Cách thưc ứng tuyển. Mỗi ý là 1 gạch đầu dòng"
           value={description}
-          onChange={(e) => setDescription(e.target.value)} 
-          ></textarea>
+          onChange={(e) => setDescription(e.target.value)}
+        ></textarea>
       </div>
       <button
         onClick={handlePostJob}

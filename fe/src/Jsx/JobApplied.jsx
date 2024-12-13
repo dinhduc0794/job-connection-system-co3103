@@ -23,12 +23,12 @@ const JobApplied = () => {
     // Lấy dữ liệu từ API
     const fetchApplications = async () => {
       try {
-        const response = await axios.get(`/applicants/${token.id}/applications`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token.value}`
-              },
-              credentials: 'include',
+        const response = await axios.get(`http://47.128.243.193:8080/applicants/${token.id}/applications`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.value}`
+          },
+          credentials: 'include',
         });
         setApplications(response.data.data);
       } catch (error) {

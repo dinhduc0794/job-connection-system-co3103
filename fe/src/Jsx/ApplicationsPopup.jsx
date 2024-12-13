@@ -21,7 +21,7 @@ const ApplicationsPopup = ({ jobId, onClose }) => {
     useEffect(() => {
         const fetchApplications = async () => {
             try {
-                const response = await fetch(`/companies/jobpostings/${jobId}/applications`, {
+                const response = await fetch(`http://47.128.243.193:8080/companies/jobpostings/${jobId}/applications`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token.value}`
@@ -52,12 +52,12 @@ const ApplicationsPopup = ({ jobId, onClose }) => {
 
     const handleSaveStatus = async (id, newStatus) => {
         const application = applications.find(app => app.applicationId === id);
-    
+
         if (!application) {
             alert("Không tìm thấy đơn ứng tuyển!");
             return;
         }
-    
+
         try {
             setSaving(true);
             const payload = {
@@ -70,8 +70,8 @@ const ApplicationsPopup = ({ jobId, onClose }) => {
                 description: application.description,
                 resume: application.resume
             };
-    
-            const response = await fetch(`/companies/jobpostings/applications`, {
+
+            const response = await fetch(`http://47.128.243.193:8080/companies/jobpostings/applications`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -79,15 +79,15 @@ const ApplicationsPopup = ({ jobId, onClose }) => {
                 },
                 body: JSON.stringify(payload)
             });
-    
+
             if (!response.ok) {
                 throw new Error(`Failed to update status: ${response.status}`);
             }
-    
+
             setApplications(prev =>
                 prev.map(app => app.applicationId === id ? { ...app, status: newStatus, isEditing: false } : app)
             );
-    
+
             alert("Cập nhật trạng thái thành công!");
         } catch (err) {
             console.error(err.message);
@@ -124,7 +124,7 @@ const ApplicationsPopup = ({ jobId, onClose }) => {
 
     const handleStatusChange = (id, newStatus) => {
         setApplications(prev =>
-            prev.map(app => 
+            prev.map(app =>
                 app.applicationId === id ? { ...app, status: newStatus } : app
             )
         );
@@ -133,7 +133,7 @@ const ApplicationsPopup = ({ jobId, onClose }) => {
     // Hàm xử lý xóa ứng tuyển
     const handleDeleteApplication = async (id) => {
         const application = applications.find(app => app.applicationId === id);
-        
+
         if (!application) {
             alert("Không tìm thấy đơn ứng tuyển!");
             return;
@@ -146,7 +146,7 @@ const ApplicationsPopup = ({ jobId, onClose }) => {
 
         try {
             setIsDeleting(true);
-            const response = await fetch(`/companies/jobpostings/applications/${id}`, {
+            const response = await fetch(`http://47.128.243.193:8080/companies/jobpostings/applications/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -188,9 +188,9 @@ const ApplicationsPopup = ({ jobId, onClose }) => {
                 <div className="popup-content">
                     <h2>Danh sách các đơn ứng tuyển</h2>
                     <div className="loading-spinner">
-                    <img src={SpinLoad}  size={200}/>
+                        <img src={SpinLoad} size={200} />
 
-                    <p className='loading-p'>Đang tải các đơn ứng tuyển...</p>
+                        <p className='loading-p'>Đang tải các đơn ứng tuyển...</p>
                     </div>
                 </div>
             </div>
@@ -306,25 +306,25 @@ const ApplicationsPopup = ({ jobId, onClose }) => {
                         {/* Pop-up xác nhận xóa */}
                         {showConfirmDelete && (
                             <div className="confirm-delete-popup">
-                            <div className="popup-delete-content">
-                                <h1>Bạn có chắc chắn muốn xóa đơn ứng tuyển này không?</h1>
-                                <div className="popup-actions">
-                                <button
-                                    className="cancel-button"
-                                    onClick={() => handleDeleteApplication(deleteAppId)}
-                                    disabled={isDeleting}
-                                >
-                                    Hủy
-                                </button>
-                                <button
-                                    className="confirm-button"
-                                    onClick={handleCloseConfirmDelete}
-                                    disabled={isDeleting}
-                                >
-                                    {isDeleting ? "Đang xóa..." : "Xác nhận"}
-                                </button>
+                                <div className="popup-delete-content">
+                                    <h1>Bạn có chắc chắn muốn xóa đơn ứng tuyển này không?</h1>
+                                    <div className="popup-actions">
+                                        <button
+                                            className="cancel-button"
+                                            onClick={() => handleDeleteApplication(deleteAppId)}
+                                            disabled={isDeleting}
+                                        >
+                                            Hủy
+                                        </button>
+                                        <button
+                                            className="confirm-button"
+                                            onClick={handleCloseConfirmDelete}
+                                            disabled={isDeleting}
+                                        >
+                                            {isDeleting ? "Đang xóa..." : "Xác nhận"}
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
                             </div>
                         )}
                     </>
