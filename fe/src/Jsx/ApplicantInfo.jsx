@@ -299,7 +299,7 @@ const ApplicantInfo = ({ userId }) => {
 
     // Gửi POST request đến API
     axios
-      .post(`/applicants`, updatedData, {
+      .post(`http://47.128.243.193:8080/applicants`, updatedData, {
         headers: {
           'Authorization': `Bearer ${token.value}`,
           'Content-Type': 'application/json',

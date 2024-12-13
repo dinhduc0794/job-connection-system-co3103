@@ -219,7 +219,7 @@ const JobList = ({ jobs, loading, pagination, onPageChange }) => {
                           Cập nhật: {new Date(job.updatedAt).toLocaleDateString('vi-VN')}
                         </div>
                         <button 
-                  onClick={() => navigate(`http://47.128.243.193:8080/JobDetail/${job.id}`)}
+                  onClick={() => navigate(`/JobDetail/${job.id}`)}
                   className="bg-blue-500 text-white px-6 py-2 rounded-lg
                     hover:bg-blue-600 active:bg-blue-700 
                     transform hover:-translate-y-0.5 active:translate-y-0
