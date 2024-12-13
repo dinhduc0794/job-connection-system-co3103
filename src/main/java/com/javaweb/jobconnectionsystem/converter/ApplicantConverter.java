@@ -78,6 +78,7 @@ public class ApplicantConverter {
                 for(ApplicantJobtypeEntity applicantJobtypeEntity : applicantJobtypeEntitys) {
                     JobTypeEntity jobTypeEntity = applicantJobtypeEntity.getJobType();
                     jobTypeEntity.getApplicantJobtypeEntities().remove(applicantJobtypeEntity);
+                    applicantEntity.getApplicantJobtypeEntities().remove(applicantJobtypeEntity);
                 }
             }
             existingApplicant.getSkills().removeAll(existingApplicant.getSkills());
