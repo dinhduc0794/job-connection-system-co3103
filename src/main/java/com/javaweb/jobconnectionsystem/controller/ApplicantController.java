@@ -110,6 +110,21 @@ public class ApplicantController {
         }
     }
 
+    @GetMapping("/applicants/{id}/rate-companies")
+    public ResponseEntity<?> getRateCompanyByApplicantId(@PathVariable Long id){
+        ResponseDTO responseDTO = new ResponseDTO();
+        List<RateCompanyDTO> rateCompanyList = rateCompanyService.getRateCompanyByApplicantId(id);
+        if (rateCompanyList.isEmpty()){
+            responseDTO.setMessage("You have no rate company");
+            return ResponseEntity.ok(responseDTO);
+        }
+        else {
+            responseDTO.setMessage("Get rate company successfully");
+            responseDTO.setData(rateCompanyList);
+            return ResponseEntity.ok(responseDTO);
+        }
+    }
+
     @PostMapping("/applicants/rate-company")
     public ResponseEntity<?> rateCompany(@Valid @RequestBody RateCompanyDTO rateCompanyDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();

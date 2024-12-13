@@ -6,11 +6,13 @@ import com.javaweb.jobconnectionsystem.entity.JobPostingEntity;
 import com.javaweb.jobconnectionsystem.model.dto.ApplicationDTO;
 import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
 import com.javaweb.jobconnectionsystem.model.dto.JobPostingDTO;
+import com.javaweb.jobconnectionsystem.model.dto.RateCompanyDTO;
 import com.javaweb.jobconnectionsystem.model.request.CompanySearchRequest;
 import com.javaweb.jobconnectionsystem.model.response.*;
 import com.javaweb.jobconnectionsystem.service.ApplicationService;
 import com.javaweb.jobconnectionsystem.service.CompanyService;
 import com.javaweb.jobconnectionsystem.service.JobPostingService;
+import com.javaweb.jobconnectionsystem.service.RateCompanyService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +35,8 @@ public class CompanyController {
     private ApplicationService applicationService;
     @Autowired
     private JobPostingService jobPostingService;
+    @Autowired
+    private RateCompanyService rateCompanyService;
 
     // lay tat ca cac cong ty duoi dang CompanyPublicResponse (khong co usn, psw) -> dung cho trang tim kiem cong ty
     @GetMapping("/public/companies")
@@ -122,6 +126,19 @@ public class CompanyController {
         }
     }
 
+    @GetMapping("/companies/{id}/rates")
+    public ResponseEntity<?> getRateCompanyByApplicantId(@PathVariable Long id){
+        ResponseDTO responseDTO = new ResponseDTO();
+        List<RateCompanyDTO> rateCompanyList = rateCompanyService.getRateCompanyByCompanyId(id);
+        if (rateCompanyList == null || rateCompanyList.isEmpty()) {
+            responseDTO.setMessage("Rate not found");
+            return ResponseEntity.ok(responseDTO);
+        } else {
+            responseDTO.setMessage("Get rate of company successfully");
+            responseDTO.setData(rateCompanyList);
+            return ResponseEntity.ok(responseDTO);
+        }
+    }
 
     @PostMapping("/companies/jobpostings")
     public ResponseEntity<?> saveJobPosting(@Valid @RequestBody JobPostingDTO jobPostingDTO, BindingResult bindingResult) {

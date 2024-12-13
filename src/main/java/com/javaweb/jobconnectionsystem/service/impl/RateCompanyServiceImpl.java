@@ -8,10 +8,14 @@ import com.javaweb.jobconnectionsystem.repository.CompanyRepository;
 import com.javaweb.jobconnectionsystem.repository.NotificationRepository;
 import com.javaweb.jobconnectionsystem.repository.RateCompanyRepository;
 import com.javaweb.jobconnectionsystem.service.RateCompanyService;
+import org.hibernate.sql.ast.tree.expression.Over;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Transactional
 @Service
@@ -68,6 +72,28 @@ public class RateCompanyServiceImpl implements RateCompanyService {
         rateCompanyRepository.save(rateCompanyEntity);
         responseDTO.setData(rateCompanyEntity);
         return responseDTO;
+    }
+
+    @Override
+    public List<RateCompanyDTO> getRateCompanyByApplicantId(Long applicantId){
+        List<RateCompanyEntity> rateCompanyEntities = rateCompanyRepository.findAllByApplicant_Id(applicantId);
+        List<RateCompanyDTO> rateCompanyDT0s = new ArrayList<>();
+        for (RateCompanyEntity rateCompanyEntity : rateCompanyEntities) {
+            RateCompanyDTO rateCompanyDTO = modelMapper.map(rateCompanyEntity, RateCompanyDTO.class);
+            rateCompanyDT0s.add(rateCompanyDTO);
+        }
+        return rateCompanyDT0s;
+    }
+
+    @Override
+    public List<RateCompanyDTO> getRateCompanyByCompanyId(Long companyId){
+        List<RateCompanyEntity> rateCompanyEntities = rateCompanyRepository.findAllByCompany_Id(companyId);
+        List<RateCompanyDTO> rateCompanyDT0s = new ArrayList<>();
+        for (RateCompanyEntity rateCompanyEntity : rateCompanyEntities) {
+            RateCompanyDTO rateCompanyDTO = modelMapper.map(rateCompanyEntity, RateCompanyDTO.class);
+            rateCompanyDT0s.add(rateCompanyDTO);
+        }
+        return rateCompanyDT0s;
     }
 
     @Override
