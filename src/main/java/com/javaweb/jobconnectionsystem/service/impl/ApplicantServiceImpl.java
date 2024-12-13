@@ -54,7 +54,7 @@ public class ApplicantServiceImpl implements ApplicantService {
 
     @Override
     public ResponseDTO saveApplicant(ApplicantDTO applicantDTO) {
-       String encodedPassword = passwordEncoder.encode(applicantDTO.getPassword());
+        String encodedPassword = passwordEncoder.encode(applicantDTO.getPassword());
         applicantDTO.setPassword(encodedPassword);
         ResponseDTO responseDTO = new ResponseDTO();
         if (applicantDTO.getId() != null) {
@@ -92,6 +92,14 @@ public class ApplicantServiceImpl implements ApplicantService {
                     throw new RuntimeException("Username already exists");
                 }
             }
+        }
+        List<String> PhoneNumbers = applicantDTO.getPhoneNumbers();
+        for(String phoneNumber : PhoneNumbers) {
+            phoneNumberRepository.deleteByPhoneNumber(phoneNumber);
+        }
+        List<String> Emails = applicantDTO.getEmails();
+        for(String email : Emails) {
+            emailRepository.deleteByEmail(email);
         }
         ApplicantEntity applicantEntity = applicantConverter.toApplicantEntity(applicantDTO);
         responseDTO.setData(applicantEntity);
