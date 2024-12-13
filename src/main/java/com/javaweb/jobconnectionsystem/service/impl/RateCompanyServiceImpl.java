@@ -11,7 +11,9 @@ import com.javaweb.jobconnectionsystem.service.RateCompanyService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Service
 public class RateCompanyServiceImpl implements RateCompanyService {
     @Autowired
@@ -60,7 +62,7 @@ public class RateCompanyServiceImpl implements RateCompanyService {
         // Lưu thông báo cho công ty
         NotificationEntity notificationEntity = new NotificationEntity();
         notificationEntity.setUser(companyEntity);
-        notificationEntity.setContent(applicantEntity.getFirstName() + " " + applicantEntity.getLastName() + " has been rating your company " + rateCompanyDTO.getRate());
+        notificationEntity.setContent(applicantEntity.getFirstName() + " " + applicantEntity.getLastName() + " has been rating your company " + rateCompanyDTO.getRate() + " stars" + " with feedback : " + rateCompanyDTO.getFeedback());
         notificationRepository.save(notificationEntity);
 
         rateCompanyRepository.save(rateCompanyEntity);
@@ -72,12 +74,12 @@ public class RateCompanyServiceImpl implements RateCompanyService {
     public void deleteRate(Long id) {
         RateCompanyEntity rateCompanyEntity = rateCompanyRepository.findById(id).orElseThrow(() -> new RuntimeException("Rate not found"));
 
-        ApplicantEntity applicantEntity = rateCompanyEntity.getApplicant();
-        CompanyEntity companyEntity = rateCompanyEntity.getCompany();
-
-        // Tính toán lại rating của công ty sau khi xóa một đánh giá
-        Double oldRating = companyEntity.getRating();
-        int numberOfRatings = companyEntity.getRateCompanyEntities().size();
+//        ApplicantEntity applicantEntity = rateCompanyEntity.getApplicant();
+//        CompanyEntity companyEntity = rateCompanyEntity.getCompany();
+//
+//        // Tính toán lại rating của công ty sau khi xóa một đánh giá
+//        Double oldRating = companyEntity.getRating();
+//        int numberOfRatings = companyEntity.getRateCompanyEntities().size();
 
 //        // Nếu có đánh giá (trừ 1 vì đánh giá này sẽ bị xóa)
 //        if (numberOfRatings > 1) {
@@ -89,8 +91,8 @@ public class RateCompanyServiceImpl implements RateCompanyService {
 //            companyEntity.setRating(0.0);
 //        }
 
-        // Cập nhật lại thông tin rating trong database
-        companyRepository.save(companyEntity);
+//        // Cập nhật lại thông tin rating trong database
+//        companyRepository.save(companyEntity);
 
         // Xóa đánh giá từ bảng RateCompanyEntity
         rateCompanyRepository.deleteById(id);

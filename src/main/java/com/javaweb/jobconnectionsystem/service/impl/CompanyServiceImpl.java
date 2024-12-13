@@ -6,6 +6,7 @@ import com.javaweb.jobconnectionsystem.model.dto.CompanyDTO;
 import com.javaweb.jobconnectionsystem.model.request.CompanySearchRequest;
 import com.javaweb.jobconnectionsystem.model.response.CompanyPublicResponse;
 import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
+import com.javaweb.jobconnectionsystem.repository.BlockUserRepository;
 import com.javaweb.jobconnectionsystem.repository.CompanyRepository;
 import com.javaweb.jobconnectionsystem.repository.EmailRepository;
 import com.javaweb.jobconnectionsystem.repository.PhoneNumberRepository;
@@ -24,6 +25,8 @@ public class CompanyServiceImpl implements CompanyService {
     private CompanyRepository companyRepository;
     @Autowired
     private CompanyConverter companyConverter;
+    @Autowired
+    private BlockUserRepository blockUserRepository;
     @Autowired
     private PhoneNumberRepository phoneNumberRepository;
     @Autowired
@@ -96,6 +99,36 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public void deleteCompanyById(Long id) {
         CompanyEntity company = companyRepository.findById(id).orElseThrow(() -> new RuntimeException("Company not found"));
-        companyRepository.delete(company);
+
+        List<BlockUserEntity> blockUser = new ArrayList<>(company.getBlockedUsers().stream().toList());
+        for(BlockUserEntity blockUserEntity : blockUser) {
+            company.getBlockedUsers().remove(blockUserEntity);
+            blockUserRepository.delete(blockUserEntity);
+        }
+
+
+
+//        companyRepository.delete(company);
+        company.setIsActive(false);
+        companyRepository.save(company);
+    }
+
+    @Override
+    public void updateCompanyRating(CompanyEntity company) {
+        double newRating = calculateAverageRating(company);
+        company.setRating(newRating);
+        companyRepository.save(company);
+    }
+
+    @Override
+    public double calculateAverageRating(CompanyEntity company) {
+        List<RateCompanyEntity> ratings = company.getRateCompanyEntities();
+        if (ratings.isEmpty()) return 0.0;
+
+        double totalRating = 0;
+        for (RateCompanyEntity rating : ratings) {
+            totalRating += rating.getRate();
+        }
+        return totalRating / ratings.size();
     }
 }

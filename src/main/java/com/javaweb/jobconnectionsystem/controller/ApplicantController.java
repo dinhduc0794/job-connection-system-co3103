@@ -94,7 +94,21 @@ public class ApplicantController {
         }
     }
 
-
+    // Endpoint xóa ứng viên
+    @DeleteMapping("/applicants/{id}")
+    public ResponseEntity<?> deleteApplicant(@PathVariable Long id) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            applicantService.deleteApplicantById(id);
+            responseDTO.setMessage("Delete successfully");
+            responseDTO.setDetail(Collections.singletonList("Applicant has been deleted"));
+            return ResponseEntity.ok().body(responseDTO);
+        } catch (RuntimeException e) {
+            responseDTO.setMessage("Internal server error");
+            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
+        }
+    }
 
     @PostMapping("/applicants/rate-company")
     public ResponseEntity<?> rateCompany(@Valid @RequestBody RateCompanyDTO rateCompanyDTO, BindingResult bindingResult) {
@@ -157,21 +171,7 @@ public class ApplicantController {
         }
     }
 
-    // Endpoint xóa ứng viên
-    @DeleteMapping("/applicants/{id}")
-    public ResponseEntity<?> deleteApplicant(@PathVariable Long id) {
-        ResponseDTO responseDTO = new ResponseDTO();
-        try {
-            applicantService.deleteApplicantById(id);
-            responseDTO.setMessage("Delete successfully");
-            responseDTO.setDetail(Collections.singletonList("Applicant has been deleted"));
-            return ResponseEntity.ok().body(responseDTO);
-        } catch (RuntimeException e) {
-            responseDTO.setMessage("Internal server error");
-            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
-        }
-    }
+
 
     /* INTERESTED POST CONTROLLER */
     @GetMapping("/applicants/{id}/interested-posts")

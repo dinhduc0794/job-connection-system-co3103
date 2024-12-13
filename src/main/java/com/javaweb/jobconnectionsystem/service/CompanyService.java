@@ -25,4 +25,6 @@ public interface CompanyService {
     CompanyEntity updateCompany(Long id, CompanyEntity companyDetails);
     // Xoa user
     void deleteCompanyById(Long id);
+    void updateCompanyRating(CompanyEntity company);
+    double calculateAverageRating(CompanyEntity company);
 }

@@ -122,24 +122,6 @@ public class CompanyController {
         }
     }
 
-    @GetMapping("/companies/jobpostings/{id}/applications")
-    public ResponseEntity<?> getApplicationByJobpostingId(@PathVariable Long id){
-        ResponseDTO responseDTO = new ResponseDTO();
-        List<ApplicationEntity> applications = applicationService.getAllApplicationByJobpostingId(id);
-
-        if (applications == null || applications.isEmpty()) {
-            responseDTO.setMessage("Application not found");
-            return ResponseEntity.ok(responseDTO);
-        } else {
-            List<JobpostingApplicationResponse> applicationResponses = applications.stream()
-                    .map(JobpostingApplicationResponse::new)
-                    .collect(Collectors.toList());
-
-            responseDTO.setMessage("Get application of jobpost successfully");
-            responseDTO.setData(applicationResponses);
-            return ResponseEntity.ok(responseDTO);
-        }
-    }
 
     @PostMapping("/companies/jobpostings")
     public ResponseEntity<?> saveJobPosting(@Valid @RequestBody JobPostingDTO jobPostingDTO, BindingResult bindingResult) {
@@ -165,6 +147,27 @@ public class CompanyController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
         }
     }
+
+    // lay ra tat ca cac don ung tuyen cua 1 bai dang cong viec
+    @GetMapping("/companies/jobpostings/{id}/applications")
+    public ResponseEntity<?> getApplicationByJobpostingId(@PathVariable Long id){
+        ResponseDTO responseDTO = new ResponseDTO();
+        List<ApplicationEntity> applications = applicationService.getAllApplicationByJobpostingId(id);
+
+        if (applications == null || applications.isEmpty()) {
+            responseDTO.setMessage("Application not found");
+            return ResponseEntity.ok(responseDTO);
+        } else {
+            List<JobpostingApplicationResponse> applicationResponses = applications.stream()
+                    .map(JobpostingApplicationResponse::new)
+                    .collect(Collectors.toList());
+
+            responseDTO.setMessage("Get application of jobpost successfully");
+            responseDTO.setData(applicationResponses);
+            return ResponseEntity.ok(responseDTO);
+        }
+    }
+
     @PostMapping("/companies/jobpostings/applications")
     //sửa trạng thái
     public ResponseEntity<?> saveApplication(@Valid @RequestBody ApplicationDTO applicationDTO, BindingResult bindingResult) {
@@ -191,6 +194,7 @@ public class CompanyController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
         }
     }
+
     @DeleteMapping("/companies/jobpostings/{id}/applications")
     public ResponseEntity<?> deleteApplication(@PathVariable Long id){
         ResponseDTO responseDTO = new ResponseDTO();
@@ -206,6 +210,7 @@ public class CompanyController {
             return ResponseEntity.badRequest().body(responseDTO);
         }
     }
+
     @DeleteMapping("/companies/jobpostings/{id}")
     public ResponseEntity<?> deleteJobPosting(@PathVariable Long id) {
         ResponseDTO responseDTO = new ResponseDTO();

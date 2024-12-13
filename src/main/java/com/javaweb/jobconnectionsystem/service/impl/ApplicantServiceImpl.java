@@ -102,7 +102,7 @@ public class ApplicantServiceImpl implements ApplicantService {
             applicant.getBlockedUsers().remove(blockUserEntity);
             blockUserRepository.delete(blockUserEntity);
         }
-        List<SkillEntity> skill =new ArrayList<> (applicant.getSkills());
+        List<SkillEntity> skill = new ArrayList<> (applicant.getSkills());
         for(SkillEntity skillEntity : skill) {
             applicant.getSkills().remove(skillEntity);
             skillRepository.delete(skillEntity);
@@ -115,9 +115,11 @@ public class ApplicantServiceImpl implements ApplicantService {
             job.getApplicantJobtypeEntities().remove(applicantJobTypeEntity);
             applicantJobTypeEntity.setJobType(null);
         }
-        applicantRepository.delete(applicant);
         for(ApplicantJobtypeEntity applicantJobTypeEntity : applicantJobType){
             applicanJobTypeRepository.delete(applicantJobTypeEntity);
         }
+        //        applicantRepository.delete(applicant);
+        applicant.setIsActive(false);
+        applicantRepository.save(applicant);
     }
 }
