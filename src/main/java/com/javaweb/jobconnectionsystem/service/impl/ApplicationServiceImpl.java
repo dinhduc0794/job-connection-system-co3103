@@ -48,11 +48,17 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         else { // chinh sua thong tin application
             if(applicationDTO.getStatus() == StatusEnum.WAITING) { // chinh sua thong tin description
+                if (applicationEntity.getApplicant() != null) {
+                    applicantRepository.save(applicationEntity.getApplicant());
+                } else {
+                    throw new RuntimeException("Application information is missing");
+                }
                 return applicationRepository.save(applicationEntity);
             }
             else {
                 NotificationEntity notificationEntity = new NotificationEntity();
                 if (applicationEntity.getApplicant() != null) {
+                    applicantRepository.save(applicationEntity.getApplicant());
                     notificationEntity.setUser(applicationEntity.getApplicant());
                 } else {
                     throw new RuntimeException("Application information is missing");
@@ -83,17 +89,12 @@ public class ApplicationServiceImpl implements ApplicationService {
         return listApplication;
     }
 
-
     @Override
-    public void deleteApplicationByJobpostingId(Long applicationId) {
-        ApplicationEntity newApplication = applicationRepository.findById(applicationId).get();
-        if(newApplication.getStatus()!= StatusEnum.REJECTED){
+    public void deleteApplicationById (Long id) {
+        ApplicationEntity application = applicationRepository.findById(id).get();
+        if(application.getStatus()!= StatusEnum.REJECTED){
             throw new RuntimeException("Can not delete this application");
         }
-        else applicationRepository.deleteById(applicationId);
-    }
-    @Override
-    public void deleteApplicationByApplicantId(Long applicantId) {
-         applicationRepository.deleteById(applicantId);
+        else applicationRepository.deleteById(id);
     }
 }

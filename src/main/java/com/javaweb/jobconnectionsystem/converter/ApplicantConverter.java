@@ -46,32 +46,7 @@ public class ApplicantConverter {
 
     public ApplicantEntity toApplicantEntity(ApplicantDTO applicantDTO) {
         // Bước kiểm tra tính hợp lệ của dữ liệu
-        if(applicantDTO.getPhoneNumbers() != null && !applicantDTO.getPhoneNumbers().isEmpty()) {
-            for(String phoneNumber : applicantDTO.getPhoneNumbers()) {
-                if(phoneNumberRepository.existsByPhoneNumber(phoneNumber)) {
-                    if(!phoneNumberRepository.findByPhoneNumber(phoneNumber).getUser().getId().equals(applicantDTO.getId())) {
-                        throw new RuntimeException("Phonenumber " + phoneNumber + " already exists");
-                    }
-                }
-            }
-        }
-        if(applicantDTO.getEmails() != null && !applicantDTO.getEmails().isEmpty()) {
-            for(String email : applicantDTO.getEmails()) {
-                if(emailRepository.existsByEmail(email)) {
-                    if(emailRepository.findByEmail(email).getUser().getId() != applicantDTO.getId()) {
-                        throw new RuntimeException("Email " + email + " already exists");
-                    }
-                }
-            }
-        }
-        if(applicantDTO.getUsername() != null) {
-            ApplicantEntity ApplicantFromUserName = applicantRepository.findByUsername(applicantDTO.getUsername());
-            if (ApplicantFromUserName != null) {
-                if(ApplicantFromUserName.getId() != applicantDTO.getId()) {
-                    throw new RuntimeException("Username already exists");
-                }
-            }
-        }
+
 
         // Sau khi kiểm tra tính hợp lệ của dữ liệu, thực hiện việc chỉnh sửa hoặc tạp mới
         ApplicantEntity applicantEntity = modelMapper.map(applicantDTO, ApplicantEntity.class);
@@ -79,46 +54,41 @@ public class ApplicantConverter {
         if (applicantDTO.getId() != null) {
             // trường hợp chỉnh sửa thông tin
             ApplicantEntity existingApplicant = applicantRepository.findById(applicantDTO.getId())
-                    .orElseThrow(() -> new RuntimeException("Applicant not found"));
+                    .orElseThrow(() -> new RuntimeException("Company not found"));
             // thêm lại các thuộc tính không thuộc trường thay đổi thông tin
             // các thuộc tính là thực thể và liên quan
+//            companyEntity.setJobPostings(existingCompany.getJobPostings());
+//            companyEntity.setRating(existingCompany.getRating());
+//            companyEntity.setRateCompanyEntities(existingCompany.getRateCompanyEntities());
+//            companyEntity.setFollowCompanyEntities(existingCompany.getFollowCompanyEntities());
+//            companyEntity.setFields(existingCompany.getFields());
+//            companyEntity.setUsedToWorkEntities(existingCompany.getUsedToWorkEntities());
+//            companyEntity.setBlockedUsers(existingCompany.getBlockedUsers());
+//            companyEntity.setBlockingUsers(existingCompany.getBlockingUsers());
+//            companyEntity.setNotifications(existingCompany.getNotifications());
+//            companyEntity.setRateApplicantEntities(existingCompany.getRateApplicantEntities());
             applicantEntity.setApplications(existingApplicant.getApplications());
-            applicantEntity.setRateApplicantEntities(existingApplicant.getRateApplicantEntities());
-            applicantEntity.setInterestedPosts(existingApplicant.getInterestedPosts());
-            applicantEntity.setIsAvailable(existingApplicant.getIsAvailable());
-            applicantEntity.setRateCompanyEntities(existingApplicant.getRateCompanyEntities());
-            applicantEntity.setUsedToWorkEntities(existingApplicant.getUsedToWorkEntities());
-            applicantEntity.setBlockedUsers(existingApplicant.getBlockedUsers());
-            applicantEntity.setBlockingUsers(existingApplicant.getBlockingUsers());
-            applicantEntity.setNotifications(existingApplicant.getNotifications());
-            applicantEntity.setCertifications(existingApplicant.getCertifications());
 
-            if(applicantDTO.getIsPublic() == null) applicantEntity.setIsPublic(existingApplicant.getIsPublic());
-            else applicantEntity.setIsPublic(applicantDTO.getIsPublic());
+            // các thuộc tính không phải thực thể
 
             // xóa hết thuộc tính cũ
             existingApplicant.getPhoneNumbers().clear();
             phoneNumberRepository.deleteAll(existingApplicant.getPhoneNumbers());
             existingApplicant.getEmails().clear();
             emailRepository.deleteAll(existingApplicant.getEmails());
+//            existingCompany.getWards().removeAll(existingCompany.getWards());
             existingApplicant.getCertifications().clear();
             certificationRepository.deleteAll(existingApplicant.getCertifications());
-            List<ApplicantJobtypeEntity> applicantJobtypeEntitys = existingApplicant.getApplicantJobtypeEntities();
-            if(applicantJobtypeEntitys != null && !applicantJobtypeEntitys.isEmpty()) {
-                for(ApplicantJobtypeEntity applicantJobtypeEntity : applicantJobtypeEntitys) {
-                    JobTypeEntity jobTypeEntity = applicantJobtypeEntity.getJobType();
-                    jobTypeEntity.getApplicantJobtypeEntities().remove(applicantJobtypeEntity);
-                }
-            }
-            existingApplicant.getSkills().removeAll(existingApplicant.getSkills());
+            existingApplicant.getSkills().clear();
+            skillRepository.deleteAll(existingApplicant.getSkills());
         } else {
+            // trường hợp tạo mới
             applicantEntity.setIsBanned(false);
             applicantEntity.setIsActive(true);
             applicantEntity.setIsPublic(true);
-            applicantEntity.setIsAvailable(true);
         }
         // các thộc tính nằm ở bảng khác
-        applicantRepository.save(applicantEntity);
+//        companyRepository.save(companyEntity);
         // PhoneNumber
         if(applicantEntity.getPhoneNumbers() != null && !applicantEntity.getPhoneNumbers().isEmpty()) {
             applicantEntity.getPhoneNumbers().clear();
@@ -129,7 +99,7 @@ public class ApplicantConverter {
                 PhoneNumberEntity phoneNumberEntity = new PhoneNumberEntity();
                 phoneNumberEntity.setPhoneNumber(phoneNumber);
                 phoneNumberEntity.setUser(applicantEntity);
-                phoneNumberRepository.save(phoneNumberEntity);
+//                phoneNumberRepository.save(phoneNumberEntity);
                 applicantEntity.getPhoneNumbers().add(phoneNumberEntity);
             }
         }
@@ -143,20 +113,19 @@ public class ApplicantConverter {
                 EmailEntity emailEntity = new EmailEntity();
                 emailEntity.setEmail(email);
                 emailEntity.setUser(applicantEntity);
-                emailRepository.save(emailEntity);
+//                emailRepository.save(emailEntity);
                 applicantEntity.getEmails().add(emailEntity);
             }
         }
-        // Certification
+        //certìfication
         if(applicantEntity.getCertifications() != null && !applicantEntity.getCertifications().isEmpty()) {
-            applicantEntity.getApplications().clear();
+            applicantEntity.getCertifications().clear();
         }
         List<CertificationDTO> certificationDTOS = applicantDTO.getCertifications();
         if(certificationDTOS != null && !certificationDTOS.isEmpty()) {
-            for(CertificationDTO certificationDTO : certificationDTOS) {
+            for (CertificationDTO certificationDTO : certificationDTOS) {
                 CertificationEntity certificationEntity = modelMapper.map(certificationDTO, CertificationEntity.class);
                 certificationEntity.setApplicant(applicantEntity);
-                certificationRepository.save(certificationEntity);
                 applicantEntity.getCertifications().add(certificationEntity);
             }
         }
@@ -164,34 +133,27 @@ public class ApplicantConverter {
         applicantEntity.setSpecificAddress(applicantDTO.getSpecificAddress());
         WardEntity wardEntity = wardRepository.findById(applicantDTO.getWard().getId()).get();
         applicantEntity.setWard(wardEntity);
-        // JobType
-        List<JobTypeDTO> jobTypes = applicantDTO.getJobTypes();
-        if(jobTypes != null && !jobTypes.isEmpty()) {
-            for (JobTypeDTO jobType : jobTypes) {
-                LevelEnum level = jobType.getLevel();
-                Long jobTypeId = jobType.getId();
-                JobTypeEntity jobTypeEntity = jobTypeRepository.findById(jobTypeId).get();
 
-                ApplicantJobtypeEntity applicantJobtypeEntity = new ApplicantJobtypeEntity();
-                applicantJobtypeEntity.setJobType(jobTypeEntity);
-                applicantJobtypeEntity.setLevel(level);
-                applicantJobtypeEntity.setApplicant(applicantEntity);
-                applicantJobTypeRepository.save(applicantJobtypeEntity);
-                applicantEntity.getApplicantJobtypeEntities().add(applicantJobtypeEntity);
-                jobTypeEntity.getApplicantJobtypeEntities().add(applicantJobtypeEntity);
-            }
-        }
-        // Skill
-        List<SkillDTO> skills = applicantDTO.getSkills();
-        if(skills != null && !skills.isEmpty()) {
-            for (SkillDTO skill : skills) {
-                SkillEntity skillEntity = skillRepository.findById(skill.getId()).get();
+//        // Field
+//        List<FieldDTO> fieldDTOs = companyDTO.getFields();
+//        if (fieldDTOs != null && !fieldDTOs.isEmpty()) {
+//            for (FieldDTO fieldDTO : fieldDTOs) {
+//                FieldEntity fieldEntity = fieldRepository.findById(fieldDTO.getId())
+//                        .orElseThrow(() -> new RuntimeException("Field not found"));
+//                companyEntity.getFields().add(fieldEntity);
+//            }
+//        }
+        List<SkillDTO> skillDTOS = applicantDTO.getSkills();
+        if(skillDTOS != null && !skillDTOS.isEmpty()) {
+            for(SkillDTO skillDTO : skillDTOS) {
+                SkillEntity skillEntity = skillRepository.findById(skillDTO.getId())
+                        .orElseThrow(() -> new RuntimeException("Skill not found"));
                 applicantEntity.getSkills().add(skillEntity);
             }
         }
+        applicantEntity = applicantRepository.save(applicantEntity);
         return  applicantEntity;
     }
-
     public ApplicantDTO toApplicantDTO(ApplicantEntity applicantEntity) {
         ApplicantDTO applicantDTO = ApplicantDTO.builder()
                 .id(applicantEntity.getId())

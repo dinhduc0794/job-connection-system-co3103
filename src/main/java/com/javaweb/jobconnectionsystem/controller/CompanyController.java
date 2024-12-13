@@ -141,7 +141,7 @@ public class CompanyController {
             return ResponseEntity.ok(responseDTO);
         }
     }
-    
+
     @PostMapping("/companies/jobpostings")
     public ResponseEntity<?> saveJobPosting(@Valid @RequestBody JobPostingDTO jobPostingDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
@@ -214,11 +214,11 @@ public class CompanyController {
         }
     }
 
-    @DeleteMapping("/companies/jobpostings/{id}/applications")
+    @DeleteMapping("/companies/jobpostings/applications/{id}")
     public ResponseEntity<?> deleteApplication(@PathVariable Long id){
         ResponseDTO responseDTO = new ResponseDTO();
         try{
-            applicationService.deleteApplicationByJobpostingId(id);
+            applicationService.deleteApplicationById(id);
             responseDTO.setMessage("Delete successfully");
             responseDTO.setDetail(Collections.singletonList("Application has been deleted"));
             return ResponseEntity.ok(responseDTO);

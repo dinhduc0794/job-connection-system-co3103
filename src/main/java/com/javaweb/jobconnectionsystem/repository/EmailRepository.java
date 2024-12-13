@@ -24,7 +24,6 @@ public interface EmailRepository extends JpaRepository<EmailEntity, Long> {
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM EmailEntity e WHERE e.email = :email")
+    @Query("DELETE EmailEntity e WHERE e.email = :email")
     void deleteByEmail(@Param("email") String email);
-
 }

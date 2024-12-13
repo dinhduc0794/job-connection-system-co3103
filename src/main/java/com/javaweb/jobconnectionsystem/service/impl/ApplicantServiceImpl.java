@@ -38,6 +38,10 @@ public class ApplicantServiceImpl implements ApplicantService {
     private JobPostingConverter jobPostingConverter;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PhoneNumberRepository phoneNumberRepository;
+    @Autowired
+    private EmailRepository emailRepository;
     @Override
     public List<ApplicantPublicResponse> getAllApplicants() {
         List<ApplicantEntity> applicants = applicantRepository.findAll();
@@ -50,9 +54,8 @@ public class ApplicantServiceImpl implements ApplicantService {
 
     @Override
     public ResponseDTO saveApplicant(ApplicantDTO applicantDTO) {
-//        String encodedPassword = passwordEncoder.encode(applicantDTO.getPassword());
-//        applicantDTO.setPassword(encodedPassword);
-
+       String encodedPassword = passwordEncoder.encode(applicantDTO.getPassword());
+        applicantDTO.setPassword(encodedPassword);
         ResponseDTO responseDTO = new ResponseDTO();
         if (applicantDTO.getId() != null) {
             if (!applicantRepository.existsById(applicantDTO.getId())) {
@@ -63,6 +66,32 @@ public class ApplicantServiceImpl implements ApplicantService {
         }
         else {
             responseDTO.setMessage("Register a new applicant successfully");
+        }
+        if(applicantDTO.getPhoneNumbers() != null && !applicantDTO.getPhoneNumbers().isEmpty()) {
+            for(String phoneNumber : applicantDTO.getPhoneNumbers()) {
+                if(phoneNumberRepository.existsByPhoneNumber(phoneNumber)) {
+                    if(!phoneNumberRepository.findByPhoneNumber(phoneNumber).getUser().getId().equals(applicantDTO.getId())) {
+                        throw new RuntimeException("Phonenumber " + phoneNumber + " already exists");
+                    }
+                }
+            }
+        }
+        if(applicantDTO.getEmails() != null && !applicantDTO.getEmails().isEmpty()) {
+            for(String email : applicantDTO.getEmails()) {
+                if(emailRepository.existsByEmail(email)) {
+                    if(emailRepository.findByEmail(email).getUser().getId() != applicantDTO.getId()) {
+                        throw new RuntimeException("Email " + email + " already exists");
+                    }
+                }
+            }
+        }
+        if(applicantDTO.getUsername() != null) {
+            ApplicantEntity applicantFromUserName = applicantRepository.findByUsername(applicantDTO.getUsername());
+            if (applicantFromUserName != null) {
+                if(applicantFromUserName.getId() != applicantDTO.getId()) {
+                    throw new RuntimeException("Username already exists");
+                }
+            }
         }
         ApplicantEntity applicantEntity = applicantConverter.toApplicantEntity(applicantDTO);
         responseDTO.setData(applicantEntity);
