@@ -44,6 +44,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/companies**").hasAnyAuthority("company")
                         .requestMatchers("/notifications**").hasAnyAuthority("applicant","company")
                         .requestMatchers("/blockings").hasAnyAuthority("applicant","company")
+                        .requestMatchers("/accounts/**").hasAnyAuthority("applicant","company")
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
