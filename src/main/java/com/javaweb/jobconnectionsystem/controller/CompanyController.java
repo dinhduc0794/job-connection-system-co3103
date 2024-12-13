@@ -126,6 +126,8 @@ public class CompanyController {
         }
     }
 
+
+    // get all rate của 1 company có id = 2
     @GetMapping("/companies/{id}/rates")
     public ResponseEntity<?> getRateCompanyByApplicantId(@PathVariable Long id){
         ResponseDTO responseDTO = new ResponseDTO();
@@ -139,7 +141,7 @@ public class CompanyController {
             return ResponseEntity.ok(responseDTO);
         }
     }
-
+    
     @PostMapping("/companies/jobpostings")
     public ResponseEntity<?> saveJobPosting(@Valid @RequestBody JobPostingDTO jobPostingDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();

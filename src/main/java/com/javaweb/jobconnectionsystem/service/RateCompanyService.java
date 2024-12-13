@@ -11,4 +11,5 @@ public interface RateCompanyService {
     void deleteRate(Long id);
     List<RateCompanyDTO> getRateCompanyByApplicantId(Long applicantId);
     List<RateCompanyDTO> getRateCompanyByCompanyId(Long companyId);
+    RateCompanyDTO getRateCompanyId(Long id);
 }

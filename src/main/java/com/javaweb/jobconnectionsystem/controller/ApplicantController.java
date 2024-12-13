@@ -110,6 +110,8 @@ public class ApplicantController {
         }
     }
 
+
+    // get all rate mà applicant có id = 2 đã từng rate các company
     @GetMapping("/applicants/{id}/rate-companies")
     public ResponseEntity<?> getRateCompanyByApplicantId(@PathVariable Long id){
         ResponseDTO responseDTO = new ResponseDTO();

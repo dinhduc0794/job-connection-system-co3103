@@ -32,10 +32,22 @@ public class RateCompanyServiceImpl implements RateCompanyService {
     private NotificationRepository notificationRepository;
 
     @Override
+    public RateCompanyDTO getRateCompanyId(Long id) {
+        RateCompanyEntity rateCompanyEntity = rateCompanyRepository.findById(id).orElseThrow(() -> new RuntimeException("Rate not found"));
+        RateCompanyDTO rateCompanyDTO = modelMapper.map(rateCompanyEntity, RateCompanyDTO.class);
+        rateCompanyDTO.setCompanyId(rateCompanyEntity.getCompany().getId());
+        rateCompanyDTO.setApplicantId(rateCompanyEntity.getApplicant().getId());
+        rateCompanyDTO.setCompanyName(rateCompanyEntity.getCompany().getName());
+        return rateCompanyDTO;
+    }
+
+    @Override
     public ResponseDTO saveRate(RateCompanyDTO rateCompanyDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
 
         RateCompanyEntity rateCompanyEntity = modelMapper.map(rateCompanyDTO, RateCompanyEntity.class);
+        rateCompanyEntity.setApplicant(applicantRepository.findById(rateCompanyDTO.getApplicantId()).get());
+        rateCompanyEntity.setCompany(companyRepository.findById(rateCompanyDTO.getCompanyId()).get());
 
         ApplicantEntity applicantEntity = applicantRepository.findById(rateCompanyDTO.getApplicantId()).get();
         CompanyEntity companyEntity = companyRepository.findById(rateCompanyDTO.getCompanyId()).get();
@@ -53,13 +65,6 @@ public class RateCompanyServiceImpl implements RateCompanyService {
         if(rateCompanyDTO.getCompanyId() != null) {
             rateCompanyEntity.setCompany(companyEntity);
         }
-
-//        // Tính toán lại rating của công ty sau khi có đánh giá mới
-//        Integer newRating = rateCompanyDTO.getRate().getValue();
-//        Double oldRating = companyEntity.getRating();
-//        int numberOfRatings = companyEntity.getRateCompanyEntities().size(); // Số lượng đánh giá hiện tại từ danh sách "applicantRateCompanyEntities"
-//        Double totalRating = oldRating * numberOfRatings + newRating;
-//        companyEntity.setRating(totalRating / (numberOfRatings + 1)); // Tính trung bình cộng mới
 
         companyRepository.save(companyEntity);
 
@@ -80,6 +85,9 @@ public class RateCompanyServiceImpl implements RateCompanyService {
         List<RateCompanyDTO> rateCompanyDT0s = new ArrayList<>();
         for (RateCompanyEntity rateCompanyEntity : rateCompanyEntities) {
             RateCompanyDTO rateCompanyDTO = modelMapper.map(rateCompanyEntity, RateCompanyDTO.class);
+            rateCompanyDTO.setCompanyId(rateCompanyEntity.getCompany().getId());
+            rateCompanyDTO.setApplicantId(rateCompanyEntity.getApplicant().getId());
+            rateCompanyDTO.setCompanyName(rateCompanyEntity.getCompany().getName());
             rateCompanyDT0s.add(rateCompanyDTO);
         }
         return rateCompanyDT0s;
@@ -91,6 +99,9 @@ public class RateCompanyServiceImpl implements RateCompanyService {
         List<RateCompanyDTO> rateCompanyDT0s = new ArrayList<>();
         for (RateCompanyEntity rateCompanyEntity : rateCompanyEntities) {
             RateCompanyDTO rateCompanyDTO = modelMapper.map(rateCompanyEntity, RateCompanyDTO.class);
+            rateCompanyDTO.setCompanyId(rateCompanyEntity.getCompany().getId());
+            rateCompanyDTO.setApplicantId(rateCompanyEntity.getApplicant().getId());
+            rateCompanyDTO.setCompanyName(rateCompanyEntity.getCompany().getName());
             rateCompanyDT0s.add(rateCompanyDTO);
         }
         return rateCompanyDT0s;
@@ -99,28 +110,6 @@ public class RateCompanyServiceImpl implements RateCompanyService {
     @Override
     public void deleteRate(Long id) {
         RateCompanyEntity rateCompanyEntity = rateCompanyRepository.findById(id).orElseThrow(() -> new RuntimeException("Rate not found"));
-
-//        ApplicantEntity applicantEntity = rateCompanyEntity.getApplicant();
-//        CompanyEntity companyEntity = rateCompanyEntity.getCompany();
-//
-//        // Tính toán lại rating của công ty sau khi xóa một đánh giá
-//        Double oldRating = companyEntity.getRating();
-//        int numberOfRatings = companyEntity.getRateCompanyEntities().size();
-
-//        // Nếu có đánh giá (trừ 1 vì đánh giá này sẽ bị xóa)
-//        if (numberOfRatings > 1) {
-//            // Tính lại rating của công ty
-//            Double totalRating = oldRating * numberOfRatings - rateCompanyEntity.getRate().getValue();
-//            companyEntity.setRating(totalRating / (numberOfRatings - 1)); // Tính lại trung bình
-//        } else {
-//            // Nếu chỉ còn 1 đánh giá, thì rating sẽ là 0
-//            companyEntity.setRating(0.0);
-//        }
-
-//        // Cập nhật lại thông tin rating trong database
-//        companyRepository.save(companyEntity);
-
-        // Xóa đánh giá từ bảng RateCompanyEntity
         rateCompanyRepository.deleteById(id);
     }
 }

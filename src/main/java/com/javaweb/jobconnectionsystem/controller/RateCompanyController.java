@@ -21,5 +21,12 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/rate-company")
 public class RateCompanyController {
+    @Autowired
+    private RateCompanyService rateCompanyService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getRateCompanyById(@PathVariable Long id) {
+        RateCompanyDTO rateCompanyDTO = rateCompanyService.getRateCompanyId(id);
+        return new ResponseEntity<>(rateCompanyDTO, HttpStatus.OK);
+    }
 }
