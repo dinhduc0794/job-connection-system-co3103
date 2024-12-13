@@ -1,10 +1,7 @@
 package com.javaweb.jobconnectionsystem.controller;
 
 import com.javaweb.jobconnectionsystem.entity.*;
-import com.javaweb.jobconnectionsystem.model.dto.ApplicantDTO;
-import com.javaweb.jobconnectionsystem.model.dto.ApplicationDTO;
-import com.javaweb.jobconnectionsystem.model.dto.RateCompanyDTO;
-import com.javaweb.jobconnectionsystem.model.dto.SkillDTO;
+import com.javaweb.jobconnectionsystem.model.dto.*;
 import com.javaweb.jobconnectionsystem.model.response.ApplicantApplicationReponse;
 import com.javaweb.jobconnectionsystem.model.response.ApplicantPublicResponse;
 import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
@@ -36,7 +33,8 @@ public class ApplicantController {
     @Autowired
     private RateCompanyService rateCompanyService;
     @Autowired
-    private SkillService skillService;
+    private InterestedPostService interestedPostService;
+
     // lay ra tat ca ung vien dang PublicResponse (ko co usn, psw), dung de hien thi tren trang web
     @GetMapping("/public/applicants")
     public ResponseEntity<List<ApplicantPublicResponse>> getAllApplicants() {
@@ -96,20 +94,6 @@ public class ApplicantController {
         }
     }
 
-    @GetMapping("/applicants/{id}/interested-posts")
-    public ResponseEntity<?> getInterestedPosts(@PathVariable Long id){
-        ResponseDTO responseDTO = new ResponseDTO();
-        List<JobPostingSearchResponse> interestedPosts = applicantService.getInterestedPostsByApplicantId(id);
-        if (interestedPosts.isEmpty()){
-            responseDTO.setMessage("you have no interested post");
-            return ResponseEntity.ok(responseDTO);
-        }
-        else {
-            responseDTO.setMessage("interested post");
-            responseDTO.setData(interestedPosts);
-            return ResponseEntity.ok(responseDTO);
-        }
-    }
 
 
     @PostMapping("/applicants/rate-company")
@@ -188,6 +172,52 @@ public class ApplicantController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
         }
     }
+
+    /* INTERESTED POST CONTROLLER */
+    @GetMapping("/applicants/{id}/interested-posts")
+    public ResponseEntity<?> getInterestedPosts(@PathVariable Long id){
+        ResponseDTO responseDTO = new ResponseDTO();
+        List<JobPostingSearchResponse> interestedPosts = interestedPostService.getInterestedPostsByApplicantId(id);
+        if (interestedPosts.isEmpty()){
+            responseDTO.setMessage("You have no interested posts");
+            return ResponseEntity.ok(responseDTO);
+        }
+        else {
+            responseDTO.setMessage("Get interested posts successfully");
+            responseDTO.setData(interestedPosts);
+            return ResponseEntity.ok(responseDTO);
+        }
+    }
+
+    // ham nay handle ca 2 viec insert va uninterested
+    @PostMapping("/applicants/interested-posts")
+    public ResponseEntity<?> saveInterestedPost(@Valid @RequestBody InterestedPostDTO interestedPostDTO, BindingResult bindingResult) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        try{
+            if (bindingResult.hasErrors()) {
+                List<String> errorMessages = bindingResult.getFieldErrors()
+                        .stream()
+                        .map(FieldError::getDefaultMessage)
+                        .collect(Collectors.toList());
+
+                responseDTO.setMessage("Validation failed");
+                responseDTO.setDetail(errorMessages);
+                return ResponseEntity.badRequest().body(responseDTO);
+            }
+            // neu dung thi //xuong service -> xuong repo -> save vao db
+            responseDTO = interestedPostService.saveInterestedPost(interestedPostDTO);
+            return ResponseEntity.ok(responseDTO);
+        }
+        catch (Exception e){
+            responseDTO.setMessage("Internal server error");
+            responseDTO.setDetail(Collections.singletonList(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
+        }
+    }
+
+
+    /* APPLICATION CONTROLLER */
+    // apply for a job
     @PostMapping("/applicants/applications")
     public ResponseEntity<?> saveApplication(@Valid @RequestBody ApplicationDTO applicationDTO, BindingResult bindingResult) {
         ResponseDTO responseDTO = new ResponseDTO();
@@ -213,21 +243,8 @@ public class ApplicantController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
         }
     }
-//    public ResponseEntity<?> saveApplications(@RequestBody ApplicationDTO applicationDTO) {
-//        try {
-//            // Gọi service để lưu application
-//            ApplicationEntity savedApplication = applicationService.saveApplication(applicationDTO);
-//
-//            // Trả về thông tin ứng dụng đã lưu
-//            return ResponseEntity.ok(savedApplication);
-//        } catch (RuntimeException e) {
-//            // Bắt RuntimeException từ service và trả về lỗi 400 với message chi tiết
-//            return ResponseEntity.badRequest().body(e.getMessage());
-//        } catch (Exception e) {
-//            // Bắt các lỗi không mong muốn khác và trả về lỗi 500
-//            return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).body("An error occurred while processing the request.");
-//        }
-//    }
+
+    // get all application by applicant id
     @GetMapping("/applicants/{id}/applications")
     public ResponseEntity<?> getAllApplication(@PathVariable Long id){
         ResponseDTO responseDTO = new ResponseDTO();
@@ -260,7 +277,8 @@ public class ApplicantController {
             return ResponseEntity.ok(responseDTO);
         }
     }
-//
+
+    // Get 1 application by application id
     @GetMapping("/applicants/applications/{id}")
     public ResponseEntity<?> getApplicationById(@PathVariable Long id){
         ResponseDTO responseDTO = new ResponseDTO();
@@ -276,7 +294,8 @@ public class ApplicantController {
         }
     }
 
-    @DeleteMapping("/applicants/application/{id}")
+    // Delete application
+    @DeleteMapping("/applicants/applications/{id}")
     public ResponseEntity<?> deleteApplication(@PathVariable Long id){
         ResponseDTO responseDTO = new ResponseDTO();
         try{

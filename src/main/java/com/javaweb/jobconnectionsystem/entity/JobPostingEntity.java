@@ -1,6 +1,7 @@
 package com.javaweb.jobconnectionsystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.javaweb.jobconnectionsystem.enums.LevelEnum;
 import com.javaweb.jobconnectionsystem.enums.ScheduleEnum;
@@ -82,7 +83,8 @@ public class JobPostingEntity extends BaseEntity {
     @JsonManagedReference
     private List<ApplicationEntity> applications;
 
-    @ManyToMany(mappedBy="interestedPosts")
-    @JsonBackReference
+    @ManyToMany(mappedBy = "interestedPosts")
+    @JsonIgnore
     private List<ApplicantEntity> applicants = new ArrayList<>();
+
 }

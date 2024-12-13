@@ -69,13 +69,13 @@ public class CompanyServiceImpl implements CompanyService {
         ResponseDTO responseDTO = new ResponseDTO();
         if (companyDTO.getId() != null) {
             if (!companyRepository.existsById(companyDTO.getId())) {
-                responseDTO.setMessage("Không tìm thấy công ty cần sửa");
+                responseDTO.setMessage("Company not found");
                 return responseDTO;
             }
-            responseDTO.setMessage("Sửa thông tin công ty thành công");
+            responseDTO.setMessage("Update company successfully");
         }
         else {
-            responseDTO.setMessage("Đăng ký công ty mới thành công");
+            responseDTO.setMessage("Register a new company successfully");
         }
         CompanyEntity companyEntity = companyConverter.toCompanyEntity(companyDTO);
         responseDTO.setData(companyEntity);

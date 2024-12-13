@@ -35,10 +35,10 @@ public class RateCompanyServiceImpl implements RateCompanyService {
         CompanyEntity companyEntity = companyRepository.findById(rateCompanyDTO.getCompanyId()).get();
 
         if(rateCompanyDTO.getId() != null || rateCompanyRepository.existsByApplicantAndCompany(applicantEntity, companyEntity)) {
-            responseDTO.setMessage("Cập nhật đánh giá thành công");
+            responseDTO.setMessage("Update rate successfully");
         }
         else {
-            responseDTO.setMessage("Đánh giá thành công");
+            responseDTO.setMessage("Create rate successfully");
         }
 
         if(rateCompanyDTO.getApplicantId() != null) {

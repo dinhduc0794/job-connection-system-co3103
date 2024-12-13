@@ -53,12 +53,12 @@ public class ApplicantEntity extends UserEntity{
     @JsonManagedReference
     private List<RateCompanyEntity> rateCompanyEntities = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "interested_post",
             joinColumns = @JoinColumn(name = "applicant_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "jobposting_id", nullable = false))
-    @JsonManagedReference
     private List<JobPostingEntity> interestedPosts = new ArrayList<>();
+
 
     @OneToMany(mappedBy = "applicant", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference

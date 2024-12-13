@@ -56,13 +56,13 @@ public class ApplicantServiceImpl implements ApplicantService {
         ResponseDTO responseDTO = new ResponseDTO();
         if (applicantDTO.getId() != null) {
             if (!applicantRepository.existsById(applicantDTO.getId())) {
-                responseDTO.setMessage("Không tìm thấy ứng viên cần sửa");
+                responseDTO.setMessage("Applicant not found");
                 return responseDTO;
             }
-            responseDTO.setMessage("Sửa thông tin ứng viên thành công");
+            responseDTO.setMessage("Update applicant successfully");
         }
         else {
-            responseDTO.setMessage("Đăng ký ứng viên mới thành công");
+            responseDTO.setMessage("Register a new applicant successfully");
         }
         ApplicantEntity applicantEntity = applicantConverter.toApplicantEntity(applicantDTO);
         responseDTO.setData(applicantEntity);
@@ -81,16 +81,6 @@ public class ApplicantServiceImpl implements ApplicantService {
     public ApplicantPublicResponse getApplicantResponseById(Long id) {
         ApplicantEntity applicantEntity = applicantRepository.findById(id).get();
         return applicantConverter.toApplicantPublicResponse(applicantEntity);
-    }
-
-    @Override
-    public List<JobPostingSearchResponse> getInterestedPostsByApplicantId(Long id) {
-        List<JobPostingEntity> jobPostings = applicantRepository.findById(id).get().getInterestedPosts();
-        List<JobPostingSearchResponse> jobPostingSearchResponses = new ArrayList<>();
-        for (JobPostingEntity jobPosting : jobPostings) {
-            jobPostingSearchResponses.add(jobPostingConverter.toJobPostingSearchResponse(jobPosting));
-        }
-        return jobPostingSearchResponses;
     }
 
     @Override

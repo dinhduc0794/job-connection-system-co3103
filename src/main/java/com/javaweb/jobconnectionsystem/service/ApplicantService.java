@@ -20,8 +20,6 @@ public interface ApplicantService {
 
     ApplicantPublicResponse getApplicantResponseById(Long id);
 
-    List<JobPostingSearchResponse> getInterestedPostsByApplicantId(Long id);
-
     // Cập nhật thông tin ứng viên
     ApplicantEntity updateApplicant(Long id, ApplicantEntity applicantDetails);
 

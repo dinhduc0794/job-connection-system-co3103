@@ -128,14 +128,14 @@ public class CompanyController {
         List<ApplicationEntity> applications = applicationService.getAllApplicationByJobpostingId(id);
 
         if (applications == null || applications.isEmpty()) {
-            responseDTO.setMessage("application not found");
+            responseDTO.setMessage("Application not found");
             return ResponseEntity.ok(responseDTO);
         } else {
             List<JobpostingApplicationResponse> applicationResponses = applications.stream()
                     .map(JobpostingApplicationResponse::new)
                     .collect(Collectors.toList());
 
-            responseDTO.setMessage("application with jobposting");
+            responseDTO.setMessage("Get application of jobpost successfully");
             responseDTO.setData(applicationResponses);
             return ResponseEntity.ok(responseDTO);
         }
@@ -196,12 +196,13 @@ public class CompanyController {
         ResponseDTO responseDTO = new ResponseDTO();
         try{
             applicationService.deleteApplicationByJobpostingId(id);
-            responseDTO.setMessage("delete succesfully");
-            responseDTO.setDetail(Collections.singletonList("application has been deleted"));
+            responseDTO.setMessage("Delete successfully");
+            responseDTO.setDetail(Collections.singletonList("Application has been deleted"));
             return ResponseEntity.ok(responseDTO);
-        }catch(RuntimeException e ){
-            responseDTO.setMessage("canot delete this application");
-            responseDTO.setDetail(Collections.singletonList("this application is not in status Rejected"));
+        }
+        catch(RuntimeException e ){
+            responseDTO.setMessage("Can not delete this application");
+            responseDTO.setDetail(Collections.singletonList("This application is not in status Rejected"));
             return ResponseEntity.badRequest().body(responseDTO);
         }
     }
