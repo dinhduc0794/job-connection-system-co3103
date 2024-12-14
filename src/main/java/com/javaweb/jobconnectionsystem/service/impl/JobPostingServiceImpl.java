@@ -1,6 +1,7 @@
 package com.javaweb.jobconnectionsystem.service.impl;
 
 import com.javaweb.jobconnectionsystem.converter.JobPostingConverter;
+import com.javaweb.jobconnectionsystem.entity.ApplicantEntity;
 import com.javaweb.jobconnectionsystem.entity.CompanyEntity;
 import com.javaweb.jobconnectionsystem.entity.JobPostingEntity;
 import com.javaweb.jobconnectionsystem.entity.JobTypeEntity;
@@ -11,17 +12,20 @@ import com.javaweb.jobconnectionsystem.model.response.JobPostingSearchResponse;
 import com.javaweb.jobconnectionsystem.model.response.ResponseDTO;
 import com.javaweb.jobconnectionsystem.repository.CompanyRepository;
 import com.javaweb.jobconnectionsystem.repository.JobPostingRepository;
+import com.javaweb.jobconnectionsystem.repository.JobTypeRepository;
 import com.javaweb.jobconnectionsystem.service.JobPostingService;
 import jakarta.persistence.OneToOne;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Transactional
 @Service
 public class JobPostingServiceImpl implements JobPostingService {
     @Autowired
@@ -30,6 +34,7 @@ public class JobPostingServiceImpl implements JobPostingService {
     private JobPostingConverter jobPostingConverter;
     @Autowired
     private CompanyRepository companyRepository;
+    @Autowired
 
     @Override
     public List<JobPostingSearchResponse> getAllJobPostings() {
@@ -125,10 +130,17 @@ public class JobPostingServiceImpl implements JobPostingService {
         return jobPostingRepository.save(jobPosting);
     }
 
-    @Override
     public void deleteJobPostingById(Long id) {
         JobPostingEntity jobPosting = jobPostingRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Job Posting not found"));
+
+        // Xóa liên kết trong bảng `interested_post`
+        for (ApplicantEntity applicant : jobPosting.getApplicants()) {
+            applicant.getInterestedPosts().remove(jobPosting);
+        }
+        jobPosting.getApplicants().clear();
+
+        // Xóa bản ghi trong `jobPosting`
         jobPostingRepository.delete(jobPosting);
     }
 }

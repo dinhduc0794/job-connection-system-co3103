@@ -150,7 +150,7 @@ public class ApplicantConverter {
             }
         }
         // Skill
-        applicantEntity.getSkills().clear();
+        if (applicantEntity.getSkills() != null) applicantEntity.getSkills().clear();
         List<SkillDTO> skills = applicantDTO.getSkills();
         if(skills != null && !skills.isEmpty()) {
             for (SkillDTO skill : skills) {

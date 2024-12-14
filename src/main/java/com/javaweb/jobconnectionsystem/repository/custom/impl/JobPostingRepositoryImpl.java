@@ -109,7 +109,7 @@ public class JobPostingRepositoryImpl implements JobPostingRepositoryCustom {
                             sql.append(" AND jp.min_salary <= " + value + " AND jp.max_salary >= " + value);
                             break;
                         case "companyName":
-                            sql.append(" AND LOWER(co.name) LIKE '%" + value.toString().toLowerCase() + "%'");
+                            sql.append(" AND co.name " + " LIKE '%" + value.toString() + "%'");
                             break;
                         case "minRating":
                                 sql.append(" AND co.rating >= " + value);
