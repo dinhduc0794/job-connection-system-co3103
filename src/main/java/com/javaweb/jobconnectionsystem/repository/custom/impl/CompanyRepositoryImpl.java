@@ -52,8 +52,7 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
         String ward = (String) params.getWard();
 
         if (StringUtils.notEmptyData(province) || StringUtils.notEmptyData(city) || StringUtils.notEmptyData(ward)) {
-            jpql.append(" JOIN co.userWards uw")
-                    .append(" JOIN uw.ward wa")
+            jpql.append(" JOIN co.ward wa")
                     .append(" JOIN wa.city ci")
                     .append(" JOIN ci.province pr");
         }
