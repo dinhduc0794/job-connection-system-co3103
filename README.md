@@ -113,3 +113,9 @@ npm install
 npm start
 ```
 
+## 📶 Website Access
+
+Access the deployed website here:  
+[http://jobconnection.s3-website-ap-southeast-1.amazonaws.com](http://jobconnection.s3-website-ap-southeast-1.amazonaws.com)
+
+---
