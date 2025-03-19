@@ -1,0 +1,62 @@
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+    border: 0.25rem solid #ccc;
+    border-top-color: #3498db;
+    border-radius: 50%;
+    animation: spin 0.75s linear infinite;
+  }
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  
+  /* Đảm bảo sticky hoạt động mượt mà */
+  .sticky {
+    position: sticky;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+  }
+  
+  /* Thêm transition cho các thay đổi */
+  .transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+  }
+  @keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  .animate-gradient {
+    background-size: 200% auto;
+    animation: gradient 3s ease infinite;
+  }
+  
+  /* Hiệu ứng hover cho các container */
+  .shadow-lg {
+    transition: all 0.3s ease;
+  }
+  
+  .shadow-lg:hover {
+    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.1),
+                0 8px 10px -6px rgba(59, 130, 246, 0.1);
+  }
+  .animate-text {
+    animation: text 5s ease infinite;
+  }

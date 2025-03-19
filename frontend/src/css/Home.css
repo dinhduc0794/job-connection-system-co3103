@@ -1,0 +1,13 @@
+
+:root {
+    --firstColor: #B4D4FF;
+    --secondColor: #86B6F6;
+    --thirdColor: #176B87;
+    --themeColor: #EEF5FF;
+  }
+    
+    
+
+#home-container{
+    background-color: #f9f9f9;
+}

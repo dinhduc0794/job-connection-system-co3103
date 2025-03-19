@@ -1,0 +1,87 @@
+/* Container tổng thể */
+#industry-container {
+    width: 70%;
+    /* max-height: 800px; */
+    height: 500px;
+    margin: 0 auto;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+  }
+  
+  /* Header với tiêu đề và nút chuyển trang */
+  #industry-container .industry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  #industry-container .industry-header h2 {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--thirdColor);
+  }
+  
+  /* Nút chuyển trang */
+  #industry-container  .pagination-controls button {
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  #industry-container .pagination-controls button:hover {
+    background-color: var(--secondColor);
+    color: white;
+  }
+  
+  /* Flexbox chứa danh sách ngành nghề */
+  #industry-container .industry-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  /* Mỗi ô ngành nghề */
+  #industry-container .industry-card {
+    width: 20%; /* 4 ô mỗi hàng */
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+  
+  #industry-container .industry-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Logo ngành nghề */
+  #industry-container .industry-logo {
+    font-size: 40px;
+    margin-bottom: 10px;
+  }
+  
+  /* Thông tin ngành nghề */
+  #industry-container  .industry-info h3 {
+    font-size: 18px;
+    color: #333;
+  }
+  
+  #industry-container  .industry-info p {
+    font-size: 14px;
+    color: #666;
+  }
+  

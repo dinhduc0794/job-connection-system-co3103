@@ -1,0 +1,45 @@
+/* Container tổng thể */
+#jobhome-container {
+    width: 70%;
+    max-height: 1200px;
+    margin: 0 auto;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  
+  
+  /* Header với chữ và nút Xem tất cả */
+  #jobhome-container .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0px;
+  }
+  
+  #jobhome-container  .header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--thirdColor);
+  }
+  
+  #jobhome-container .view-all-btn {
+    background-color: var(--secondColor);
+    color: var(--themeColor);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  #jobhome-container .view-all-btn:hover {
+    background-color: var(--thirdColor);
+    color: white;
+  }
+
+
+  /* Danh sách công việc */
+  

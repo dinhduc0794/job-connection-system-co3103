@@ -1,0 +1,186 @@
+/* Tổng thể container */
+#list-company-container {
+  width: 70%; /* Tăng độ rộng để giống giao diện */
+  margin: 0 auto;
+  margin-top: 20px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+/* Header với tiêu đề và nút xem tất cả */
+#list-company-container .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+#list-company-container .header h2 {
+  font-size: 24px;
+  color: var(--thirdColor);
+  margin: 0;
+  font-weight: 800;
+}
+
+#list-company-container .view-all-btn {
+  background-color: var(--secondColor);
+    color: var(--themeColor);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#list-company-container .view-all-btn:hover {
+  background-color: var(--thirdColor);
+  color: white;
+}
+
+/* Flexbox chứa các công ty */
+#list-company-container .company-flexbox-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  background-color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+/* Nút điều hướng */
+#list-company-container .carousel-control {
+  background-color: white;
+  color: black;
+  border: 1px solid #FEF3E2;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#list-company-container .carousel-control:hover {
+  background-color: var(--secondColor);
+  color: white;
+}
+
+#list-company-container .carousel-control.left {
+  left: -17px;
+}
+
+#list-company-container .carousel-control.right {
+  right: -17px;
+}
+
+/* Ô công ty */
+#list-company-container .company-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Hiển thị 3 cột */
+  gap: 15px; /* Khoảng cách giữa các ô */
+  width: 100%;
+}
+
+/* Ô công ty */
+#list-company-container .company-card {
+  display: flex;
+  flex-direction: column; /* Chia thành 2 phần theo chiều dọc */
+  background-color: #fff;
+  border: 1px solid #dfe3e8;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+  cursor: pointer;
+  height: 135px;
+}
+
+#list-company-container .company-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Phần trên của card (logo + thông tin) */
+#list-company-container .card-top {
+  display: flex; /* Chia thành 2 phần: logo và thông tin */
+  flex: 0 0 80%; /* Chiếm 80% chiều cao */
+}
+
+/* Logo công ty */
+#list-company-container .company-logo {
+  flex: 0 0 30%; /* Chiếm 30% chiều rộng của phần trên */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44px;
+  background-color: white;
+  border-radius: 10px;
+  border-color: #f9f9f9;
+}
+
+/* Thông tin công ty */
+#list-company-container .company-info {
+  flex: 1; /* Chiếm 70% chiều rộng còn lại */
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  margin-top: 15px;
+  padding-left: 10px;
+}
+
+#list-company-container .company-info h3 {
+  font-size: 16px;
+  margin: 0;
+  color: #333;
+  font-weight: bold;
+}
+
+#list-company-container .company-info p {
+  margin: 5px 0 0 0;
+  font-size: 12px;
+  color: #666;
+}
+
+/* Phần dưới của card (số lượng việc làm) */
+#list-company-container .card-bottom {
+  flex: 0 0 20%; /* Chiếm 20% chiều cao */
+  display: flex;
+  /* align-items: center;
+  justify-content: center; */
+  padding-left: 30px;
+  font-size: 14px;
+  color: #06060663;
+  font-weight: bold;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+
+/* Dấu chấm phân trang */
+#list-company-container .pagination-dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+#list-company-container .pagination-dots .dot {
+  height: 10px;
+  width: 10px;
+  margin: 0 4px;
+  background-color: #FEF3E2;
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#list-company-container .pagination-dots .dot.active {
+  background-color: var(--secondColor);
+}

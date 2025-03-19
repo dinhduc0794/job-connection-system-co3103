@@ -1,0 +1,73 @@
+#company-profile-container {
+    display: flex;
+    width: 70%;
+    margin: 0 auto;
+    margin-top: 100px;
+    /* padding: 20px; */
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  #company-profile-container .sidebar {
+    width: 200px;
+    background-color: #f4f4f4;
+    padding: 20px;
+    z-index: 0;
+  }
+  
+  #company-profile-container .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  #company-profile-container  .sidebar li {
+    margin: 15px 0;
+    cursor: pointer;
+    padding: 5px 0;
+    position: relative;
+    color: #333;
+    transition: color 0.3s;
+  }
+  
+  #company-profile-container .sidebar li:hover {
+    color: var(--thirdColor);
+  }
+  
+  #company-profile-container .sidebar li::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--thirdColor);
+    transition: width 0.3s;
+  }
+  
+  #company-profile-container .sidebar li:hover::after {
+    width: 100%;
+  }
+  
+  #company-profile-container .sidebar .active {
+    color: var(--thirdColor);
+    font-weight: bold;
+  }
+  
+  #company-profile-container .sidebar .active::after {
+    width: 100%;
+  }
+  
+  #company-profile-container  .content {
+    flex: 1;
+    /* padding: 20px; */
+    background-color: #fff;
+  }
+  
+  #company-profile-container  .content h2 {
+    font-size: 24px;
+  }
+
+
+  
+
+  

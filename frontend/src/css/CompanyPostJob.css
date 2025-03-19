@@ -1,0 +1,162 @@
+/* Dang bai tuyen dung */
+
+.post-job {
+  background-color: #f9f9f9;
+  padding: 40px;
+  /* border-radius: 8px; */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.post-job h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.post-job .form-group {
+  margin-bottom: 20px;
+  justify-content: space-between; /* Đảm bảo label và nút được căn chỉnh theo chiều ngang */
+  align-items: center;
+}
+
+.post-job label {
+  font-size: 14px;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.post-job input,
+.post-job select,
+.post-job textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+  transition: border-color 0.3s;
+}
+
+.post-job input:focus,
+.post-job select:focus,
+.post-job textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.post-job textarea {
+  resize: none;
+}
+
+.post-job .post-btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.post-job .post-btn:hover {
+  background-color: #0056b3;
+}
+
+/* CSS cho kỹ năng */
+.post-job .skills-container {
+  display: block;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.post-job .skill-row {
+  display: flex;
+  align-items: center;
+}
+
+.post-job .add-skill-btn {
+  float: right; /* Đẩy nút về bên phải */
+  padding: 6px 12px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.post-job .add-skill-btn:hover {
+  background-color: #218838;
+}
+
+.post-job .remove-btn {
+  margin-left: 2%;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 5%;
+}
+
+.post-job .remove-btn:hover {
+  background-color: #c82333;
+}
+.post-job .skills-container {
+  clear: both; /* Đảm bảo các phần tử tiếp theo không bị ảnh hưởng */
+}
+
+.post-job .popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.post-job .popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.post-job .popup-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.post-job .cancel-btn,
+.post-job .confirm-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.post-job.cancel-btn {
+  background: #f44336;
+  color: white;
+}
+
+.post-job.confirm-btn {
+  background: #4caf50;
+  color: white;
+}
+
+.post-job .select-skills {
+  width: 93%;
+}

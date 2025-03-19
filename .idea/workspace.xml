@@ -1,0 +1,715 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="job-connection-system:war exploded" />
+    </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="678763f3-17b0-493a-9a18-f23d4c091929" name="Changes" comment="" />
+    <list id="c6865803-c166-40a4-a66b-b88b8e996366" name="Changes by Lenovo" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Class" />
+        <option value="Interface" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/model/dto/CompanyDTO.java" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <hideBySeverity>
+      <option value="300" />
+    </hideBySeverity>
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2oPb2tPgzzRXPYwoHEjPVTY6JYt" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="abbreviatePackageNames" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="false" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.JobConnectionSystemApplication.executor": "Run",
+    "Tomcat Server.Tomcat 8.5.34.executor": "Run",
+    "git-widget-placeholder": "backend-dinhduc",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/devspace/java/job-connection-system",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql",
+      "postgresql"
+    ]
+  }
+}]]></component>
+  <component name="RunManager" selected="Spring Boot.JobConnectionSystemApplication">
+    <configuration name="JobConnectionSystemApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="job-connection-system" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.javaweb.jobconnectionsystem.JobConnectionSystemApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Tomcat 8.5.34" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 8.5.34" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment>
+        <artifact name="job-connection-system:war exploded">
+          <settings>
+            <option name="CONTEXT_PATH" value="" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="c2b0112e-3ad4-462e-a2a4-43b7cba1104c" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="64422" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Profile">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="job-connection-system:war exploded" />
+        </option>
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Spring Boot.JobConnectionSystemApplication" />
+      <item itemvalue="Tomcat Server.Tomcat 8.5.34" />
+    </list>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
+        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="678763f3-17b0-493a-9a18-f23d4c091929" name="Changes" comment="" />
+      <created>1730773954741</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1730773954741</updated>
+      <workItem from="1730773955585" duration="16636000" />
+      <workItem from="1731065107714" duration="4021000" />
+      <workItem from="1731069240235" duration="10709000" />
+      <workItem from="1731080170132" duration="1581000" />
+      <workItem from="1731092016240" duration="2000" />
+      <workItem from="1731129056304" duration="43000" />
+      <workItem from="1731404109846" duration="2767000" />
+      <workItem from="1731464842033" duration="5206000" />
+      <workItem from="1731489775175" duration="1000" />
+      <workItem from="1731510861149" duration="33000" />
+      <workItem from="1731604805690" duration="5720000" />
+      <workItem from="1731637927899" duration="44465000" />
+      <workItem from="1731722377642" duration="3322000" />
+      <workItem from="1731806328716" duration="25000" />
+      <workItem from="1731812388987" duration="4583000" />
+      <workItem from="1731921192570" duration="19000" />
+      <workItem from="1731977326864" duration="13770000" />
+      <workItem from="1731991217255" duration="1651000" />
+      <workItem from="1731992904737" duration="34750000" />
+      <workItem from="1732079243719" duration="9530000" />
+      <workItem from="1732090012028" duration="15083000" />
+      <workItem from="1732105432065" duration="3517000" />
+      <workItem from="1732170702652" duration="243000" />
+      <workItem from="1732241368941" duration="769000" />
+      <workItem from="1732242192129" duration="18618000" />
+      <workItem from="1732331177200" duration="341000" />
+      <workItem from="1732335804492" duration="457000" />
+      <workItem from="1732348353531" duration="289000" />
+      <workItem from="1732452019576" duration="7689000" />
+      <workItem from="1732502033438" duration="38156000" />
+      <workItem from="1732631136984" duration="1564000" />
+      <workItem from="1732689079690" duration="14357000" />
+      <workItem from="1732800553668" duration="3639000" />
+      <workItem from="1732811200390" duration="92000" />
+      <workItem from="1732816552406" duration="3526000" />
+      <workItem from="1732860166514" duration="1018000" />
+      <workItem from="1732861227221" duration="26443000" />
+      <workItem from="1732900483201" duration="14523000" />
+      <workItem from="1732991971949" duration="3417000" />
+      <workItem from="1733052156637" duration="728000" />
+      <workItem from="1733098584944" duration="21000" />
+      <workItem from="1733149365922" duration="662000" />
+      <workItem from="1733152084609" duration="3000" />
+      <workItem from="1733152093170" duration="21000" />
+      <workItem from="1733152146201" duration="36000" />
+      <workItem from="1733152229421" duration="12000" />
+      <workItem from="1733152593061" duration="5000" />
+      <workItem from="1733196014121" duration="593000" />
+      <workItem from="1733258116793" duration="991000" />
+      <workItem from="1733290219085" duration="16855000" />
+      <workItem from="1733403772415" duration="9000" />
+      <workItem from="1733405674507" duration="189000" />
+      <workItem from="1733475263099" duration="16000" />
+      <workItem from="1733475421232" duration="995000" />
+      <workItem from="1733578671675" duration="670000" />
+      <workItem from="1733630975682" duration="6354000" />
+      <workItem from="1733669273602" duration="12719000" />
+      <workItem from="1733733378102" duration="14960000" />
+      <workItem from="1733755226036" duration="602000" />
+      <workItem from="1733757661316" duration="1584000" />
+      <workItem from="1733793749351" duration="45626000" />
+      <workItem from="1733845396651" duration="5865000" />
+      <workItem from="1733876193964" duration="3734000" />
+      <workItem from="1733986885123" duration="5338000" />
+      <workItem from="1734015709719" duration="57949000" />
+      <workItem from="1734595704175" duration="1268000" />
+      <workItem from="1734788016295" duration="10000" />
+      <workItem from="1735186721879" duration="789000" />
+      <workItem from="1735547026788" duration="1707000" />
+      <workItem from="1735672587723" duration="3680000" />
+      <workItem from="1736232321614" duration="656000" />
+      <workItem from="1736579425514" duration="86000" />
+      <workItem from="1736580636038" duration="24000" />
+      <workItem from="1736588590595" duration="2160000" />
+      <workItem from="1740186668480" duration="1272000" />
+      <workItem from="1742397741371" duration="1168000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/service/ProvinceService.java</url>
+          <line>10</line>
+          <properties class="com.javaweb.jobconnectionsystem.service.ProvinceService" method="addProvince">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/service/JobPostingService.java</url>
+          <line>19</line>
+          <properties class="com.javaweb.jobconnectionsystem.service.JobPostingService" method="getAllJobPostings">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/controller/ApplicantController.java</url>
+          <line>70</line>
+          <properties class="com.javaweb.jobconnectionsystem.controller.ApplicantController" method="saveApplicant">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="97" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/service/SkillService.java</url>
+          <line>10</line>
+          <properties class="com.javaweb.jobconnectionsystem.service.SkillService" method="getAllSkills">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="102" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/service/CompanyService.java</url>
+          <line>13</line>
+          <properties class="com.javaweb.jobconnectionsystem.service.CompanyService" method="saveCompany">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="286" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/controller/auth/LoginController.java</url>
+          <line>35</line>
+          <properties class="com.javaweb.jobconnectionsystem.controller.auth.LoginController" method="loginHere">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="327" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/service/RateCompanyService.java</url>
+          <line>10</line>
+          <properties class="com.javaweb.jobconnectionsystem.service.RateCompanyService" method="deleteRate">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="332" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/controller/ApplicantController.java</url>
+          <line>98</line>
+          <properties class="com.javaweb.jobconnectionsystem.controller.ApplicantController" method="deleteApplicant">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="451" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/service/impl/UserServiceImpl.java</url>
+          <line>33</line>
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/service/impl/UserServiceImpl.java</url>
+          <line>40</line>
+          <option name="timeStamp" value="38" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/JobPostingConverter.java</url>
+          <line>79</line>
+          <option name="timeStamp" value="42" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/JobPostingConverter.java</url>
+          <line>83</line>
+          <option name="timeStamp" value="43" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/JobPostingConverter.java</url>
+          <line>88</line>
+          <option name="timeStamp" value="44" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/JobPostingConverter.java</url>
+          <line>97</line>
+          <option name="timeStamp" value="45" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/JobPostingConverter.java</url>
+          <line>108</line>
+          <option name="timeStamp" value="46" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/JobPostingConverter.java</url>
+          <line>122</line>
+          <option name="timeStamp" value="47" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/JobPostingConverter.java</url>
+          <line>145</line>
+          <option name="timeStamp" value="48" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/JobPostingConverter.java</url>
+          <line>132</line>
+          <option name="timeStamp" value="49" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/controller/ApplicantController.java</url>
+          <line>86</line>
+          <option name="timeStamp" value="67" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/controller/ApplicantController.java</url>
+          <line>76</line>
+          <option name="timeStamp" value="93" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/controller/ApplicantController.java</url>
+          <line>82</line>
+          <option name="timeStamp" value="95" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/controller/auth/RegisterController.java</url>
+          <line>33</line>
+          <option name="timeStamp" value="105" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/controller/auth/RegisterController.java</url>
+          <line>35</line>
+          <option name="timeStamp" value="106" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/controller/ApplicantController.java</url>
+          <line>73</line>
+          <option name="timeStamp" value="109" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/controller/ApplicantController.java</url>
+          <line>72</line>
+          <option name="timeStamp" value="110" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/UserConverter.java</url>
+          <line>32</line>
+          <option name="timeStamp" value="148" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/UserConverter.java</url>
+          <line>43</line>
+          <option name="timeStamp" value="149" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/UserConverter.java</url>
+          <line>48</line>
+          <option name="timeStamp" value="150" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/UserConverter.java</url>
+          <line>55</line>
+          <option name="timeStamp" value="151" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/UserConverter.java</url>
+          <line>62</line>
+          <option name="timeStamp" value="152" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/UserConverter.java</url>
+          <line>68</line>
+          <option name="timeStamp" value="153" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/UserConverter.java</url>
+          <line>70</line>
+          <option name="timeStamp" value="154" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/UserConverter.java</url>
+          <line>66</line>
+          <option name="timeStamp" value="155" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/UserConverter.java</url>
+          <line>73</line>
+          <option name="timeStamp" value="156" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/UserConverter.java</url>
+          <line>25</line>
+          <option name="timeStamp" value="160" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/UserConverter.java</url>
+          <line>35</line>
+          <option name="timeStamp" value="161" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/UserConverter.java</url>
+          <line>36</line>
+          <option name="timeStamp" value="162" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/UserConverter.java</url>
+          <line>37</line>
+          <option name="timeStamp" value="163" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/UserConverter.java</url>
+          <line>23</line>
+          <option name="timeStamp" value="164" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/UserConverter.java</url>
+          <line>24</line>
+          <option name="timeStamp" value="165" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/controller/BlockUserController.java</url>
+          <line>46</line>
+          <option name="timeStamp" value="181" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/controller/BlockUserController.java</url>
+          <line>45</line>
+          <option name="timeStamp" value="182" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/controller/CompanyController.java</url>
+          <line>64</line>
+          <option name="timeStamp" value="195" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/service/impl/CompanyServiceImpl.java</url>
+          <line>55</line>
+          <option name="timeStamp" value="197" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/CompanyConverter.java</url>
+          <line>193</line>
+          <option name="timeStamp" value="208" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/CompanyConverter.java</url>
+          <line>195</line>
+          <option name="timeStamp" value="220" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/CompanyConverter.java</url>
+          <line>221</line>
+          <option name="timeStamp" value="221" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/CompanyConverter.java</url>
+          <line>211</line>
+          <option name="timeStamp" value="228" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/CompanyConverter.java</url>
+          <line>218</line>
+          <option name="timeStamp" value="229" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/controller/CompanyController.java</url>
+          <line>66</line>
+          <option name="timeStamp" value="232" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/controller/CompanyController.java</url>
+          <line>68</line>
+          <option name="timeStamp" value="233" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/CompanyConverter.java</url>
+          <line>204</line>
+          <option name="timeStamp" value="234" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/controller/auth/LoginController.java</url>
+          <line>49</line>
+          <option name="timeStamp" value="328" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/controller/auth/LoginController.java</url>
+          <line>50</line>
+          <option name="timeStamp" value="329" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/controller/auth/LoginController.java</url>
+          <line>51</line>
+          <option name="timeStamp" value="330" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/controller/auth/LoginController.java</url>
+          <line>52</line>
+          <option name="timeStamp" value="331" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/CompanyConverter.java</url>
+          <line>106</line>
+          <option name="timeStamp" value="333" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/CompanyConverter.java</url>
+          <line>108</line>
+          <option name="timeStamp" value="334" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/CompanyConverter.java</url>
+          <line>131</line>
+          <option name="timeStamp" value="335" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/CompanyConverter.java</url>
+          <line>145</line>
+          <option name="timeStamp" value="336" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/CompanyConverter.java</url>
+          <line>162</line>
+          <option name="timeStamp" value="337" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/CompanyConverter.java</url>
+          <line>143</line>
+          <option name="timeStamp" value="338" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/CompanyConverter.java</url>
+          <line>142</line>
+          <option name="timeStamp" value="339" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/CompanyConverter.java</url>
+          <line>128</line>
+          <option name="timeStamp" value="341" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/converter/CompanyConverter.java</url>
+          <line>129</line>
+          <option name="timeStamp" value="342" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/service/impl/ApplicantServiceImpl.java</url>
+          <line>101</line>
+          <option name="timeStamp" value="442" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/service/impl/ApplicantServiceImpl.java</url>
+          <line>103</line>
+          <option name="timeStamp" value="443" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/service/impl/ApplicantServiceImpl.java</url>
+          <line>104</line>
+          <option name="timeStamp" value="444" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/controller/CompanyController.java</url>
+          <line>43</line>
+          <option name="timeStamp" value="463" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/controller/CompanyController.java</url>
+          <line>45</line>
+          <option name="timeStamp" value="464" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/service/impl/CompanyServiceImpl.java</url>
+          <line>38</line>
+          <option name="timeStamp" value="465" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/service/impl/CompanyServiceImpl.java</url>
+          <line>42</line>
+          <option name="timeStamp" value="467" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/javaweb/jobconnectionsystem/service/impl/CompanyServiceImpl.java</url>
+          <line>44</line>
+          <option name="timeStamp" value="468" />
+        </line-breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.StackOverflowError" package="java.lang" />
+          <option name="timeStamp" value="50" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

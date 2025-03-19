@@ -1,0 +1,56 @@
+.company-job-management-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+  }
+  
+  .company-job-management-container  h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .company-job-management-container  .job-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .company-job-management-container .job-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+  }
+  
+  .company-job-management-container .job-item:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .company-job-management-container .job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .company-job-management-container .job-title {
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .company-job-management-container  .job-schedule {
+    background-color: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+  }
+  
+  .company-job-management-container .job-location,
+  .company-job-management-container .job-salary,
+  .company-job-management-container .job-skills {
+    margin-top: 8px;
+    color: #666;
+  }
+  

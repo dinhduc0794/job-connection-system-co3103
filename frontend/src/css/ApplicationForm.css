@@ -1,0 +1,198 @@
+/* Overlay for the pop-up */
+.popup-apply-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Pop-up content container */
+.popup-apply-overlay .popup-content {
+  background: white;
+  padding: 40px;
+  width: 650px;
+  max-height: 700px;
+  overflow-y: auto; /* Enable vertical scrolling if content is too long */
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  position: relative;
+  /* font-family: Arial, sans-serif; */
+}
+
+/* Close button */
+.popup-apply-overlay .close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+}
+
+.popup-apply-overlay .close-btn:hover {
+  color: #333;
+}
+
+/* Informational text for required fields */
+.popup-apply-overlay .required-info {
+    font-size: 8px;
+    color: red;
+    margin-bottom: 20px;
+    text-align: right;
+    top: 70px;
+    right: 20px;
+    position: absolute;
+  }
+  
+  /* Red asterisks for required fields */
+  .popup-apply-overlay  label .required {
+    color: red;
+    font-weight: bold;
+  }
+  /* Red asterisk in the required-info text */
+  .popup-apply-overlay .required-info .asterisk {
+    color: rgb(237, 67, 67);
+  }
+  
+
+/* Pop-up title */
+.popup-apply-overlay .popup-content h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 28px;
+  color: #333;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Required information note */
+.popup-apply-overlay .popup-content .required-info {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Labels */
+.popup-apply-overlay .popup-content form label {
+  display: block;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-weight: bold;
+}
+
+.popup-apply-overlay .intro {
+        font-size: 12px;
+        font-weight:lighter;
+    }
+
+/* Larger file upload field */
+.popup-apply-overlay input[type="file"] {
+  width: 100%;
+  padding: 40px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 15px;
+  margin-bottom: 30px;
+}
+
+/* Input fields */
+.popup-apply-overlay input[type="text"],
+.popup-apply-overlay input[type="email"],
+.popup-apply-overlay input[type="tel"],
+.popup-apply-overlay textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  /* margin-left: 5px; */
+  transition: border-color 0.3s ease;
+}
+
+.popup-apply-overlay textarea {
+    height:200px;
+} 
+
+.popup-apply-overlay input[type="text"]:focus,
+.popup-apply-overlay input[type="email"]:focus,
+.popup-apply-overlay input[type="tel"]:focus,
+.popup-apply-overlay textarea:focus {
+  border-color: #42b7ce;
+  outline: none;
+}
+
+/* Error messages */
+.popup-apply-overlay .error {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+  margin-bottom: 15px; /* Optional: to keep distance from the next label */
+  font-weight: normal;
+}
+
+/* Red asterisks for required fields */
+.popup-apply-overlay label span.required {
+  color: red;
+  font-weight: bold;
+}
+
+/* Buttons */
+.popup-apply-overlay .button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+
+.popup-apply-overlay .cancel-btn,
+.popup-apply-overlay .submit-btn {
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.popup-apply-overlay .cancel-btn {
+  background-color: #ddd;
+  border: none;
+  color: #555;
+}
+
+.popup-apply-overlay .submit-btn {
+  background-color: var(--secondColor);
+  color: white;
+  border: none;
+}
+
+.popup-apply-overlay .submit-btn:hover {
+  background-color: var(--thirdColor);
+}
+
+.popup-apply-overlay .cancel-btn:hover {
+  background-color: #bbb;
+}
+
+/* Adjust spacing between form fields for better aesthetics */
+.popup-apply-overlay .popup-content form label + input,
+.popup-apply-overlay .popup-content form label + textarea {
+  margin-top: 5px;
+}
+
+.popup-apply-overlay .popup-content label,
+.popup-apply-overlay .popup-content .required-info {
+  margin-bottom: 15px;
+}

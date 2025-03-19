@@ -1,0 +1,41 @@
+/* Tổng thể trang loading */
+#loading-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Chiều cao toàn màn hình */
+    background-color: white; /* Màu nền nhạt */
+}
+
+/* Container của loading */
+#loading-page .loading-container {
+    display: flex;
+    flex-direction: column; /* Sắp xếp ảnh và chữ theo chiều dọc */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Hiệu chỉnh kích thước ảnh gif */
+#loading-page .loading-gif {
+    width: 800px; /* Bạn có thể điều chỉnh kích thước này */
+    height: auto; /* Điều chỉnh chiều cao theo tỷ lệ */
+}
+
+/* Text hiển thị */
+#loading-page .loading-text {
+    font-size: 18px;
+    color: #5a5a5a;
+    font-weight: 500;
+    animation: pulse 1.5s infinite;
+    text-align: center; /* Căn giữa chữ */
+}
+
+/* Hiệu ứng "nhấp nháy" chữ */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}

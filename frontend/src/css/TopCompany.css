@@ -1,0 +1,200 @@
+/* Container tổng thể của các công ty */
+.container-wrapper {
+  width: 100%;
+  max-height: none; 
+  background-image: linear-gradient(45deg, var(--thirdColor), var(--themeColor));
+  display: flex;
+  flex-direction: column; /* Đảm bảo các phần tử con xếp theo chiều dọc */
+  align-items: center; /* Canh giữa nội dung nếu cần */
+  gap: 20px; /* Khoảng cách giữa các phần tử con */
+  box-sizing: border-box; /* Đảm bảo padding không làm ảnh hưởng đến width */
+  margin-top: 80px;
+}
+
+#hometopcompany-container {
+    width: 70%;
+    max-height: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: transparent;
+    backdrop-filter: blur(10px); /* Hiệu ứng làm mờ nền phía sau */
+    
+  }
+  
+  #hometopcompany-container  .section-title {
+    font-size: 28px;
+    font-weight: 800;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: var(--themeColor);
+  }
+  
+  /* Danh sách công ty */
+  #hometopcompany-container  .topcompany-list {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Tự động xuống dòng nếu không đủ chỗ */
+    gap: 20px;
+  }
+  
+  /* Ô công ty */
+  #hometopcompany-container  .topcompany-card {
+    display: flex;
+    flex-direction: column; /* Sắp xếp nội dung theo cột */
+    justify-content: space-between; /* Khoảng cách giữa logo và tên */
+    align-items: center; /* Canh giữa nội dung theo chiều ngang */
+    width: 18%; /* Đảm bảo thẻ con chiếm 18% chiều rộng cha */
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    height: 250px; /* Đặt chiều cao cố định để logo chiếm đúng tỷ lệ */
+    box-sizing: border-box;
+  }
+  
+  #hometopcompany-container  .topcompany-card:hover {
+    transform: translateY(-5px); /* Hiệu ứng nhấn nổi khi di chuột qua */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  #hometopcompany-container .logo-container {
+    flex: 0 0 70%; /* Chiếm 70% chiều cao thẻ */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Đảm bảo logo không vượt khỏi vùng chứa */
+    width: 100%;
+}
+  
+  /* Ảnh logo công ty */
+  #hometopcompany-container  .topcompany-logo {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 10px;
+  }
+
+  #hometopcompany-container .name-container {
+    flex: 0 0 30%; /* Chiếm 30% chiều cao thẻ */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+  /* Tên công ty */
+  #hometopcompany-container  .topcompany-name {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+    overflow: hidden; /* Ẩn phần dư thừa */
+    text-overflow: ellipsis; /* Thêm '...' khi có overflow */
+  }
+
+  /* Tổng thể container cho phần carousel tin tức */
+  #hometopcompany-container .news-carousel-container {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    padding: 0px;
+    position: relative;
+    z-index: 0;
+    box-sizing: border-box;
+    border-radius: 20px;
+  }
+  /* Đảm bảo container của pagination dot nằm bên dưới và căn giữa */
+  #hometopcompany-container  .pagination-dots {
+    display: flex;
+    justify-content: center; /* Đặt dot vào trung tâm */
+    align-items: center;
+    position: absolute; /* Vị trí tuyệt đối để định vị */
+    bottom: 15px; /* Cách đáy của news card một khoảng */
+    left: 50%; /* Di chuyển sang giữa theo chiều ngang */
+    transform: translateX(-50%); /* Căn giữa theo chiều ngang */
+    z-index: 2; /* Đảm bảo nằm trên các nội dung khác */
+  }
+
+  /* Styling cho các dot */
+  #hometopcompany-container  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: gray;
+    margin: 0 5px;
+    cursor: pointer;
+    /* transition: background-color 0.3s ease-in-out; */
+    transition: 0.5s;
+  }
+  #hometopcompany-container  .dot:hover {
+    background-color: white; /* Dot hiện tại được làm nổi bật */
+    width: 20px;
+    border-radius: 30%;
+  }
+
+  #hometopcompany-container  .dot.active {
+    background-color: white; /* Dot hiện tại được làm nổi bật */
+    width: 20px;
+    border-radius: 30%;
+  }
+  /* Ô chứa tin tức hiện tại */
+  #hometopcompany-container  .news-card {
+    width: 100%;
+    padding: 200px;
+    background-color: transparent;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    height: 520px;
+    z-index: 0;
+    transition: 1s;
+  }
+
+
+  .news-card .background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Màu đen mờ, bạn có thể thay đổi opacity */
+    z-index: 1;
+    border-radius: 20px;
+}
+  
+  #hometopcompany-container  .news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Tiêu đề và nội dung tin tức */
+  #hometopcompany-container  .news-card h2 {
+    font-size: 30px;
+    margin-bottom: 10px;
+    color: #ffffff;
+    position: relative;
+    font-weight: bold;
+    z-index: 2; /* Đảm bảo nội dung nằm trên lớp phủ */
+  }
+  
+  #hometopcompany-container  .news-card p {
+    font-size: 16px;
+    color: #ffffff;
+    position: relative;
+    opacity: 0.6;
+    z-index: 2; /* Đảm bảo nội dung nằm trên lớp phủ */
+  }
+
+  #hometopcompany-container .top-company-home {
+    margin-top: 20px;
+  }
+  
+  

@@ -1,0 +1,116 @@
+#applicant-profile-container {
+    display: flex;
+    /* font-family: Arial, sans-serif; */
+    width: 70%;
+    margin: 0 auto;
+    margin-top: 100px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  #applicant-profile-container .sidebar {
+    width: 200px;
+    background-color: #f4f4f4;
+    padding: 20px;
+  }
+  
+  #applicant-profile-container .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  #applicant-profile-container  .sidebar li {
+    margin: 15px 0;
+    cursor: pointer;
+    padding: 5px 0;
+    position: relative;
+    color: #333;
+    transition: color 0.3s;
+  }
+  
+  #applicant-profile-container .sidebar li:hover {
+    color: #42b7ce;
+  }
+  
+  #applicant-profile-container .sidebar li::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background-color: #42b7ce;
+    transition: width 0.3s;
+  }
+  
+  #applicant-profile-container .sidebar li:hover::after {
+    width: 100%;
+  }
+  
+  #applicant-profile-container .sidebar .active {
+    color: #42b7ce;
+    font-weight: bold;
+  }
+  
+  #applicant-profile-container .sidebar .active::after {
+    width: 100%;
+  }
+
+
+  
+  
+  #applicant-profile-container  .content {
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+  }
+  
+  #applicant-profile-container  .content h2 {
+    font-size: 24px;
+  }
+
+
+  #applicant-profile-container.content-info {
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+  }
+  
+  #applicant-profile-container .content-info h2 {
+    margin-bottom: 10px;
+    font-size: 24px;
+  }
+  
+  #applicant-profile-container .content-info h3 {
+    font-size: 18px;
+    color: #333;
+    margin-top: 20px;
+  }
+
+  #applicant-profile-container .content-info label,
+  #applicant-profile-container .change-pass label {
+    display: block;
+    font-weight: bold;
+    margin-top: 40px;
+  }
+
+  #applicant-profile-container .content-info input,
+  #applicant-profile-container .change-pass input {
+    width: 100%;
+    padding: 15px;
+    margin-top: 7px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  
+  #applicant-profile-container .update-btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
