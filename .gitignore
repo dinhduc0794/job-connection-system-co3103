@@ -1,1 +1,72 @@
+# === Java / Spring Boot ===
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+*.iml
+*.ipr
+*.iws
+*.h2.db
+*.mv.db
+*.sqlite
+*.db
+
+# IDE
 .idea/
+*.swp
+*.swo
+*.bak
+
+# Maven
+.mvn/
+!/.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Logs
+logs/
+*.log
+log/
+
+# Temp files
+tmp/
+temp/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# === NodeJS / React ===
+node_modules/
+dist/
+build/
+.env
+.env.local
+.env.*.local
+
+# Yarn
+.yarn/
+.pnp.*
+.yarnrc.yml
+
+# NPM logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Vite / CRA build artifacts
+.vite/
+.cache/
+coverage/
+
+# Test coverage
+coverage/
+
+# === Misc ===
+/frontend/.idea/
+backend/.idea/
