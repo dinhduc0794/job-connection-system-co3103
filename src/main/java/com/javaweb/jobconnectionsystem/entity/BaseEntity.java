@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
-public class BaseEntity {
+public abstract class BaseEntity {
     @Column(name = "created_at", updatable = false) // Chỉ thiết lập khi tạo mới
     private LocalDateTime createdAt;
 
