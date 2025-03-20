@@ -91,7 +91,7 @@ Watch the demo video here:
 
 | Role       | Username | Password   |
 |------------|----------|------------|
-| Company    | user31   | password   |
+| Company    | user31   | password31 |
 | Job Seeker | user1    | password1  |
 
 ---
