@@ -32,18 +32,6 @@ GoodJob is a job connection system developed for the **Software Engineering Caps
 - Axios for HTTP requests
 
 ---
-## 🚀 Use case diagram  
-![system_architecture](https://github.com/user-attachments/assets/3fa0d0b8-04f2-4b53-b3ce-36e01c069c9e)
-
-
-
----
-
-## 🚀 System architecture
-![job-connection-system drawio](https://github.com/user-attachments/assets/454c36cc-ef4e-415d-83a1-df2b3bbdf6e6)
-
-
----
 
 ## 👥 Team Roles and Responsibilities
 
@@ -100,16 +88,27 @@ Watch the demo video here:
 [![GoodJob Demo](https://img.youtube.com/vi/-fozVZbGKv8/0.jpg)](https://youtube.com/watch?v=-fozVZbGKv8)
 
 ---
+## 🚀 Use case diagram  
+![system_architecture](https://github.com/user-attachments/assets/3fa0d0b8-04f2-4b53-b3ce-36e01c069c9e)
 
-## 🧪 Demo Accounts
 
-| Role       | Username | Password   |
-|------------|----------|------------|
-| Company    | user31   | password31 |
-| Job Seeker | user1    | password1  |
 
 ---
 
+## 🚀 Enhanced entity–relationship diagram (EERD)
+![abc drawio](https://github.com/user-attachments/assets/79d773d7-7f57-495a-9cb6-3b919b561414)
+
+---
+## 🚀 Relational Schema
+![acd drawio](https://github.com/user-attachments/assets/ab1ae25f-7ca3-432e-b0e1-5ca7c64ed0eb)
+
+---
+
+## 🚀 System architecture
+![job-connection-system drawio](https://github.com/user-attachments/assets/454c36cc-ef4e-415d-83a1-df2b3bbdf6e6)
+
+
+---
 
 ## 🛠️ Setup Instructions
 
@@ -132,6 +131,16 @@ npm start
 Access the deployed website here:  
 [http://jobconnection.s3-website-ap-southeast-1.amazonaws.com](http://jobconnection.s3-website-ap-southeast-1.amazonaws.com)
 
+---
+
+## 🧪 Demo Accounts
+
+| Role       | Username | Password   |
+|------------|----------|------------|
+| Company    | user31   | password31 |
+| Job Seeker | user1    | password1  |
+
+---
 
 ## 🚀 Some images
 ![Screenshot 2024-12-13 233825 (1)](https://github.com/user-attachments/assets/9b1667c3-05db-43a8-ba04-50c8a464f623)
