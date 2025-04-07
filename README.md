@@ -96,7 +96,8 @@ Watch the demo video here:
 ---
 
 ## 🚀 Enhanced entity–relationship diagram (EERD)
-![abc drawio](https://github.com/user-attachments/assets/79d773d7-7f57-495a-9cb6-3b919b561414)
+![erd drawio](https://github.com/user-attachments/assets/4f90a367-c458-4db1-a348-b689b4140e90)
+
 
 ---
 ## 🚀 Relational Schema
