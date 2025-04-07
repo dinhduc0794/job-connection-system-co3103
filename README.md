@@ -4,8 +4,10 @@ A full-stack job portal platform for job posting and application across various 
 
 > **Capstone Project** | Team Size: 5  
 > **Timeline**: 10/2024 - 12/2024
+
 ![trangchu1](https://github.com/user-attachments/assets/1f7d3a5f-44c5-4d7c-b3da-0d494e6e04bb)
 ![searchjob](https://github.com/user-attachments/assets/0f3f4ad6-3d80-45c3-b83f-34a6eced7e00)
+
 ---
 
 
