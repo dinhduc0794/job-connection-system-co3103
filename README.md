@@ -89,8 +89,8 @@ Watch the demo video here:
 
 ---
 ## 🚀 Use case diagram  
-![system_architecture](https://github.com/user-attachments/assets/3fa0d0b8-04f2-4b53-b3ce-36e01c069c9e)
 
+![job-connection-system drawio](https://github.com/user-attachments/assets/454c36cc-ef4e-415d-83a1-df2b3bbdf6e6)
 
 
 ---
@@ -105,7 +105,7 @@ Watch the demo video here:
 ---
 
 ## 🚀 System architecture
-![job-connection-system drawio](https://github.com/user-attachments/assets/454c36cc-ef4e-415d-83a1-df2b3bbdf6e6)
+![system_architecture](https://github.com/user-attachments/assets/3fa0d0b8-04f2-4b53-b3ce-36e01c069c9e)
 
 
 ---
