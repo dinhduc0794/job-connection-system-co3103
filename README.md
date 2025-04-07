@@ -89,19 +89,21 @@ Watch the demo video here:
 
 ---
 ## 🚀 Use case diagram  
-
-![job-connection-system drawio](https://github.com/user-attachments/assets/454c36cc-ef4e-415d-83a1-df2b3bbdf6e6)
+![job-connection-system-All system drawio](https://github.com/user-attachments/assets/a1b7fe0f-46f9-4cb4-828f-b047eaab3e66)
 
 
 ---
 
 ## 🚀 Enhanced entity–relationship diagram (EERD)
-![erd drawio](https://github.com/user-attachments/assets/4f90a367-c458-4db1-a348-b689b4140e90)
+![EERD drawio](https://github.com/user-attachments/assets/93facc5e-4ac1-4ecd-b081-15268b4d05ff)
+
 
 
 ---
 ## 🚀 Relational Schema
-![acd drawio](https://github.com/user-attachments/assets/ab1ae25f-7ca3-432e-b0e1-5ca7c64ed0eb)
+![ERD-Relational Schema drawio](https://github.com/user-attachments/assets/74db513d-cc2a-4a63-9d56-c783fc64a49e)
+![job-connection-system-diagrams-Relation Schema drawio](https://github.com/user-attachments/assets/03f8f40e-44c9-44ed-9cf0-f24a49412785)
+
 
 ---
 
