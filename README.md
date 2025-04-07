@@ -1,4 +1,4 @@
-![system_architecture](https://github.com/user-attachments/assets/3fa0d0b8-04f2-4b53-b3ce-36e01c069c9e)![job-connection-system drawio](https://github.com/user-attachments/assets/454c36cc-ef4e-415d-83a1-df2b3bbdf6e6)# GoodJob - Job Connection System
+# GoodJob - Job Connection System
 
 A full-stack job portal platform for job posting and application across various industries and locations, inspired by platforms like VietnamWorks, ITviec, and TopDev.
 
@@ -33,14 +33,14 @@ GoodJob is a job connection system developed for the **Software Engineering Caps
 
 ---
 ## 🚀 Use case diagram  
-![image](https://github.com/user-attachments/assets/c0a65a10-246e-47fb-a53b-0d0d8b5e9c26)
+![system_architecture](https://github.com/user-attachments/assets/3fa0d0b8-04f2-4b53-b3ce-36e01c069c9e)
 
 
 
 ---
 
 ## 🚀 System architecture
-![image](https://github.com/user-attachments/assets/8d1114ca-d25d-41a0-8d6e-59efad9addce)
+![job-connection-system drawio](https://github.com/user-attachments/assets/454c36cc-ef4e-415d-83a1-df2b3bbdf6e6)
 
 
 ---
