@@ -43,7 +43,7 @@ GoodJob is a job connection system developed for the **Software Engineering Caps
 | Huỳnh Trần Học Đăng   | Frontend Developer                   | UI/UX design, frontend development with ReactJS, integration with backend APIs                   |
 | Mai Văn Hoàng Duy     | Frontend Developer                   | UI/UX design, frontend development with ReactJS, integration with backend APIs                   |
 | Doãn Đình Hảo         | Backend Developer                    | Backend core development, AWS Deployment                                                         |
-| Nguyễn Hoàng Thiện    | Product Owner                        | Write documentation, perform testing, bug tracking, ensure quality standards                     |
+| Hoàng Đức Thiện       | Product Owner                        | Write documentation, perform testing, bug tracking, ensure quality standards                     |
 
 ---
 
